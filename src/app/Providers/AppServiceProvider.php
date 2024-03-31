@@ -3,7 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use App\Models\User;
+use App\Models\Profile;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -17,8 +18,13 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot()
     {
-        //
+        User::created(function ($user) {
+            // Créer un profil associé à l'utilisateur
+            $user->profile()->create([
+                // Vous pouvez initialiser les champs du profil ici si nécessaire
+            ]);
+        });
     }
 }

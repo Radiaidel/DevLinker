@@ -38,21 +38,21 @@ class AuthController extends Controller
         ]);
     }
 
-    public function store(Request $request){
-        $validate = $request->validate([
-            'name' => 'required',
-            'email' => 'required|unique:users,email',
-            'password' => 'required|min:6',
-        ]);
-    
-        $data = $request->except('password');
-        $data['password'] = Hash::make($request->password);
+        public function store(Request $request){
+            $validate = $request->validate([
+                'name' => 'required',
+                'email' => 'required|unique:users,email',
+                'password' => 'required|min:6',
+            ]);
         
-        User::create($data);
+            $data = $request->except('password');
+            $data['password'] = Hash::make($request->password);
+            
+            User::create($data);
+            
+            return redirect('/login');
+        }
         
-        return redirect('/login');
-    }
-    
 
     public function logout(Request $request)
     {

@@ -101,21 +101,20 @@
     </div>
 
 
-    <div class="max-md:hidden gap-5 justify-between text-xs mr-6 max-md:flex">
-        <div class="flex gap-4 items-center">
-            <div class="shrink-0 self-stretch w-px h-20 border border-solid bg-zinc-100 border-zinc-100"></div>
-            <img src="{{asset('storage/profile/unknown.png')}}" class="rounded-full shrink-0 self-stretch my-auto aspect-square w-[42px]" />
-            <div class="flex flex-col self-stretch my-auto">
-                <div class="uppercase text-neutral-900">{{Auth::user()->name}}</div>
-                <div class="flex items-center justify-center gap-2 mt-1">
-                    <div class="w-2 h-2 rounded-full bg-green-400">
-
-                    </div>
-                    <div class="text-neutral-500">online</div>
-                </div>
+    <a href="{{ route('profile.show') }}" class="max-md:hidden gap-5 justify-between text-xs mr-6 max-md:flex">
+    <div class="flex gap-4 items-center">
+        <div class="shrink-0 self-stretch w-px h-20 border border-solid bg-zinc-100 border-zinc-100"></div>
+        <img src="{{ asset('storage/profile/unknown.png') }}" class="rounded-full shrink-0 self-stretch my-auto aspect-square w-[42px]" />
+        <div class="flex flex-col self-stretch my-auto">
+            <div class="uppercase text-neutral-900">{{ Auth::user()->name }}</div>
+            <div class="flex items-center justify-center gap-2 mt-1">
+                <div class="w-2 h-2 rounded-full bg-green-400"></div>
+                <div class="text-neutral-500">online</div>
             </div>
         </div>
     </div>
+</a>
+
     <script>
         // Sélectionnez l'élément du bouton de menu burger et l'élément du contenu du menu burger
         var burgerButton = document.getElementById('burger-menu');
