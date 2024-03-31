@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\FeedController;
+use App\Http\Controllers\ProfileController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +32,7 @@ Route::post('/register', [AuthController::class, 'store'])->name('auth.store');
 
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+
+Route::get('/feed', [FeedController::class, 'index'])->name('feed');
+Route::get('/profile', [ProfileController::class , 'show'])->name('profile.show');

@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <div class="flex gap-12 p-12">
     <div class="flex flex-col w-2/3">
         <div class="flex flex-col px-7 py-5 w-full bg-white rounded-3xl max-md:px-5 max-md:max-w-full">
@@ -162,3 +165,4 @@
     </div>
 
 </div>
+@endsection
