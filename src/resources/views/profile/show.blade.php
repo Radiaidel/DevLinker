@@ -130,41 +130,106 @@
             <div class="text-lg text-neutral-900 max-md:max-w-full">Experience</div>
 
             <div>
-                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-
+                <svg id="addExperienceButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-
                     <g id="SVGRepo_iconCarrier">
                         <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </g>
-
                 </svg>
             </div>
+            <div id="experienceModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+                <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center block">
+                    <!-- Overlay -->
+                    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                        <!-- Close button -->
+                        <button id="closeModalButton" class="absolute top-0 right-0 m-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none">&times;</button>
+
+                        <!-- Form for adding experience -->
+                        <form action="{{ route('add.experience') }}" method="POST" enctype="multipart/form-data" class="w-full px-6 py-4 mt-6">
+                            @csrf
+                            <div class="mb-4">
+                                <label for="companyName" class="block text-sm font-medium text-gray-700">Company Name</label>
+                                <input type="text" id="companyName" name="companyName" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                            <div class="mb-4">
+                                <label for="position" class="block text-sm font-medium text-gray-700">Position</label>
+                                <input type="text" id="position" name="position" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                            <div class="mb-4">
+    <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+    <input type="text" id="location" name="location" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+</div>
+
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
+                                    <input type="date" id="startDate" name="startDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
+                                    <input type="date" id="endDate" name="endDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="about" class="block text-sm font-medium text-gray-700">About</label>
+                                <textarea id="about" name="about" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="companyImage" class="block text-sm font-medium text-gray-700">Company Image</label>
+                                <input type="file" id="companyImage" name="companyImage" accept="image/*" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                            
+                            <div class="flex justify-end">
+                                <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Add Experience</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+
+
         </div>
 
+        @foreach(Auth::user()->profile->experience ?? [] as $experience)
         <div class="flex gap-4 items-start mt-6 max-md:flex-wrap">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc95d00301bd3f7c1fd639ffb81c6d303123aac23ec8e96df9204990be6bb776?" class="shrink-0 aspect-square w-[54px]" />
+            @if(isset($experience['companyImage']))
+            <img loading="lazy" src="{{ asset('storage/' . $experience['companyImage']) }}" class="shrink-0 aspect-square w-[54px]" />
+            @else
+            <div class="shrink-0 aspect-square w-[54px] bg-gray-200"></div>
+            @endif
             <div class="flex flex-col grow shrink-0 basis-0 w-fit max-md:max-w-full">
                 <div class="text-sm text-neutral-900 max-md:max-w-full">
-                    UX/UI designer
+                    {{ $experience['position'] }}
                 </div>
                 <div class="flex gap-3.5 self-start mt-4 whitespace-nowrap text-neutral-900">
-                    <div>Upwork</div>
-                    <div>International</div>
+                    <div>{{ $experience['companyName'] }}</div>
+                    <div>{{ $experience['location'] }}</div>
                 </div>
                 <div class="flex gap-3.5 self-start mt-3">
-                    <div class="grow text-neutral-900">Jun 2019 — Present</div>
-                    <div class="text-sky-800">3 mos</div>
+                    <div class="grow text-neutral-900">{{ $experience['startDate'] }} — {{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}</div>
+                    @php
+                    $startDate = new DateTime($experience['startDate']);
+                    $endDate = isset($experience['endDate']) ? new DateTime($experience['endDate']) : new DateTime();
+                    $interval = $startDate->diff($endDate);
+                    $months = $interval->format('%m') + ($interval->format('%y') * 12);
+                    @endphp
+                    <div class="text-sky-800">{{ $months }} month</div>
                 </div>
                 <div class="mt-4 text-neutral-900 max-md:max-w-full">
-                    New experience with Upwork system. Work in next areas: UX/UI design,
-                    graphic design, interaction design, UX research.
+                    {{ $experience['about'] }}
                 </div>
             </div>
         </div>
         <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
+        @endforeach
+
 
     </div>
     <div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
@@ -216,8 +281,14 @@
     document.getElementById('editImageButton').addEventListener('click', function() {
         document.getElementById('imageUploadInput').click();
     });
+    document.getElementById('addExperienceButton').addEventListener('click', function() {
+        document.getElementById('experienceModal').classList.remove('hidden');
+    });
 
-    
+    // Close modal when close button is clicked
+    document.getElementById('closeModalButton').addEventListener('click', function() {
+        document.getElementById('experienceModal').classList.add('hidden');
+    });
 </script>
 
 @endsection

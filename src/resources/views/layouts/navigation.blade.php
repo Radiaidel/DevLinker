@@ -106,7 +106,7 @@
             <div class="shrink-0 self-stretch w-px h-20 border border-solid bg-zinc-100 border-zinc-100"></div>
             <div class="shrink-0 self-stretch w-px h-20 border border-solid bg-zinc-100 border-zinc-100"></div>
             @if(Auth::user()->profile && Auth::user()->profile->profile_image)
-            <img src="{{ asset('storage/' . Auth::user()->profile->profile_image) }}" class="rounded-full shrink-0 self-stretch my-auto aspect-square w-[42px]" />
+            <img src="{{ asset('storage/profile/' . Auth::user()->profile->profile_image) }}" class="rounded-full shrink-0 self-stretch my-auto aspect-square w-[42px]" />
             @else
             <img src="{{ asset('storage/profile/unknown.png') }}" class="rounded-full shrink-0 self-stretch my-auto aspect-square w-[42px]" />
             @endif

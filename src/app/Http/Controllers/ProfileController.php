@@ -56,4 +56,49 @@ class ProfileController extends Controller
         return redirect()->back()->with('success', 'You profile image updated successfully.');
     }
     
+    public function addExperience(Request $request)
+    {
+        // Valider les données du formulaire
+        $validatedData = $request->validate([
+            'companyName' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+            'startDate' => 'required|date',
+            'endDate' => 'nullable|date|after_or_equal:startDate',
+            'about' => 'nullable|string',
+            'location' => 'required|string|max:255',
+            'companyImage' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    
+        // Récupérer le profil de l'utilisateur authentifié
+        $profile = auth()->user()->profile;
+    
+        // Récupérer les expériences existantes de l'utilisateur
+        $experiences = $profile->experience ?? [];
+        // Ajouter la nouvelle expérience au tableau des expériences existantes
+        $newExperience = [
+            'companyName' => $validatedData['companyName'],
+            'position' => $validatedData['position'],
+            'startDate' => $validatedData['startDate'],
+            'endDate' => $validatedData['endDate'],
+            'location' => $validatedData['location'],
+            'about' => $validatedData['about'],
+        ];
+        
+        // Enregistrer l'image de l'entreprise s'il a été téléchargé
+        if ($request->hasFile('companyImage')) {
+            $imagePath = $request->file('companyImage')->store('company_images', 'public');
+            $newExperience['companyImage'] = $imagePath;
+        }
+        
+        // Ajouter la nouvelle expérience à celles déjà existantes
+        $experiences[] = $newExperience;
+        
+        // dd($experiences);
+        // Mettre à jour le profil avec les nouvelles expériences
+        $profile->update(['experience' => $experiences]);
+    
+        return redirect()->back()->with('success', 'Experience added successfully');
+    }
+    
+    
 }
