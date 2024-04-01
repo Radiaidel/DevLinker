@@ -162,9 +162,9 @@
                                 <input type="text" id="position" name="position" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
                             <div class="mb-4">
-    <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
-    <input type="text" id="location" name="location" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-</div>
+                                <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                                <input type="text" id="location" name="location" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            </div>
 
                             <div class="grid grid-cols-2 gap-4 mb-4">
                                 <div>
@@ -184,7 +184,7 @@
                                 <label for="companyImage" class="block text-sm font-medium text-gray-700">Company Image</label>
                                 <input type="file" id="companyImage" name="companyImage" accept="image/*" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
-                            
+
                             <div class="flex justify-end">
                                 <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Add Experience</button>
                             </div>
@@ -192,13 +192,23 @@
                     </div>
                 </div>
             </div>
-            
+
 
 
         </div>
 
-        @foreach(Auth::user()->profile->experience ?? [] as $experience)
-        <div class="flex gap-4 items-start mt-6 max-md:flex-wrap">
+        @php
+        // Récupérer les expériences de l'utilisateur
+        $experiences = Auth::user()->profile->experience ?? [];
+
+        // Trier les expériences par date de début
+        usort($experiences, function($b, $a) {
+        return strtotime($a['startDate']) - strtotime($b['startDate']);
+        });
+        @endphp
+
+        @foreach($experiences as $experience)
+        <div class="relative flex group gap-4 items-start mt-6 max-md:flex-wrap">
             @if(isset($experience['companyImage']))
             <img loading="lazy" src="{{ asset('storage/' . $experience['companyImage']) }}" class="shrink-0 aspect-square w-[54px]" />
             @else
@@ -226,9 +236,13 @@
                     {{ $experience['about'] }}
                 </div>
             </div>
+            <div class="absolute top-0 right-0 hidden group-hover:block">
+                <button class="text-sm text-indigo-600 hover:text-indigo-800">Edit</button>
+            </div>
         </div>
         <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
         @endforeach
+
 
 
     </div>
