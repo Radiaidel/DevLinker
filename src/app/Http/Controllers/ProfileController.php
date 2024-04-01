@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 class ProfileController extends Controller
 {
     //
@@ -55,7 +56,7 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('success', 'You profile image updated successfully.');
     }
-    
+
     public function addExperience(Request $request)
     {
         // Valider les données du formulaire
@@ -68,10 +69,10 @@ class ProfileController extends Controller
             'location' => 'required|string|max:255',
             'companyImage' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         // Récupérer le profil de l'utilisateur authentifié
         $profile = auth()->user()->profile;
-    
+
         // Récupérer les expériences existantes de l'utilisateur
         $experiences = $profile->experience ?? [];
         // Ajouter la nouvelle expérience au tableau des expériences existantes
@@ -83,22 +84,89 @@ class ProfileController extends Controller
             'location' => $validatedData['location'],
             'about' => $validatedData['about'],
         ];
-        
+
         // Enregistrer l'image de l'entreprise s'il a été téléchargé
         if ($request->hasFile('companyImage')) {
             $imagePath = $request->file('companyImage')->store('company_images', 'public');
             $newExperience['companyImage'] = $imagePath;
         }
-        
+
         // Ajouter la nouvelle expérience à celles déjà existantes
         $experiences[] = $newExperience;
-        
+
         // dd($experiences);
         // Mettre à jour le profil avec les nouvelles expériences
         $profile->update(['experience' => $experiences]);
-    
+
         return redirect()->back()->with('success', 'Experience added successfully');
     }
-    
-    
+
+    public function updateExperience(Request $request)
+    {
+        // Valider les données du formulaire
+        $validatedData = $request->validate([
+            'editCompanyName' => 'required|string|max:255',
+            'editPosition' => 'required|string|max:255',
+            'editStartDate' => 'required|date',
+            'editEndDate' => 'nullable|date|after_or_equal:editStartDate',
+            'editAbout' => 'nullable|string',
+            'editLocation' => 'required|string|max:255',
+            'editCompanyImage' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Récupérer le profil de l'utilisateur authentifié
+        $profile = auth()->user()->profile;
+
+        // Récupérer les expériences existantes de l'utilisateur
+        $experiences = $profile->experience ?? [];
+
+        // Recherche de l'expérience à mettre à jour en fonction de la date de début
+        foreach ($experiences as $key => $experience) {
+            if ($experience['startDate'] == $request->editStartDate) {
+                // Mettre à jour les champs de l'expérience
+                $experiences[$key]['companyName'] = $validatedData['editCompanyName'];
+                $experiences[$key]['position'] = $validatedData['editPosition'];
+                $experiences[$key]['startDate'] = $validatedData['editStartDate'];
+                $experiences[$key]['endDate'] = $validatedData['editEndDate'];
+                $experiences[$key]['about'] = $validatedData['editAbout'];
+                $experiences[$key]['location'] = $validatedData['editLocation'];
+
+                // Mettre à jour l'image de l'entreprise si elle a été téléchargée
+                if ($request->hasFile('editCompanyImage')) {
+                    $imagePath = $request->file('editCompanyImage')->store('company_images', 'public');
+                    $experiences[$key]['companyImage'] = $imagePath;
+                }
+                break; // Sortir de la boucle une fois que l'expérience a été mise à jour
+            }
+        }
+
+        // Mettre à jour le profil avec les expériences mises à jour
+        $profile->update(['experience' => $experiences]);
+
+        return redirect()->back()->with('success', 'Experience updated successfully');
+    }
+    public function delete(Request $request)
+    {
+
+
+        // Trouver le profil de l'utilisateur authentifié
+        $profile = auth()->user()->profile;
+
+        // Récupérer les expériences existantes de l'utilisateur
+        $experiences = $profile->experience ?? [];
+
+        // Parcourir les expériences pour trouver celle à supprimer
+        foreach ($experiences as $key => $experience) {
+            if ($experience['startDate'] == $request->editStartDate) {
+                // Supprimer l'expérience du tableau des expériences
+                unset($experiences[$key]);
+                break;
+            }
+        }
+
+        // Mettre à jour le profil avec les expériences mises à jour
+        $profile->update(['experience' => array_values($experiences)]);
+
+        return redirect()->back()->with('success', 'Experience deleted successfully');
+    }
 }

@@ -41,4 +41,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-cover-image', [ProfileController::class, 'updateCoverImage'])->name('update.cover.image');
     Route::post('/update-profile-image', [ProfileController::class, 'updateProfileImage'])->name('update.profile.image');
     Route::post('/add-experience', [ProfileController::class, 'addExperience'])->name('add.experience');
+    Route::post('/update-experience', [ProfileController::class, 'updateExperience'])->name('update.experience');
+    Route::post('/experience/delete', [ProfileController::class,'delete'])->name('delete.experience');
 });
