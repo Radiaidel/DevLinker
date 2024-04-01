@@ -63,7 +63,7 @@
                     </div>
                     <div class="mt-6 text-center text-blue-500">
                         Already have an account?
-                        <span class="font-semibold text-blue-500">Log in</span>
+                        <a href="{{route('auth.login')}}"  class="font-semibold text-blue-500">Log in</a>
                     </div>
                 </div>
             </div>

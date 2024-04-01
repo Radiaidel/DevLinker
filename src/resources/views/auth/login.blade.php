@@ -65,7 +65,7 @@
                         </div>
                         <div class="mt-6 text-center text-blue-500">
                             Don't have an account?
-                            <span class="font-semibold text-blue-500">Sign up</span>
+                            <a href="{{route('auth.register')}}" class="font-semibold text-blue-500">Sign up</a>
                         </div>
                     </div>
                 </div>

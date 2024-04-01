@@ -101,19 +101,36 @@
     </div>
 
 
-    <a href="{{ route('profile.show') }}" class="max-md:hidden gap-5 justify-between text-xs mr-6 max-md:flex">
-    <div class="flex gap-4 items-center">
-        <div class="shrink-0 self-stretch w-px h-20 border border-solid bg-zinc-100 border-zinc-100"></div>
-        <img src="{{ asset('storage/profile/unknown.png') }}" class="rounded-full shrink-0 self-stretch my-auto aspect-square w-[42px]" />
-        <div class="flex flex-col self-stretch my-auto">
-            <div class="uppercase text-neutral-900">{{ Auth::user()->name }}</div>
-            <div class="flex items-center justify-center gap-2 mt-1">
-                <div class="w-2 h-2 rounded-full bg-green-400"></div>
-                <div class="text-neutral-500">online</div>
+    <div class="relative max-md:hidden gap-5 justify-between text-xs mr-12 max-md:flex">
+        <a href="{{ route('profile.show') }}" class="flex gap-4 items-center" onclick="toggleDropdown(event)">
+            <div class="shrink-0 self-stretch w-px h-20 border border-solid bg-zinc-100 border-zinc-100"></div>
+            <div class="shrink-0 self-stretch w-px h-20 border border-solid bg-zinc-100 border-zinc-100"></div>
+            @if(Auth::user()->profile && Auth::user()->profile->profile_image)
+            <img src="{{ asset('storage/' . Auth::user()->profile->profile_image) }}" class="rounded-full shrink-0 self-stretch my-auto aspect-square w-[42px]" />
+            @else
+            <img src="{{ asset('storage/profile/unknown.png') }}" class="rounded-full shrink-0 self-stretch my-auto aspect-square w-[42px]" />
+            @endif
+             <div class="flex flex-col self-stretch my-auto">
+                <div class="uppercase text-neutral-900">{{ Auth::user()->name }}</div>
+                <div class="flex  items-center justify-start gap-2 mt-1">
+                    <div class="w-2 h-2 rounded-full bg-green-400"></div>
+                    <div class="text-neutral-500">online</div>
+                </div>
             </div>
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+
+        <!-- Dropdown menu -->
+        <div id="dropdownMenu" class="absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded shadow-lg z-10 hidden">
+            <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
+            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Preferences</a>
+            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
         </div>
     </div>
-</a>
+
+
 
     <script>
         // Sélectionnez l'élément du bouton de menu burger et l'élément du contenu du menu burger
@@ -134,5 +151,12 @@
                 menuContent.classList.add('hidden');
             }
         });
+    </script>
+    <script>
+        function toggleDropdown(event) {
+            event.preventDefault();
+            var dropdownMenu = document.getElementById('dropdownMenu');
+            dropdownMenu.classList.toggle('hidden');
+        }
     </script>
 </nav>

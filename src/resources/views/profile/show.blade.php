@@ -3,29 +3,74 @@
 @section('content')
 <div class="">
     <div class="flex flex-col mx-auto pb-6 mt-10 max-w-full bg-white rounded shadow-2xl w-[850px]">
-        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc95d00301bd3f7c1fd639ffb81c6d303123aac23ec8e96df9204990be6bb776?"  class="w-full aspect-[4.76] max-md:max-w-full" />
-        <div class="z-10 mt-0 ml-5 max-w-full w-[786px]">
-            <div class="flex gap-5 max-md:flex-col max-md:gap-0">
-                <div class="flex flex-col w-[23%] max-md:ml-0 max-md:w-full">
-                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc95d00301bd3f7c1fd639ffb81c6d303123aac23ec8e96df9204990be6bb776?"  class="shrink-0 max-w-full rounded-full border-white border-solid aspect-square border-[10px] w-[180px] max-md:mt-5" />
+        <div class="relative">
+            @if(Auth::user()->profile && Auth::user()->profile->cover_image)
+
+            <img src="{{ asset('storage/profile/' . Auth::user()->profile->cover_image) }}" class="w-full aspect-[4.76] max-md:max-w-full" />
+            @else
+            <img src="{{ asset('storage/profile/cover_default.jpeg') }}" class="w-full aspect-[4.76] max-md:max-w-full  " />
+            @endif
+            <svg id="editCoverButton" class="absolute top-0 right-0 m-3 w-6 h-6 cursor-pointer text-gray-500 hover:text-gray-700" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                <g id="SVGRepo_iconCarrier">
+                    <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#c0c0c0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#c0c0c0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+
+            </svg>
+            <form id="coverForm" action="{{route('update.cover.image')}}" method="POST" enctype="multipart/form-data" style="display: none;">
+                @csrf
+                <input id="coverUploadInput" name="cover_image" type="file" style="display: none;" onchange="submitForm('coverForm')">
+            </form>
+        </div>
+        <div class="z-10  ml-5 max-w-full w-[786px]">
+            <div class="flex gap-5 items-center max-md:flex-col max-md:gap-0">
+                <div class="flex flex-col w-[23%] max-md:ml-0 max-md:w-full relative">
+                    @if(Auth::user()->profile && Auth::user()->profile->profile_image)
+                    <img loading="lazy" src="{{ asset('storage/profile/' . Auth::user()->profile->profile_image) }}" class="shrink-0 max-w-full rounded-full border-white border-solid aspect-square border-[10px] w-[180px] max-md:mt-5" />
+                    @else
+                    <img loading="lazy" src="{{ asset('storage/profile/unknown.png') }}" class="shrink-0 max-w-full rounded-full border-white border-solid aspect-square border-[10px] w-[180px] max-md:mt-5" />
+                    @endif
+                    <div class="absolute top-0 rounded-full  left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
+                        <svg id="editImageButton" width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </g>
+
+                        </svg>
+                    </div>
+                    <form id="imageForm" action="{{route('update.profile.image')}}" method="POST" enctype="multipart/form-data" style="display: none;">
+                        @csrf
+                        <input id="imageUploadInput" name="profile_image" type="file" style="display: none;" onchange="submitForm('imageForm')">
+                    </form>
                 </div>
-                <div class="flex flex-col ml-5 w-[77%] max-md:ml-0 max-md:w-full">
-                    <div class="flex flex-col mt-14 max-md:mt-10 max-md:max-w-full">
+
+
+                <div class="flex flex-col ml-5 mt-2 w-[77%] max-md:ml-0 max-md:w-full">
+                    <div class="flex flex-col  max-md:mt-10 max-md:max-w-full">
                         <div class="flex gap-5 justify-between items-start w-full text-neutral-900 max-md:flex-wrap max-md:max-w-full">
                             <div class="flex flex-col">
-                                <div class="text-lg italic">Dmitry Kargaev</div>
-                                <div class="mt-3 text-sm leading-5">
-                                    Freelance UX/UI designer.
-                                </div>
+                                <div class="text-lg ">{{Auth::user()->name}}</div>
+                                @if(Auth::user()->profile && Auth::user()->profile->title)
+                                <div class="mt-2 text-sm leading-5">{{ Auth::user()->profile->title }}</div>
+                                @else
+                                <div class="mt-2 text-sm leading-5">Profile Title Not Set</div>
+                                @endif
+
                             </div>
-                            <div class="flex gap-2 text-xs leading-5">
-                                <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/c0e16e3654ba5b7b65dc5f699e1ae7f0c70fbc816f23ca8b87fe77b9ee66a08e?" class="shrink-0 w-4 aspect-square" />
-                                <div class="flex-auto">
-                                    Saint Petersburg, Russian Federation
-                                </div>
-                            </div>
+
                         </div>
-                        <div class="flex gap-4 self-start mt-10 text-xs text-center uppercase">
+                        <div class="flex gap-4 self-start mt-8 text-xs text-center uppercase">
                             <div class="justify-center px-11 py-3 text-white bg-sky-800 rounded max-md:px-5">
                                 Contact info
                             </div>
@@ -40,73 +85,67 @@
     </div>
     <div class="flex mx-auto flex-col px-8 py-9 mt-4 max-w-full bg-white rounded shadow-2xl text-neutral-900 w-[850px] max-md:px-5">
         <div class="text-lg max-md:max-w-full">About</div>
+        @if(Auth::user()->profile && Auth::user()->profile->about)
         <div class="mt-5 text-sm leading-5 max-md:max-w-full">
-            I'm more experienced in eCommerce web projects and mobile banking apps,
-            but also like to work with creative projects, such as landing pages or
-            unusual corporate websites.
+            {{ Auth::user()->profile->about }}
         </div>
-        <div class="mt-6 text-xs text-center text-sky-800 uppercase max-md:max-w-full">
-            See more
+        @else
+        <div class="mt-5 text-sm leading-5 max-md:max-w-full">
+            About section not filled out.
         </div>
+        @endif
     </div>
+
     <div class="flex mx-auto flex-col px-8 py-8 mt-4 bg-white rounded shadow-2xl max-w-[850px] max-md:px-5">
         <div class="flex gap-5 justify-between self-start text-lg">
             <div class="text-neutral-900">Projects</div>
-            <div class="text-neutral-500">3 of 12</div>
         </div>
+        @if(Auth::user()->profile->projects && Auth::user()->profile->projects->count() > 0)
+
         <div class="mt-6 max-md:max-w-full">
             <div class="flex gap-5 max-md:flex-col max-md:gap-0">
+                @foreach(Auth::user()->profile->projects as $project)
                 <div class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
                     <div class="flex flex-col grow leading-[150%] text-neutral-900 max-md:mt-5">
-                        <img loading="lazy" srcset="..." class="w-full aspect-[1.56]" />
-                        <div class="mt-5 text-sm">Zara redesign concept</div>
-                        <div class="mt-3 text-xs">UX/UI design, 15.07.2019</div>
+                        <img loading="lazy" src="{{ $project->image }}" class="w-full aspect-[1.56]" />
+                        <div class="mt-5 text-sm">{{ $project->name }}</div>
+                        <div class="mt-3 text-xs">{{ $project->type }}, {{ $project->date }}</div>
                     </div>
                 </div>
-                <div class="flex flex-col ml-5 w-[33%] max-md:ml-0 max-md:w-full">
-                    <div class="flex flex-col grow leading-[150%] text-neutral-900 max-md:mt-5">
-                        <img loading="lazy" srcset="..." class="w-full aspect-[1.56]" />
-                        <div class="mt-5 text-sm">SCTHON event brand identity</div>
-                        <div class="mt-3 text-xs">Graphic design, 03.31.2019</div>
-                    </div>
-                </div>
-                <div class="flex flex-col ml-5 w-[33%] max-md:ml-0 max-md:w-full">
-                    <div class="flex flex-col grow leading-[150%] text-neutral-900 max-md:mt-5">
-                        <img loading="lazy" srcset="..." class="w-full aspect-[1.56]" />
-                        <div class="mt-5 text-sm">Drozd. Brand identity. 2016</div>
-                        <div class="mt-3 text-xs">Graphic design, 03.04.2016</div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
         <div class="mt-7 text-xs text-sky-800 uppercase max-md:max-w-full">
-            Show all (12)
+            Show all ({{ Auth::user()->profile->projects->count() }})
         </div>
+        @else
+        <div class="mt-6 max-md:max-w-full">
+            <div class="text-sm text-neutral-900">No projects available.</div>
+        </div>
+        @endif
     </div>
+
     <div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
-        <div class="text-lg text-neutral-900 max-md:max-w-full">Experience</div>
-        <div class="flex gap-4 items-start self-start mt-6">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc95d00301bd3f7c1fd639ffb81c6d303123aac23ec8e96df9204990be6bb776?" class="shrink-0 aspect-square w-[54px]" />
-            <div class="flex flex-col">
-                <div class="text-sm text-neutral-900">Freelance UX/UI designer</div>
-                <div class="flex gap-4 mt-4 text-neutral-900">
-                    <div class="grow">Self Employed</div>
-                    <div>Around the world</div>
-                </div>
-                <div class="flex gap-3.5 mt-3">
-                    <div class="grow text-neutral-900">Jun 2016 — Present</div>
-                    <div class="text-sky-800">3 yrs 3 mos</div>
-                </div>
+        <div class="flex justify-between items-center">
+            <div class="text-lg text-neutral-900 max-md:max-w-full">Experience</div>
+
+            <div>
+                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+
+                </svg>
             </div>
         </div>
-        <div class="mt-4 leading-4 text-neutral-900 max-md:max-w-full">
-            Work with clients and web studios as freelancer. Work in next areas:
-            eCommerce web projects; creative landing pages; iOs and Android apps;
-            corporate web sites and corporate identity sometimes.
-        </div>
-        <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
+
         <div class="flex gap-4 items-start mt-6 max-md:flex-wrap">
-            <img loading="lazy" srcset="..." class="shrink-0 aspect-square w-[54px]" />
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc95d00301bd3f7c1fd639ffb81c6d303123aac23ec8e96df9204990be6bb776?" class="shrink-0 aspect-square w-[54px]" />
             <div class="flex flex-col grow shrink-0 basis-0 w-fit max-md:max-w-full">
                 <div class="text-sm text-neutral-900 max-md:max-w-full">
                     UX/UI designer
@@ -125,11 +164,30 @@
                 </div>
             </div>
         </div>
+        <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
+
     </div>
-    <div class="flex mx-auto flex-col items-start py-9 pr-20 pl-8 mt-4 max-w-full bg-white rounded shadow-2xl text-neutral-900 w-[850px] max-md:px-5">
-        <div class="text-lg max-md:max-w-full">Education</div>
+    <div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
+        <div class="flex justify-between items-center">
+            <div class="text-lg text-neutral-900 max-md:max-w-full">Education</div>
+
+            <div>
+                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+
+                </svg>
+            </div>
+        </div>
+
         <div class="flex gap-4 items-start mt-7 text-xs leading-4 max-md:flex-wrap">
-            <img loading="lazy" srcset="..." class="shrink-0 aspect-square w-[54px]" />
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc95d00301bd3f7c1fd639ffb81c6d303123aac23ec8e96df9204990be6bb776?" class="shrink-0 aspect-square w-[54px]" />
             <div class="flex flex-col grow shrink-0 basis-0 w-fit max-md:max-w-full">
                 <div class="text-sm max-md:max-w-full">
                     Moscow State Linguistic University
@@ -146,6 +204,20 @@
         </div>
     </div>
 </div>
+<script>
+    function submitForm(idForm) {
+        document.getElementById(idForm).submit();
+    }
 
+    document.getElementById('editCoverButton').addEventListener('click', function() {
+        document.getElementById('coverUploadInput').click();
+    });
+
+    document.getElementById('editImageButton').addEventListener('click', function() {
+        document.getElementById('imageUploadInput').click();
+    });
+
+    
+</script>
 
 @endsection

@@ -31,8 +31,14 @@ Route::get('/register', [AuthController::class, 'register'])->name('auth.registe
 Route::post('/register', [AuthController::class, 'store'])->name('auth.store');
 
 // Logout
-Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-Route::get('/feed', [FeedController::class, 'index'])->name('feed');
-Route::get('/profile', [ProfileController::class , 'show'])->name('profile.show');
+Route::middleware('auth')->group(function () {
+
+    Route::get('/feed', [FeedController::class, 'index'])->name('feed');
+    Route::get('/profile', [ProfileController::class , 'show'])->name('profile.show');
+    Route::post('/update-cover-image', [ProfileController::class, 'updateCoverImage'])->name('update.cover.image');
+    Route::post('/update-profile-image', [ProfileController::class, 'updateProfileImage'])->name('update.profile.image');
+
+});
