@@ -210,5 +210,41 @@ class ProfileController extends Controller
     
         return redirect()->back()->with('success', 'Education added successfully');
     }
-    
+    public function updateEducation(Request $request)
+{
+    // Valider les données du formulaire
+    $validatedData = $request->validate([
+        'editInstitution' => 'required|string|max:255',
+        'editFieldOfStudy' => 'required|string|max:255',
+        'editStartDate' => 'required|date',
+        'editEndDate' => 'nullable|date|after_or_equal:editStartDate',
+        'editDescription' => 'nullable|string',
+    ]);
+
+    // Récupérer le profil de l'utilisateur authentifié
+    $profile = auth()->user()->profile;
+
+    // Récupérer les éducations existantes de l'utilisateur
+    $educations = $profile->education ?? [];
+
+    // Recherche de l'éducation à mettre à jour en fonction de la date de début
+    foreach ($educations as $key => $education) {
+        if ($education['startDate'] == $request->editStartDate) {
+            // Mettre à jour les champs de l'éducation
+            $educations[$key]['institution'] = $validatedData['editInstitution'];
+            $educations[$key]['fieldOfStudy'] = $validatedData['editFieldOfStudy'];
+            $educations[$key]['startDate'] = $validatedData['editStartDate'];
+            $educations[$key]['endDate'] = $validatedData['editEndDate'];
+            $educations[$key]['description'] = $validatedData['editDescription'];
+
+            break; // Sortir de la boucle une fois que l'éducation a été mise à jour
+        }
+    }
+
+    // Mettre à jour le profil avec les éducations mises à jour
+    $profile->update(['education' => $educations]);
+
+    return redirect()->back()->with('success', 'Education updated successfully');
+}
+
 }
