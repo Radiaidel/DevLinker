@@ -145,7 +145,7 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('success', 'Experience updated successfully');
     }
-    public function delete(Request $request)
+    public function deleteExperience(Request $request)
     {
 
 
@@ -180,13 +180,13 @@ class ProfileController extends Controller
             'description' => 'nullable|string',
             'schoolImage' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         // Récupérer le profil de l'utilisateur authentifié
         $profile = auth()->user()->profile;
-    
+
         // Récupérer les éducations existantes de l'utilisateur
         $educations = $profile->education ?? [];
-    
+
         // Ajouter la nouvelle éducation au tableau des éducations existantes
         $newEducation = [
             'institution' => $validatedData['institution'],
@@ -195,56 +195,78 @@ class ProfileController extends Controller
             'endDate' => $validatedData['endDate'],
             'description' => $validatedData['description'],
         ];
-    
+
         // Enregistrer l'image de l'école s'il a été téléchargé
         if ($request->hasFile('schoolImage')) {
             $imagePath = $request->file('schoolImage')->store('school_images', 'public');
             $newEducation['schoolImage'] = $imagePath;
         }
-    
+
         // Ajouter la nouvelle éducation à celles déjà existantes
         $educations[] = $newEducation;
-    
+
         // Mettre à jour le profil avec les nouvelles éducations
         $profile->update(['education' => $educations]);
-    
+
         return redirect()->back()->with('success', 'Education added successfully');
     }
     public function updateEducation(Request $request)
-{
-    // Valider les données du formulaire
-    $validatedData = $request->validate([
-        'editInstitution' => 'required|string|max:255',
-        'editFieldOfStudy' => 'required|string|max:255',
-        'editStartDate' => 'required|date',
-        'editEndDate' => 'nullable|date|after_or_equal:editStartDate',
-        'editDescription' => 'nullable|string',
-    ]);
+    {
+        // Valider les données du formulaire
+        $validatedData = $request->validate([
+            'editInstitution' => 'required|string|max:255',
+            'editFieldOfStudy' => 'required|string|max:255',
+            'editStartDate' => 'required|date',
+            'editEndDate' => 'nullable|date|after_or_equal:editStartDate',
+            'editDescription' => 'nullable|string',
+        ]);
 
-    // Récupérer le profil de l'utilisateur authentifié
+        // Récupérer le profil de l'utilisateur authentifié
+        $profile = auth()->user()->profile;
+
+        // Récupérer les éducations existantes de l'utilisateur
+        $educations = $profile->education ?? [];
+
+        // Recherche de l'éducation à mettre à jour en fonction de la date de début
+        foreach ($educations as $key => $education) {
+            if ($education['startDate'] == $request->editStartDate) {
+                // Mettre à jour les champs de l'éducation
+                $educations[$key]['institution'] = $validatedData['editInstitution'];
+                $educations[$key]['fieldOfStudy'] = $validatedData['editFieldOfStudy'];
+                $educations[$key]['startDate'] = $validatedData['editStartDate'];
+                $educations[$key]['endDate'] = $validatedData['editEndDate'];
+                $educations[$key]['description'] = $validatedData['editDescription'];
+
+                break; // Sortir de la boucle une fois que l'éducation a été mise à jour
+            }
+        }
+
+        // Mettre à jour le profil avec les éducations mises à jour
+        $profile->update(['education' => $educations]);
+
+        return redirect()->back()->with('success', 'Education updated successfully');
+    }
+    public function deleteEducation(Request $request)
+{
+    // Trouver le profil de l'utilisateur authentifié
     $profile = auth()->user()->profile;
 
     // Récupérer les éducations existantes de l'utilisateur
     $educations = $profile->education ?? [];
 
-    // Recherche de l'éducation à mettre à jour en fonction de la date de début
+    // Parcourir les éducations pour trouver celle à supprimer
     foreach ($educations as $key => $education) {
         if ($education['startDate'] == $request->editStartDate) {
-            // Mettre à jour les champs de l'éducation
-            $educations[$key]['institution'] = $validatedData['editInstitution'];
-            $educations[$key]['fieldOfStudy'] = $validatedData['editFieldOfStudy'];
-            $educations[$key]['startDate'] = $validatedData['editStartDate'];
-            $educations[$key]['endDate'] = $validatedData['editEndDate'];
-            $educations[$key]['description'] = $validatedData['editDescription'];
-
-            break; // Sortir de la boucle une fois que l'éducation a été mise à jour
+            // Supprimer l'éducation du tableau des éducations
+            unset($educations[$key]);
+            break;
         }
     }
 
     // Mettre à jour le profil avec les éducations mises à jour
-    $profile->update(['education' => $educations]);
+    $profile->update(['education' => array_values($educations)]);
 
-    return redirect()->back()->with('success', 'Education updated successfully');
+    return redirect()->back()->with('success', 'Education deleted successfully');
 }
 
 }

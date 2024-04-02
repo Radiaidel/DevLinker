@@ -346,7 +346,7 @@
                 </div>
             </div>
             <div class="absolute top-0 right-0 hidden group-hover:block">
-            <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editEducation(this)" data-education='{"institution": "{{ $education['institution'] }}", "fieldOfStudy": "{{ $education['fieldOfStudy'] }}", "startDate": "{{ $education['startDate'] }}", "endDate": "{{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}", "description": "{{ $education['description'] }}"}'>Edit</button>
+                <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editEducation(this)" data-education='{"institution": "{{ $education['institution'] }}", "fieldOfStudy": "{{ $education['fieldOfStudy'] }}", "startDate": "{{ $education['startDate'] }}", "endDate": "{{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}", "description": "{{ $education['description'] }}"}'>Edit</button>
             </div>
 
         </div>
@@ -447,10 +447,11 @@
                         <textarea id="editDescription" name="editDescription" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
                     </div>
 
-                    <!-- Submit button -->
                     <div class="flex justify-end">
                         <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Update Education</button>
+                        <button id="deleteEducationButton" type="button" class="bg-red-500 text-white px-4 py-2 rounded-md ml-4">Delete Education</button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -531,21 +532,40 @@
         document.getElementById('editEducationModal').classList.add('hidden');
     }
 
-function editEducation(button) {
-    // Récupérer les données de l'éducation à partir de l'attribut data-education du bouton
-    var educationData = JSON.parse(button.getAttribute('data-education'));
+    function editEducation(button) {
+        // Récupérer les données de l'éducation à partir de l'attribut data-education du bouton
+        var educationData = JSON.parse(button.getAttribute('data-education'));
 
 
-    document.getElementById('editInstitution').value = educationData.institution;
-    document.getElementById('editFieldOfStudy').value = educationData.fieldOfStudy;
-    document.getElementById('editStartDateEdu').value = educationData.startDate;
-    document.getElementById('editEndDateEdu').value = educationData.endDate;
-    document.getElementById('editDescription').value = educationData.description;
+        document.getElementById('editInstitution').value = educationData.institution;
+        document.getElementById('editFieldOfStudy').value = educationData.fieldOfStudy;
+        document.getElementById('editStartDateEdu').value = educationData.startDate;
+        document.getElementById('editEndDateEdu').value = educationData.endDate;
+        document.getElementById('editDescription').value = educationData.description;
 
-    // Afficher le modal d'édition
-    document.getElementById('editEducationModal').classList.remove('hidden');
-}
+        // Afficher le modal d'édition
+        document.getElementById('editEducationModal').classList.remove('hidden');
+    }
 
+    function confirmDelete() {
+        if (confirm("Are you sure you want to delete this education?")) {
+            // Si l'utilisateur confirme, soumettre le formulaire de suppression
+            document.getElementById("editEducationForm").submit();
+        }
+    }
+
+    function confirmDeleteEducation() {
+        if (confirm("Are you sure you want to delete this education?")) {
+            // Si l'utilisateur confirme, soumettre le formulaire de suppression
+            document.getElementById("editEducationForm").action = "{{ route('education.delete') }}"; // Définir l'action de suppression
+            document.getElementById("editEducationForm").submit();
+        }
+    }
+
+    // Attacher un événement au bouton de suppression
+    document.getElementById("deleteEducationButton").addEventListener("click", function() {
+        confirmDeleteEducation();
+    });
 </script>
 
 @endsection
