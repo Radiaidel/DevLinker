@@ -169,4 +169,46 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('success', 'Experience deleted successfully');
     }
+    public function addEducation(Request $request)
+    {
+        // Valider les données du formulaire
+        $validatedData = $request->validate([
+            'institution' => 'required|string|max:255',
+            'fieldOfStudy' => 'required|string|max:255',
+            'startDate' => 'required|date',
+            'endDate' => 'nullable|date|after_or_equal:startDate',
+            'description' => 'nullable|string',
+            'schoolImage' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    
+        // Récupérer le profil de l'utilisateur authentifié
+        $profile = auth()->user()->profile;
+    
+        // Récupérer les éducations existantes de l'utilisateur
+        $educations = $profile->education ?? [];
+    
+        // Ajouter la nouvelle éducation au tableau des éducations existantes
+        $newEducation = [
+            'institution' => $validatedData['institution'],
+            'fieldOfStudy' => $validatedData['fieldOfStudy'],
+            'startDate' => $validatedData['startDate'],
+            'endDate' => $validatedData['endDate'],
+            'description' => $validatedData['description'],
+        ];
+    
+        // Enregistrer l'image de l'école s'il a été téléchargé
+        if ($request->hasFile('schoolImage')) {
+            $imagePath = $request->file('schoolImage')->store('school_images', 'public');
+            $newEducation['schoolImage'] = $imagePath;
+        }
+    
+        // Ajouter la nouvelle éducation à celles déjà existantes
+        $educations[] = $newEducation;
+    
+        // Mettre à jour le profil avec les nouvelles éducations
+        $profile->update(['education' => $educations]);
+    
+        return redirect()->back()->with('success', 'Education added successfully');
+    }
+    
 }

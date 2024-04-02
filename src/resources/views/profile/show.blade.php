@@ -236,11 +236,9 @@
                     {{ $experience['about'] }}
                 </div>
             </div>
-            <div class="absolute top-0 right-0 hidden group-hover:block" >
-            <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editExperience(this)" data-experience='{"companyName": "{{ $experience['companyName'] }}", "position": "{{ $experience['position'] }}", "location": "{{ $experience['location'] }}", "startDate": "{{ $experience['startDate'] }}", "endDate": "{{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}", "about": "{{ $experience['about'] }}"}'>Edit</button></div>
-
-
-
+            <div class="absolute top-0 right-0 hidden group-hover:block">
+                <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editExperience(this)" data-experience='{"companyName": "{{ $experience['companyName'] }}", "position": "{{ $experience['position'] }}", "location": "{{ $experience['location'] }}", "startDate": "{{ $experience['startDate'] }}", "endDate": "{{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}", "about": "{{ $experience['about'] }}"}'>Edit</button>
+            </div>
 
         </div>
         <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
@@ -310,7 +308,7 @@
             <div class="text-lg text-neutral-900 max-md:max-w-full">Education</div>
 
             <div>
-                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg id="addEducationButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                     <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -323,24 +321,143 @@
                 </svg>
             </div>
         </div>
-
-        <div class="flex gap-4 items-start mt-7 text-xs leading-4 max-md:flex-wrap">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc95d00301bd3f7c1fd639ffb81c6d303123aac23ec8e96df9204990be6bb776?" class="shrink-0 aspect-square w-[54px]" />
+        @php
+        // Récupérer les expériences de l'utilisateur
+        $educations = Auth::user()->profile->education ?? [];
+        @endphp
+        @foreach($educations as $education)
+        <div class="relative flex group gap-4 items-start mt-7 text-xs leading-4 max-md:flex-wrap">
+            @if(isset($education['schoolImage']))
+            <img loading="lazy" src="{{ asset('storage/' . $education['schoolImage']) }}" class="shrink-0 aspect-square w-[54px]" />
+            @else
+            <div class="shrink-0 aspect-square w-[54px] bg-gray-200"></div>
+            @endif
             <div class="flex flex-col grow shrink-0 basis-0 w-fit max-md:max-w-full">
                 <div class="text-sm max-md:max-w-full">
-                    Moscow State Linguistic University
+                    {{ $education['institution'] }}
                 </div>
                 <div class="mt-4 max-md:max-w-full">
-                    Bachelor's degree Field Of StudyComputer and Information Systems
-                    Security/Information Assurance
+                    {{ $education['fieldOfStudy'] }}
                 </div>
-                <div class="mt-3 max-md:max-w-full">2013 — 2017</div>
+                <div class="mt-3 max-md:max-w-full">
+                    {{ $education['startDate'] }} — {{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}
+                </div>
                 <div class="mt-4 max-md:max-w-full">
-                    Additional English classes and UX profile courses​.
+                    {{ $education['description'] }}
                 </div>
+            </div>
+            <div class="absolute top-0 right-0 hidden group-hover:block">
+                <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editEducation(this)" data-education='{"institution": "{{ $education['institution'] }}", "fieldOfStudy": "{{ $education['fieldOfStudy'] }}", "startDate": "{{ $education['startDate'] }}", "endDate": "{{ isset($education['endDate']) ? $education['endDate'] : '' }}", "description": "{{ $education['description'] }}"}'>Edit</button>
+            </div>
+
+        </div>
+        <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
+        @endforeach
+    </div>
+
+    <!-- Modal pour ajouter l'éducation -->
+    <div id="educationModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
+            <!-- Overlay -->
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <!-- Modal -->
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <!-- Close button -->
+                <button id="closeEducationModalButton" class="absolute top-0 right-0 m-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none">&times;</button>
+
+                <form id="addEducationForm" method="POST" action="{{route('education.store')}}" class="w-full px-6 py-4 mt-6" enctype="multipart/form-data">
+                    @csrf
+                    <!-- Champ d'entrée pour le nom de l'institution -->
+                    <div class="mb-4">
+                        <label for="institution" class="block text-sm font-medium text-gray-700">Institution</label>
+                        <input type="text" id="institution" name="institution" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <!-- Champ d'entrée pour le domaine d'études -->
+                    <div class="mb-4">
+                        <label for="fieldOfStudy" class="block text-sm font-medium text-gray-700">Field Of Study</label>
+                        <input type="text" id="fieldOfStudy" name="fieldOfStudy" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <!-- Champs d'entrée pour les dates de début et de fin -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
+                            <input type="date" id="startDate" name="startDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
+                            <input type="date" id="endDate" name="endDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                    <!-- Champ d'entrée pour la description -->
+                    <div class="mb-4">
+                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea id="description" name="description" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="schoolImage" class="block text-sm font-medium text-gray-700">Company Image</label>
+                        <input type="file" id="schoolImage" name="schoolImage" accept="image/*" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    </div>
+
+                    <!-- Bouton pour soumettre le formulaire -->
+                    <div class="flex justify-end">
+                        <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Add Education</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
+    <div id="editEducationModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center block">
+        <!-- Overlay -->
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+
+        <!-- Modal -->
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <!-- Close button -->
+            <button id="closeEditEducationModalButton" class="absolute top-0 right-0 m-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none">&times;</button>
+
+            <!-- Form for editing education -->
+            <form id="editEducationForm" action="{{ route('education.update') }}" method="POST" class="w-full px-6 py-4 mt-6">
+                @csrf
+                <!-- Hidden input for education ID -->
+                <input type="hidden" id="editEducationId" name="editEducationId">
+                <div class="mb-4">
+                    <label for="editInstitution" class="block text-sm font-medium text-gray-700">Institution</label>
+                    <input type="text" id="editInstitution" name="editInstitution" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+                <div class="mb-4">
+                    <label for="editFieldOfStudy" class="block text-sm font-medium text-gray-700">Field Of Study</label>
+                    <input type="text" id="editFieldOfStudy" name="editFieldOfStudy" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="editStartDate" class="block text-sm font-medium text-gray-700">Start Date</label>
+                        <input type="date" id="editStartDate" name="editStartDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <label for="editEndDate" class="block text-sm font-medium text-gray-700">End Date</label>
+                        <input type="date" id="editEndDate" name="editEndDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="editDescription" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea id="editDescription" name="editDescription" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                </div>
+
+                <!-- Submit button -->
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Update Education</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 </div>
 <script>
     function submitForm(idForm) {
@@ -385,6 +502,8 @@
     document.getElementById('closeEditModalButton').addEventListener('click', function() {
         document.getElementById('editExperienceModal').classList.add('hidden');
     });
+
+
     function confirmDelete() {
         if (confirm("Are you sure you want to delete this experience?")) {
             // Si l'utilisateur confirme, soumettre le formulaire de suppression
@@ -396,6 +515,20 @@
     // Attacher un événement au bouton de suppression
     document.getElementById("deleteExperienceButton").addEventListener("click", function() {
         confirmDelete();
+    });
+
+    const addEducationButton = document.getElementById('addEducationButton');
+
+    // Sélectionnez le modal d'ajout d'éducation
+    const educationModal = document.getElementById('educationModal');
+
+    // Ajoutez un gestionnaire d'événements pour le clic sur le bouton "Plus"
+    addEducationButton.addEventListener('click', function() {
+        // Afficher le modal d'ajout d'éducation
+        educationModal.classList.remove('hidden');
+    });
+    document.getElementById('closeEducationModalButton').addEventListener('click', function() {
+        document.getElementById('educationModal').classList.add('hidden');
     });
 </script>
 

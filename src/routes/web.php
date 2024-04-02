@@ -43,4 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-experience', [ProfileController::class, 'addExperience'])->name('add.experience');
     Route::post('/update-experience', [ProfileController::class, 'updateExperience'])->name('update.experience');
     Route::post('/experience/delete', [ProfileController::class,'delete'])->name('delete.experience');
+    Route::post('/add-education', [ProfileController::class, 'addEducation'])->name('education.store');
+    Route::post('/update-education', [ProfileController::class, 'updateEducation'])->name('education.update');
+
 });
