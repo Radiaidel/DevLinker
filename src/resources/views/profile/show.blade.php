@@ -8,7 +8,7 @@
 
             <img src="{{ asset('storage/profile/' . Auth::user()->profile->cover_image) }}" class="w-full aspect-[4.76] max-md:max-w-full" />
             @else
-            <img src="{{ asset('storage/profile/cover_default.jpeg') }}" class="w-full aspect-[4.76] max-md:max-w-full  " />
+            <img src="{{ asset('storage/profile/cover_default.jpeg') }}" class="w-full aspect-[4.76] max-md:max-w-full" />
             @endif
             <svg id="editCoverButton" class="absolute top-0 right-0 m-3 w-6 h-6 cursor-pointer text-gray-500 hover:text-gray-700" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
@@ -64,7 +64,9 @@
                                 @if(Auth::user()->profile && Auth::user()->profile->title)
                                 <div class="mt-2 text-sm leading-5">{{ Auth::user()->profile->title }}</div>
                                 @else
-                                <div class="mt-2 text-sm leading-5">Profile Title Not Set</div>
+                                <div id="profileTitle" class="flex items-center gap-2 hover:cursor-pointer">
+    <div class="mt-2 text-sm leading-5">Profile Title Not Set</div>
+</div>
                                 @endif
 
                             </div>
@@ -420,7 +422,7 @@
                 <!-- Close button -->
                 <button id="closeEditEducationModalButton" onclick="closeEditEducationModal()" class="absolute top-0 right-0 m-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none">&times;</button>
                 <!-- Form for editing education -->
-                <form id="editEducationForm" action="{{ route('education.update') }}" method="POST" class="w-full px-6 py-4 mt-6">
+                <form id="editEducationForm" action="{{ route('education.update') }}" method="POST" class="w-full px-6 py-4 mt-6" enctype="multipart/form-data">
                     @csrf
                     <!-- Hidden input for education ID -->
                     <input type="hidden" id="editEducationId" name="editEducationId">
@@ -445,6 +447,10 @@
                     <div class="mb-4">
                         <label for="editDescription" class="block text-sm font-medium text-gray-700">Description</label>
                         <textarea id="editDescription" name="editDescription" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="editSchoolImage" class="block text-sm font-medium text-gray-700">Company Image</label>
+                        <input type="file" id="editSchoolImage" name="editSchoolImage" accept="image/*" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                     </div>
 
                     <div class="flex justify-end">
@@ -566,6 +572,8 @@
     document.getElementById("deleteEducationButton").addEventListener("click", function() {
         confirmDeleteEducation();
     });
+
+    
 </script>
 
 @endsection

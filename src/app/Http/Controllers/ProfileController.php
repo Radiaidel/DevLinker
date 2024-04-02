@@ -219,6 +219,8 @@ class ProfileController extends Controller
             'editStartDate' => 'required|date',
             'editEndDate' => 'nullable|date|after_or_equal:editStartDate',
             'editDescription' => 'nullable|string',
+            'editSchoolImage' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+
         ]);
 
         // Récupérer le profil de l'utilisateur authentifié
@@ -236,6 +238,13 @@ class ProfileController extends Controller
                 $educations[$key]['startDate'] = $validatedData['editStartDate'];
                 $educations[$key]['endDate'] = $validatedData['editEndDate'];
                 $educations[$key]['description'] = $validatedData['editDescription'];
+
+
+                if ($request->hasFile('editSchoolImage')) {
+                    $imagePath = $request->file('editSchoolImage')->store('school_images', 'public');
+                    $educations[$key]['schoolImage'] = $imagePath;
+                }
+
 
                 break; // Sortir de la boucle une fois que l'éducation a été mise à jour
             }
