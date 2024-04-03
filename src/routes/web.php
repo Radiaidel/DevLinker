@@ -46,5 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-education', [ProfileController::class, 'addEducation'])->name('education.store');
     Route::post('/update-education', [ProfileController::class, 'updateEducation'])->name('education.update');
     Route::post('/delete-education', [ProfileController::class, 'deleteEducation'])->name('education.delete');
+    Route::post('/edit-profile-title',  [ProfileController::class, 'updateProfileTitle'])->name('edit.profile.title');
+    Route::post('/edit-profile-about',  [ProfileController::class, 'updateProfileAbout'])->name('edit.profile.about');
 
 });

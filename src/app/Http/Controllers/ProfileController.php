@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\User;
 class ProfileController extends Controller
 {
     //
@@ -276,6 +276,42 @@ class ProfileController extends Controller
     $profile->update(['education' => array_values($educations)]);
 
     return redirect()->back()->with('success', 'Education deleted successfully');
+}
+
+
+
+public function updateProfileTitle(Request $request)
+{
+    // Valider les données du formulaire
+    $validatedData = $request->validate([
+        'newProfileTitle' => 'required|string|max:255',
+    ]);
+    // Récupérer l'utilisateur authentifié
+    $user = auth()->user();
+
+    // Mettre à jour le titre du profil de l'utilisateur
+    $user->profile->update(['title' => $validatedData['newProfileTitle']]);
+
+    return redirect()->back()->with('success', 'Profile title updated successfully');
+}
+
+
+
+
+public function updateProfileAbout(Request $request)
+{
+    // Valider les données du formulaire
+    $request->validate([
+        'newAboutContent' => 'required|string', // Assurez-vous d'ajuster les règles de validation selon vos besoins
+    ]);
+
+    // Mettre à jour la section "About" de l'utilisateur
+    $user = auth()->user();
+    $user->profile->about = $request->newAboutContent;
+    $user->profile->save();
+
+    // Rediriger l'utilisateur vers une autre page ou retourner une réponse JSON, selon vos besoins
+    return redirect()->back()->with('success', 'About section updated successfully!');
 }
 
 }
