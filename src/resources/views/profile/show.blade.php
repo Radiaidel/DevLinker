@@ -93,33 +93,7 @@
 
                     </div>
                     <!-- Modal pour éditer le titre du profil -->
-                    <div id="editProfileTitleModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-                        <div class="flex items-center justify-center min-h-screen px-4">
-                            <div class="fixed inset-0 transition-opacity z-10" aria-hidden="true">
-                                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-                            </div>
 
-                            <!-- Contenu du modal -->
-                            <div class="bg-white rounded-lg overflow-hidden max-w-lg w-full p-6 z-20">
-                                <!-- Titre -->
-
-                                <!-- Formulaire pour éditer le titre -->
-                                <form id="editProfileTitleForm" action="{{ route('edit.profile.title') }}" method="POST">
-                                    @csrf
-                                    <div class="mb-4">
-                                        <label for="newProfileTitle" class="block text-sm font-medium text-gray-700">New Profile Title</label>
-                                        <input type="text" id="newProfileTitle" name="newProfileTitle" value="{{Auth::user()->profile->title}}" class="mt-1 py-2 border  focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" value="{{ old('newProfileTitle') }}">
-                                    </div>
-
-                                    <!-- Boutons -->
-                                    <div class="flex justify-end">
-                                        <button type="button" id="cancelEditProfileTitle" class="text-gray-600 mr-4">Cancel</button>
-                                        <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Save</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
 
 
                     <script>
@@ -144,559 +118,379 @@
             </div>
         </div>
     </div>
-</div>
-<div class="flex mx-auto flex-col px-8 py-9 mt-4 max-w-full bg-white rounded shadow-2xl text-neutral-900 w-[850px] max-md:px-5">
-    <div class="text-lg max-md:max-w-full">About</div>
-    @if(Auth::user()->profile && Auth::user()->profile->about)
-    <div class="relative group mt-5 text-sm leading-5 max-md:max-w-full hover:text-indigo-600 aboutSection">
-        {{ Auth::user()->profile->about }}
-        <button class="absolute top-0 right-0 hidden edit-button group-hover:block editAboutButton">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                <path d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" />
-            </svg>
-        </button>
-    </div> 
-    @else
-    <div class="relative group mt-5 text-sm leading-5 max-md:max-w-full hover:text-indigo-600 aboutSection">
-        About section not filled out.
-        <button class="absolute top-0 right-0 hidden edit-button group-hover:block editAboutButton">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                <path d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" />
-            </svg>
-        </button>
     </div>
 
-    @endif
-</div>
-<!-- HTML pour le modal -->
-<div id="editAboutModal" class="fixed z-50 inset-0 overflow-y-auto hidden">
-    <div class="flex items-center justify-center min-h-screen">
-        <div class="fixed inset-0 transition-opacity z-10" aria-hidden="true">
-            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+    <div class="flex mx-auto flex-col px-8 py-9 mt-4 max-w-full bg-white rounded shadow-2xl text-neutral-900 w-[850px] max-md:px-5">
+        <div class="text-lg max-md:max-w-full">About</div>
+        @if(Auth::user()->profile && Auth::user()->profile->about)
+        <div class="relative group mt-5 text-sm leading-5 max-md:max-w-full hover:text-indigo-600 aboutSection">
+            {{ Auth::user()->profile->about }}
+            <button class="absolute top-0 right-0 hidden edit-button group-hover:block editAboutButton">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" />
+                </svg>
+            </button>
         </div>
-        <div class="bg-white rounded-lg overflow-hidden max-w-lg w-full p-6 z-20">
-            <!-- Titre du modal -->
-
-            <!-- Formulaire pour éditer la section "About" -->
-            <form id="editAboutForm" action="{{ route('edit.profile.about') }}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <label for="newAboutContent" class="block text-sm font-medium text-gray-700">New About Content</label>
-                    <textarea id="newAboutContent" name="newAboutContent" rows="4" class="border mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">{{ Auth::user()->profile->about }}</textarea>
-                </div>
-
-                <!-- Boutons -->
-                <div class="flex justify-end">
-                    <button type="button" id="cancelEditAbout" class="text-gray-600 mr-4">Cancel</button>
-                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Save</button>
-                </div>
-            </form>
+        @else
+        <div class="relative group mt-5 text-sm leading-5 max-md:max-w-full hover:text-indigo-600 aboutSection">
+            About section not filled out.
+            <button class="absolute top-0 right-0 hidden edit-button group-hover:block editAboutButton">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" />
+                </svg>
+            </button>
         </div>
+
+        @endif
     </div>
-</div>
-
-<!-- JavaScript pour gérer l'affichage du modal -->
-<script>
-    // Sélection des boutons pour ouvrir le modal
-    const editAboutButtons = document.querySelectorAll('.editAboutButton');
-    // Sélection de l'élément modal
-    const editAboutModal = document.getElementById('editAboutModal');
-    // Sélection du bouton pour fermer le modal
-    const cancelEditAbout = document.getElementById('cancelEditAbout');
-
-    // Fonction pour ouvrir le modal
-    function openEditAboutModal() {
-        editAboutModal.classList.remove('hidden');
-    }
-
-    // Fonction pour fermer le modal
-    function closeEditAboutModal() {
-        editAboutModal.classList.add('hidden');
-    }
-
-    // Ajout d'un écouteur d'événement à chaque bouton pour ouvrir le modal
-    editAboutButtons.forEach(button => {
-        button.addEventListener('click', openEditAboutModal);
-    });
-    // Ajout d'un écouteur d'événement au bouton pour fermer le modal
-    cancelEditAbout.addEventListener('click', closeEditAboutModal);
-</script>
+    <!-- HTML pour le modal -->
 
 
-<div class="flex mx-auto flex-col px-8 py-8 mt-4 bg-white rounded shadow-2xl max-w-[850px] max-md:px-5">
-    <div class="flex gap-5 justify-between self-start text-lg">
-        <div class="text-neutral-900">Projects</div>
+
+
+
+    <div class="flex mx-auto flex-col px-8 py-8 mt-4 bg-white rounded shadow-2xl max-w-[850px] max-md:px-5">
+        <div class="flex gap-5 justify-between self-start text-lg">
+            <div class="text-neutral-900">Projects</div>
+        </div>
+        @if(Auth::user()->profile->projects && Auth::user()->profile->projects->count() > 0)
+
+        <div class="mt-6 max-md:max-w-full">
+            <div class="flex gap-5 max-md:flex-col max-md:gap-0">
+                @foreach(Auth::user()->profile->projects as $project)
+                <div class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
+                    <div class="flex flex-col grow leading-[150%] text-neutral-900 max-md:mt-5">
+                        <img loading="lazy" src="{{ $project->image }}" class="w-full aspect-[1.56]" />
+                        <div class="mt-5 text-sm">{{ $project->name }}</div>
+                        <div class="mt-3 text-xs">{{ $project->type }}, {{ $project->date }}</div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        <div class="mt-7 text-xs text-sky-800 uppercase max-md:max-w-full">
+            Show all ({{ Auth::user()->profile->projects->count() }})
+        </div>
+        @else
+        <div class="mt-6 max-md:max-w-full">
+            <div class="text-sm text-neutral-900">No projects available.</div>
+        </div>
+        @endif
     </div>
-    @if(Auth::user()->profile->projects && Auth::user()->profile->projects->count() > 0)
 
-    <div class="mt-6 max-md:max-w-full">
-        <div class="flex gap-5 max-md:flex-col max-md:gap-0">
-            @foreach(Auth::user()->profile->projects as $project)
-            <div class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
-                <div class="flex flex-col grow leading-[150%] text-neutral-900 max-md:mt-5">
-                    <img loading="lazy" src="{{ $project->image }}" class="w-full aspect-[1.56]" />
-                    <div class="mt-5 text-sm">{{ $project->name }}</div>
-                    <div class="mt-3 text-xs">{{ $project->type }}, {{ $project->date }}</div>
+    <div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
+        <div class="flex justify-between items-center">
+            <div class="text-lg text-neutral-900 max-md:max-w-full">Experience</div>
+
+            <div>
+                <svg id="addExperienceButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+                </svg>
+            </div>
+
+        </div>
+
+        @php
+        // Récupérer les expériences de l'utilisateur
+        $experiences = Auth::user()->profile->experience ?? [];
+
+        // Trier les expériences par date de début
+        usort($experiences, function($b, $a) {
+        return strtotime($a['startDate']) - strtotime($b['startDate']);
+        });
+        @endphp
+
+        @foreach($experiences as $experience)
+        <div class="relative flex group gap-4 items-start mt-6 max-md:flex-wrap">
+            @if(isset($experience['companyImage']))
+            <img loading="lazy" src="{{ asset('storage/' . $experience['companyImage']) }}" class="shrink-0 aspect-square w-[54px]" />
+            @else
+            <div class="shrink-0 aspect-square w-[54px] bg-gray-200"></div>
+            @endif
+            <div class="flex flex-col grow shrink-0 basis-0 w-fit max-md:max-w-full">
+                <div class="text-sm text-neutral-900 max-md:max-w-full">
+                    {{ $experience['position'] }}
+                </div>
+                <div class="flex gap-3.5 self-start mt-4 whitespace-nowrap text-neutral-900">
+                    <div>{{ $experience['companyName'] }}</div>
+                    <div>{{ $experience['location'] }}</div>
+                </div>
+                <div class="flex gap-3.5 self-start mt-3">
+                    <div class="grow text-neutral-900">{{ $experience['startDate'] }} — {{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}</div>
+                    @php
+                    $startDate = new DateTime($experience['startDate']);
+                    $endDate = isset($experience['endDate']) ? new DateTime($experience['endDate']) : new DateTime();
+                    $interval = $startDate->diff($endDate);
+                    $months = $interval->format('%m') + ($interval->format('%y') * 12);
+                    @endphp
+                    <div class="text-sky-800">{{ $months }} month</div>
+                </div>
+                <div class="mt-4 text-neutral-900 max-md:max-w-full">
+                    {{ $experience['about'] }}
                 </div>
             </div>
+            <div class="absolute top-0 right-0 hidden group-hover:block">
+                <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editExperience(this)" data-experience='{"companyName": "{{ $experience['companyName'] }}", "position": "{{ $experience['position'] }}", "location": "{{ $experience['location'] }}", "startDate": "{{ $experience['startDate'] }}", "endDate": "{{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}", "about": "{{ $experience['about'] }}"}'>Edit</button>
+            </div>
+
+        </div>
+        <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
+        @endforeach
+
+    </div>
+
+
+    <div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
+        <div class="flex justify-between items-center">
+            <div class="text-lg text-neutral-900 max-md:max-w-full">Education</div>
+
+            <div>
+                <svg id="addEducationButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+
+                </svg>
+            </div>
+        </div>
+        @php
+        // Récupérer les expériences de l'utilisateur
+        $educations = Auth::user()->profile->education ?? [];
+        @endphp
+        @foreach($educations as $education)
+        <div class="relative flex group gap-4 items-start mt-7 text-xs leading-4 max-md:flex-wrap">
+            @if(isset($education['schoolImage']))
+            <img loading="lazy" src="{{ asset('storage/' . $education['schoolImage']) }}" class="shrink-0 aspect-square w-[54px]" />
+            @else
+            <div class="shrink-0 aspect-square w-[54px] bg-gray-200"></div>
+            @endif
+            <div class="flex flex-col grow shrink-0 basis-0 w-fit max-md:max-w-full">
+                <div class="text-sm max-md:max-w-full">
+                    {{ $education['institution'] }}
+                </div>
+                <div class="mt-4 max-md:max-w-full">
+                    {{ $education['fieldOfStudy'] }}
+                </div>
+                <div class="mt-3 max-md:max-w-full">
+                    {{ $education['startDate'] }} — {{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}
+                </div>
+                <div class="mt-4 max-md:max-w-full">
+                    {{ $education['description'] }}
+                </div>
+            </div>
+            <div class="absolute top-0 right-0 hidden group-hover:block">
+                <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editEducation(this)" data-education='{"institution": "{{ $education['institution'] }}", "fieldOfStudy": "{{ $education['fieldOfStudy'] }}", "startDate": "{{ $education['startDate'] }}", "endDate": "{{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}", "description": "{{ $education['description'] }}"}'>Edit</button>
+            </div>
+
+        </div>
+        <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
+        @endforeach
+    </div>
+
+
+
+
+    <div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
+        <div class="flex justify-between items-center">
+            <div class="text-lg text-neutral-900 max-md:max-w-full">Skills</div>
+
+            <div>
+                <svg id="addSkillButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+
+                </svg>
+            </div>
+        </div>
+        @php
+        // Récupérer les expériences de l'utilisateur
+        $skills = Auth::user()->profile->skills ?? [];
+        @endphp
+        <div class="flex flex-wrap mt-4">
+            @foreach($skills as $skill)
+            <div class="bg-sky-800 hover:bg-sky-700 text-white px-4 py-2 rounded-full mr-2 mb-2 shadow-md cursor-pointer" onclick="confirmDeleteSkill('{{ $skill }}')">{{ $skill }}</div>
             @endforeach
         </div>
     </div>
-    <div class="mt-7 text-xs text-sky-800 uppercase max-md:max-w-full">
-        Show all ({{ Auth::user()->profile->projects->count() }})
-    </div>
-    @else
-    <div class="mt-6 max-md:max-w-full">
-        <div class="text-sm text-neutral-900">No projects available.</div>
-    </div>
-    @endif
-</div>
 
-<div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
-    <div class="flex justify-between items-center">
-        <div class="text-lg text-neutral-900 max-md:max-w-full">Experience</div>
 
-        <div>
-            <svg id="addExperienceButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </g>
-            </svg>
-        </div>
-        <div id="experienceModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center block">
-                <!-- Overlay -->
-                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-                </div>
-
-                <!-- Modal -->
-                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <!-- Close button -->
-                    <button id="closeModalButton" class="absolute top-0 right-0 m-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none">&times;</button>
-
-                    <!-- Form for adding experience -->
-                    <form action="{{ route('add.experience') }}" method="POST" enctype="multipart/form-data" class="w-full px-6 py-4 mt-6">
-                        @csrf
-                        <div class="mb-4">
-                            <label for="companyName" class="block text-sm font-medium text-gray-700">Company Name</label>
-                            <input type="text" id="companyName" name="companyName" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-                        <div class="mb-4">
-                            <label for="position" class="block text-sm font-medium text-gray-700">Position</label>
-                            <input type="text" id="position" name="position" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-                        <div class="mb-4">
-                            <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
-                            <input type="text" id="location" name="location" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
-                                <input type="date" id="startDate" name="startDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                            <div>
-                                <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
-                                <input type="date" id="endDate" name="endDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label for="about" class="block text-sm font-medium text-gray-700">About</label>
-                            <textarea id="about" name="about" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
-                        </div>
-                        <div class="mb-4">
-                            <label for="companyImage" class="block text-sm font-medium text-gray-700">Company Image</label>
-                            <input type="file" id="companyImage" name="companyImage" accept="image/*" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-
-                        <div class="flex justify-end">
-                            <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Add Experience</button>
-                        </div>
-                    </form>
-                </div>
+    <!-- Modal pour ajouter une nouvelle compétence -->
+    <div id="addSkillModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="fixed inset-0 transition-opacity">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-        </div>
+            <div class="bg-white rounded-lg overflow-hidden max-w-lg w-full p-6 z-20">
 
-
-
-    </div>
-
-    @php
-    // Récupérer les expériences de l'utilisateur
-    $experiences = Auth::user()->profile->experience ?? [];
-
-    // Trier les expériences par date de début
-    usort($experiences, function($b, $a) {
-    return strtotime($a['startDate']) - strtotime($b['startDate']);
-    });
-    @endphp
-
-    @foreach($experiences as $experience)
-    <div class="relative flex group gap-4 items-start mt-6 max-md:flex-wrap">
-        @if(isset($experience['companyImage']))
-        <img loading="lazy" src="{{ asset('storage/' . $experience['companyImage']) }}" class="shrink-0 aspect-square w-[54px]" />
-        @else
-        <div class="shrink-0 aspect-square w-[54px] bg-gray-200"></div>
-        @endif
-        <div class="flex flex-col grow shrink-0 basis-0 w-fit max-md:max-w-full">
-            <div class="text-sm text-neutral-900 max-md:max-w-full">
-                {{ $experience['position'] }}
-            </div>
-            <div class="flex gap-3.5 self-start mt-4 whitespace-nowrap text-neutral-900">
-                <div>{{ $experience['companyName'] }}</div>
-                <div>{{ $experience['location'] }}</div>
-            </div>
-            <div class="flex gap-3.5 self-start mt-3">
-                <div class="grow text-neutral-900">{{ $experience['startDate'] }} — {{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}</div>
-                @php
-                $startDate = new DateTime($experience['startDate']);
-                $endDate = isset($experience['endDate']) ? new DateTime($experience['endDate']) : new DateTime();
-                $interval = $startDate->diff($endDate);
-                $months = $interval->format('%m') + ($interval->format('%y') * 12);
-                @endphp
-                <div class="text-sky-800">{{ $months }} month</div>
-            </div>
-            <div class="mt-4 text-neutral-900 max-md:max-w-full">
-                {{ $experience['about'] }}
-            </div>
-        </div>
-        <div class="absolute top-0 right-0 hidden group-hover:block">
-            <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editExperience(this)" data-experience='{"companyName": "{{ $experience['companyName'] }}", "position": "{{ $experience['position'] }}", "location": "{{ $experience['location'] }}", "startDate": "{{ $experience['startDate'] }}", "endDate": "{{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}", "about": "{{ $experience['about'] }}"}'>Edit</button>
-        </div>
-
-    </div>
-    <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
-    @endforeach
-
-</div>
-<div id="editExperienceModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center block">
-        <!-- Overlay -->
-        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </div>
-
-        <!-- Modal -->
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <!-- Close button -->
-            <button id="closeEditModalButton" class="absolute top-0 right-0 m-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none">&times;</button>
-
-            <!-- Form for editing experience -->
-            <form id="editExperienceForm" action="{{route('update.experience')}}" method="POST" enctype="multipart/form-data" class="w-full px-6 py-4 mt-6">
-                @csrf
-                <!-- Hidden input for experience ID -->
-                <div class="mb-4">
-                    <label for="editCompanyName" class="block text-sm font-medium text-gray-700">Company Name</label>
-                    <input type="text" id="editCompanyName" name="editCompanyName" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                </div>
-                <div class="mb-4">
-                    <label for="editPosition" class="block text-sm font-medium text-gray-700">Position</label>
-                    <input type="text" id="editPosition" name="editPosition" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                </div>
-                <div class="mb-4">
-                    <label for="editLocation" class="block text-sm font-medium text-gray-700">Location</label>
-                    <input type="text" id="editLocation" name="editLocation" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                </div>
-
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label for="editStartDate" class="block text-sm font-medium text-gray-700">Start Date</label>
-                        <input type="date" id="editStartDate" name="editStartDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                <form id="addSkillForm" action="{{ route('add.skill') }}" method="POST">
+                    @csrf
+                    <div class="mb-4">
+                        <label for="skillName" class="block text-sm font-medium text-gray-700">Skill Name</label>
+                        <input type="text" id="skillName" name="skillName" class="mt-1 py-2 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                     </div>
-                    <div>
-                        <label for="editEndDate" class="block text-sm font-medium text-gray-700">End Date</label>
-                        <input type="date" id="editEndDate" name="editEndDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+
+                    <div class="flex justify-end">
+                        <button type="button" id="cancelAddSkill" class="text-gray-600 mr-4">Cancel</button>
+                        <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Add Skill</button>
                     </div>
-                </div>
-                <div class="mb-4">
-                    <label for="editAbout" class="block text-sm font-medium text-gray-700">About</label>
-                    <textarea id="editAbout" name="editAbout" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
-                </div>
-                <div class="mb-4">
-                    <label for="editCompanyImage" class="block text-sm font-medium text-gray-700">Company Image</label>
-                    <input type="file" id="editCompanyImage" name="editCompanyImage" accept="image/*" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                </div>
-
-                <div class="flex justify-end">
-                    <button id="updateExperienceButton" type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Update Experience</button>
-                    <button id="deleteExperienceButton" type="button" class="bg-red-500 text-white px-4 py-2 rounded-md ml-4">Delete Experience</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
-    <div class="flex justify-between items-center">
-        <div class="text-lg text-neutral-900 max-md:max-w-full">Education</div>
-
-        <div>
-            <svg id="addEducationButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </g>
-
-            </svg>
-        </div>
-    </div>
-    @php
-    // Récupérer les expériences de l'utilisateur
-    $educations = Auth::user()->profile->education ?? [];
-    @endphp
-    @foreach($educations as $education)
-    <div class="relative flex group gap-4 items-start mt-7 text-xs leading-4 max-md:flex-wrap">
-        @if(isset($education['schoolImage']))
-        <img loading="lazy" src="{{ asset('storage/' . $education['schoolImage']) }}" class="shrink-0 aspect-square w-[54px]" />
-        @else
-        <div class="shrink-0 aspect-square w-[54px] bg-gray-200"></div>
-        @endif
-        <div class="flex flex-col grow shrink-0 basis-0 w-fit max-md:max-w-full">
-            <div class="text-sm max-md:max-w-full">
-                {{ $education['institution'] }}
-            </div>
-            <div class="mt-4 max-md:max-w-full">
-                {{ $education['fieldOfStudy'] }}
-            </div>
-            <div class="mt-3 max-md:max-w-full">
-                {{ $education['startDate'] }} — {{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}
-            </div>
-            <div class="mt-4 max-md:max-w-full">
-                {{ $education['description'] }}
+                </form>
             </div>
         </div>
-        <div class="absolute top-0 right-0 hidden group-hover:block">
-            <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editEducation(this)" data-education='{"institution": "{{ $education['institution'] }}", "fieldOfStudy": "{{ $education['fieldOfStudy'] }}", "startDate": "{{ $education['startDate'] }}", "endDate": "{{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}", "description": "{{ $education['description'] }}"}'>Edit</button>
-        </div>
-
     </div>
-    <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
-    @endforeach
-</div>
-
-<!-- Modal pour ajouter l'éducation -->
-<div id="educationModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
-        <!-- Overlay -->
-        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </div>
-        <!-- Modal -->
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <!-- Close button -->
-            <button id="closeEducationModalButton" class="absolute top-0 right-0 m-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none">&times;</button>
-
-            <form id="addEducationForm" method="POST" action="{{route('education.store')}}" class="w-full px-6 py-4 mt-6" enctype="multipart/form-data">
-                @csrf
-                <!-- Champ d'entrée pour le nom de l'institution -->
-                <div class="mb-4">
-                    <label for="institution" class="block text-sm font-medium text-gray-700">Institution</label>
-                    <input type="text" id="institution" name="institution" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                </div>
-                <!-- Champ d'entrée pour le domaine d'études -->
-                <div class="mb-4">
-                    <label for="fieldOfStudy" class="block text-sm font-medium text-gray-700">Field Of Study</label>
-                    <input type="text" id="fieldOfStudy" name="fieldOfStudy" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                </div>
-                <!-- Champs d'entrée pour les dates de début et de fin -->
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
-                        <input type="date" id="startDate" name="startDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-                    <div>
-                        <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
-                        <input type="date" id="endDate" name="endDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-                </div>
-                <!-- Champ d'entrée pour la description -->
-                <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                    <textarea id="description" name="description" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
-                </div>
-                <div class="mb-4">
-                    <label for="schoolImage" class="block text-sm font-medium text-gray-700">Company Image</label>
-                    <input type="file" id="schoolImage" name="schoolImage" accept="image/*" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                </div>
-
-                <!-- Bouton pour soumettre le formulaire -->
-                <div class="flex justify-end">
-                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Add Education</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div id="editEducationModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center block">
-        <!-- Overlay -->
-        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </div>
-
-        <!-- Modal -->
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <!-- Close button -->
-            <button id="closeEditEducationModalButton" onclick="closeEditEducationModal()" class="absolute top-0 right-0 m-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none">&times;</button>
-            <!-- Form for editing education -->
-            <form id="editEducationForm" action="{{ route('education.update') }}" method="POST" class="w-full px-6 py-4 mt-6" enctype="multipart/form-data">
-                @csrf
-                <!-- Hidden input for education ID -->
-                <input type="hidden" id="editEducationId" name="editEducationId">
-                <div class="mb-4">
-                    <label for="editInstitution" class="block text-sm font-medium text-gray-700">Institution</label>
-                    <input type="text" id="editInstitution" name="editInstitution" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                </div>
-                <div class="mb-4">
-                    <label for="editFieldOfStudy" class="block text-sm font-medium text-gray-700">Field Of Study</label>
-                    <input type="text" id="editFieldOfStudy" name="editFieldOfStudy" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                </div>
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label for="editStartDate" class="block text-sm font-medium text-gray-700">Start Date</label>
-                        <input type="date" id="editStartDateEdu" name="editStartDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-                    <div>
-                        <label for="editEndDate" class="block text-sm font-medium text-gray-700">End Date</label>
-                        <input type="date" id="editEndDateEdu" name="editEndDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label for="editDescription" class="block text-sm font-medium text-gray-700">Description</label>
-                    <textarea id="editDescription" name="editDescription" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
-                </div>
-                <div class="mb-4">
-                    <label for="editSchoolImage" class="block text-sm font-medium text-gray-700">Company Image</label>
-                    <input type="file" id="editSchoolImage" name="editSchoolImage" accept="image/*" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                </div>
-
-                <div class="flex justify-end">
-                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Update Education</button>
-                    <button id="deleteEducationButton" type="button" class="bg-red-500 text-white px-4 py-2 rounded-md ml-4">Delete Education</button>
-                </div>
-
-            </form>
-        </div>
-    </div>
-</div>
-
-</div>
-<script>
-    function submitForm(idForm) {
-        document.getElementById(idForm).submit();
-    }
-
-    document.getElementById('editCoverButton').addEventListener('click', function() {
-        document.getElementById('coverUploadInput').click();
-    });
-
-    document.getElementById('editImageButton').addEventListener('click', function() {
-        document.getElementById('imageUploadInput').click();
-    });
-    document.getElementById('addExperienceButton').addEventListener('click', function() {
-        document.getElementById('experienceModal').classList.remove('hidden');
-    });
-
-    // Close modal when close button is clicked
-    document.getElementById('closeModalButton').addEventListener('click', function() {
-        document.getElementById('experienceModal').classList.add('hidden');
-    });
-
-    function editExperience(button) {
-        // Récupérer les données de l'expérience à partir de l'attribut data-experience du bouton
-        var experienceData = JSON.parse(button.getAttribute('data-experience'));
 
 
-        document.getElementById('editCompanyName').value = experienceData.companyName;
-        document.getElementById('editPosition').value = experienceData.position;
-        document.getElementById('editLocation').value = experienceData.location;
-        document.getElementById('editStartDate').value = experienceData.startDate;
-        document.getElementById('editEndDate').value = experienceData.endDate;
-        document.getElementById('editAbout').value = experienceData.about;
+    <!-- JavaScript pour gérer l'affichage du modal -->
+    <script>
+        // Sélection du bouton pour ouvrir le modal
+        const addSkillButton = document.getElementById('addSkillButton');
+        // Sélection de l'élément modal
+        const addSkillModal = document.getElementById('addSkillModal');
+        // Sélection du bouton pour fermer le modal
+        const cancelAddSkill = document.getElementById('cancelAddSkill');
 
-        // Afficher le modal d'édition
-        document.getElementById('editExperienceModal').classList.remove('hidden');
-    }
-
-    // Function to close edit modal
-    document.getElementById('closeEditModalButton').addEventListener('click', function() {
-        document.getElementById('editExperienceModal').classList.add('hidden');
-    });
-
-
-    function confirmDelete() {
-        if (confirm("Are you sure you want to delete this experience?")) {
-            // Si l'utilisateur confirme, soumettre le formulaire de suppression
-            document.getElementById("editExperienceForm").action = "{{ route('delete.experience') }}"; // Définir l'action de suppression
-            document.getElementById("editExperienceForm").submit();
+        // Fonction pour ouvrir le modal
+        function openAddSkillModal() {
+            addSkillModal.classList.remove('hidden');
         }
-    }
 
-    // Attacher un événement au bouton de suppression
-    document.getElementById("deleteExperienceButton").addEventListener("click", function() {
-        confirmDelete();
-    });
-
-    const addEducationButton = document.getElementById('addEducationButton');
-
-    // Sélectionnez le modal d'ajout d'éducation
-    const educationModal = document.getElementById('educationModal');
-
-    // Ajoutez un gestionnaire d'événements pour le clic sur le bouton "Plus"
-    addEducationButton.addEventListener('click', function() {
-        // Afficher le modal d'ajout d'éducation
-        educationModal.classList.remove('hidden');
-    });
-    document.getElementById('closeEducationModalButton').addEventListener('click', function() {
-        document.getElementById('educationModal').classList.add('hidden');
-    });
-
-    function closeEditEducationModal() {
-        document.getElementById('editEducationModal').classList.add('hidden');
-    }
-
-    function editEducation(button) {
-        // Récupérer les données de l'éducation à partir de l'attribut data-education du bouton
-        var educationData = JSON.parse(button.getAttribute('data-education'));
-
-
-        document.getElementById('editInstitution').value = educationData.institution;
-        document.getElementById('editFieldOfStudy').value = educationData.fieldOfStudy;
-        document.getElementById('editStartDateEdu').value = educationData.startDate;
-        document.getElementById('editEndDateEdu').value = educationData.endDate;
-        document.getElementById('editDescription').value = educationData.description;
-
-        // Afficher le modal d'édition
-        document.getElementById('editEducationModal').classList.remove('hidden');
-    }
-
-    function confirmDelete() {
-        if (confirm("Are you sure you want to delete this education?")) {
-            // Si l'utilisateur confirme, soumettre le formulaire de suppression
-            document.getElementById("editEducationForm").submit();
+        // Fonction pour fermer le modal
+        function closeAddSkillModal() {
+            addSkillModal.classList.add('hidden');
         }
-    }
 
-    function confirmDeleteEducation() {
-        if (confirm("Are you sure you want to delete this education?")) {
-            // Si l'utilisateur confirme, soumettre le formulaire de suppression
-            document.getElementById("editEducationForm").action = "{{ route('education.delete') }}"; // Définir l'action de suppression
-            document.getElementById("editEducationForm").submit();
+        // Ajout d'un écouteur d'événement au bouton pour ouvrir le modal
+        addSkillButton.addEventListener('click', openAddSkillModal);
+        // Ajout d'un écouteur d'événement au bouton pour fermer le modal
+        cancelAddSkill.addEventListener('click', closeAddSkillModal);
+
+        function confirmDeleteSkill(skillName) {
+            if (confirm("Are you sure you want to delete the skill '" + skillName + "'?")) {
+                // Si l'utilisateur confirme, soumettre le formulaire de suppression
+                window.location.href = "{{ route('delete.skill') }}?skill=" + encodeURIComponent(skillName);
+            }
         }
-    }
 
-    // Attacher un événement au bouton de suppression
-    document.getElementById("deleteEducationButton").addEventListener("click", function() {
-        confirmDeleteEducation();
-    });
-</script>
+        function submitForm(idForm) {
+            document.getElementById(idForm).submit();
+        }
 
+        document.getElementById('editCoverButton').addEventListener('click', function() {
+            document.getElementById('coverUploadInput').click();
+        });
+
+        document.getElementById('editImageButton').addEventListener('click', function() {
+            document.getElementById('imageUploadInput').click();
+        });
+        document.getElementById('addExperienceButton').addEventListener('click', function() {
+            document.getElementById('experienceModal').classList.remove('hidden');
+        });
+
+        // Close modal when close button is clicked
+        document.getElementById('closeModalButton').addEventListener('click', function() {
+            document.getElementById('experienceModal').classList.add('hidden');
+        });
+
+        function editExperience(button) {
+            // Récupérer les données de l'expérience à partir de l'attribut data-experience du bouton
+            var experienceData = JSON.parse(button.getAttribute('data-experience'));
+
+
+            document.getElementById('editCompanyName').value = experienceData.companyName;
+            document.getElementById('editPosition').value = experienceData.position;
+            document.getElementById('editLocation').value = experienceData.location;
+            document.getElementById('editStartDate').value = experienceData.startDate;
+            document.getElementById('editEndDate').value = experienceData.endDate;
+            document.getElementById('editAbout').value = experienceData.about;
+
+            // Afficher le modal d'édition
+            document.getElementById('editExperienceModal').classList.remove('hidden');
+        }
+
+        // Function to close edit modal
+        document.getElementById('closeEditModalButton').addEventListener('click', function() {
+            document.getElementById('editExperienceModal').classList.add('hidden');
+        });
+
+
+        function confirmDelete() {
+            if (confirm("Are you sure you want to delete this experience?")) {
+                // Si l'utilisateur confirme, soumettre le formulaire de suppression
+                document.getElementById("editExperienceForm").action = "{{ route('delete.experience') }}"; // Définir l'action de suppression
+                document.getElementById("editExperienceForm").submit();
+            }
+        }
+
+        // Attacher un événement au bouton de suppression
+        document.getElementById("deleteExperienceButton").addEventListener("click", function() {
+            confirmDelete();
+        });
+
+        const addEducationButton = document.getElementById('addEducationButton');
+
+        // Sélectionnez le modal d'ajout d'éducation
+        const educationModal = document.getElementById('educationModal');
+
+        // Ajoutez un gestionnaire d'événements pour le clic sur le bouton "Plus"
+        addEducationButton.addEventListener('click', function() {
+            // Afficher le modal d'ajout d'éducation
+            educationModal.classList.remove('hidden');
+        });
+        document.getElementById('closeEducationModalButton').addEventListener('click', function() {
+            document.getElementById('educationModal').classList.add('hidden');
+        });
+
+        function closeEditEducationModal() {
+            document.getElementById('editEducationModal').classList.add('hidden');
+        }
+
+        function editEducation(button) {
+            // Récupérer les données de l'éducation à partir de l'attribut data-education du bouton
+            var educationData = JSON.parse(button.getAttribute('data-education'));
+
+
+            document.getElementById('editInstitution').value = educationData.institution;
+            document.getElementById('editFieldOfStudy').value = educationData.fieldOfStudy;
+            document.getElementById('editStartDateEdu').value = educationData.startDate;
+            document.getElementById('editEndDateEdu').value = educationData.endDate;
+            document.getElementById('editDescription').value = educationData.description;
+
+            // Afficher le modal d'édition
+            document.getElementById('editEducationModal').classList.remove('hidden');
+        }
+
+        function confirmDelete() {
+            if (confirm("Are you sure you want to delete this education?")) {
+                // Si l'utilisateur confirme, soumettre le formulaire de suppression
+                document.getElementById("editEducationForm").submit();
+            }
+        }
+
+        function confirmDeleteEducation() {
+            if (confirm("Are you sure you want to delete this education?")) {
+                // Si l'utilisateur confirme, soumettre le formulaire de suppression
+                document.getElementById("editEducationForm").action = "{{ route('education.delete') }}";
+                document.getElementById("editEducationForm").submit();
+            }
+        }
+
+        // Attacher un événement au bouton de suppression
+        document.getElementById("deleteEducationButton").addEventListener("click", function() {
+            confirmDeleteEducation();
+        });
+    </script>
 @endsection
