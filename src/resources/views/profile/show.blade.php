@@ -92,20 +92,7 @@
                         </div>
 
                     </div>
-                    <!-- Modal pour éditer le titre du profil -->
 
-
-
-                    <script>
-                        document.querySelector('.profileTitle .edit-button').addEventListener('click', function() {
-                            document.getElementById('editProfileTitleModal').classList.remove('hidden');
-                        });
-
-                        // Masquer le modal d'édition du titre du profil
-                        document.getElementById('cancelEditProfileTitle').addEventListener('click', function() {
-                            document.getElementById('editProfileTitleModal').classList.add('hidden');
-                        });
-                    </script>
                     <div class="flex gap-4 self-start mt-8 text-xs text-center uppercase">
                         <div class="justify-center px-11 py-3 text-white bg-sky-800 rounded max-md:px-5">
                             Contact info
@@ -118,379 +105,252 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="flex mx-auto flex-col px-8 py-9 mt-4 max-w-full bg-white rounded shadow-2xl text-neutral-900 w-[850px] max-md:px-5">
+    <div class="text-lg max-md:max-w-full">About</div>
+    @if(Auth::user()->profile && Auth::user()->profile->about)
+    <div class="relative group mt-5 text-sm leading-5 max-md:max-w-full hover:text-indigo-600 aboutSection">
+        {{ Auth::user()->profile->about }}
+        <button class="absolute top-0 right-0 hidden edit-button group-hover:block editAboutButton">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" />
+            </svg>
+        </button>
+    </div>
+    @else
+    <div class="relative group mt-5 text-sm leading-5 max-md:max-w-full hover:text-indigo-600 aboutSection">
+        About section not filled out.
+        <button class="absolute top-0 right-0 hidden edit-button group-hover:block editAboutButton">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" />
+            </svg>
+        </button>
     </div>
 
-    <div class="flex mx-auto flex-col px-8 py-9 mt-4 max-w-full bg-white rounded shadow-2xl text-neutral-900 w-[850px] max-md:px-5">
-        <div class="text-lg max-md:max-w-full">About</div>
-        @if(Auth::user()->profile && Auth::user()->profile->about)
-        <div class="relative group mt-5 text-sm leading-5 max-md:max-w-full hover:text-indigo-600 aboutSection">
-            {{ Auth::user()->profile->about }}
-            <button class="absolute top-0 right-0 hidden edit-button group-hover:block editAboutButton">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" />
-                </svg>
-            </button>
-        </div>
-        @else
-        <div class="relative group mt-5 text-sm leading-5 max-md:max-w-full hover:text-indigo-600 aboutSection">
-            About section not filled out.
-            <button class="absolute top-0 right-0 hidden edit-button group-hover:block editAboutButton">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" />
-                </svg>
-            </button>
-        </div>
+    @endif
+</div>
 
-        @endif
+
+
+
+<div class="flex mx-auto flex-col px-8 py-8 mt-4 bg-white rounded shadow-2xl max-w-[850px] max-md:px-5">
+    <div class="flex gap-5 justify-between self-start text-lg">
+        <div class="text-neutral-900">Projects</div>
     </div>
-    <!-- HTML pour le modal -->
+    @if(Auth::user()->profile->projects && Auth::user()->profile->projects->count() > 0)
 
-
-
-
-
-    <div class="flex mx-auto flex-col px-8 py-8 mt-4 bg-white rounded shadow-2xl max-w-[850px] max-md:px-5">
-        <div class="flex gap-5 justify-between self-start text-lg">
-            <div class="text-neutral-900">Projects</div>
-        </div>
-        @if(Auth::user()->profile->projects && Auth::user()->profile->projects->count() > 0)
-
-        <div class="mt-6 max-md:max-w-full">
-            <div class="flex gap-5 max-md:flex-col max-md:gap-0">
-                @foreach(Auth::user()->profile->projects as $project)
-                <div class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
-                    <div class="flex flex-col grow leading-[150%] text-neutral-900 max-md:mt-5">
-                        <img loading="lazy" src="{{ $project->image }}" class="w-full aspect-[1.56]" />
-                        <div class="mt-5 text-sm">{{ $project->name }}</div>
-                        <div class="mt-3 text-xs">{{ $project->type }}, {{ $project->date }}</div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-        <div class="mt-7 text-xs text-sky-800 uppercase max-md:max-w-full">
-            Show all ({{ Auth::user()->profile->projects->count() }})
-        </div>
-        @else
-        <div class="mt-6 max-md:max-w-full">
-            <div class="text-sm text-neutral-900">No projects available.</div>
-        </div>
-        @endif
-    </div>
-
-    <div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
-        <div class="flex justify-between items-center">
-            <div class="text-lg text-neutral-900 max-md:max-w-full">Experience</div>
-
-            <div>
-                <svg id="addExperienceButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                    <g id="SVGRepo_iconCarrier">
-                        <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </g>
-                </svg>
-            </div>
-
-        </div>
-
-        @php
-        // Récupérer les expériences de l'utilisateur
-        $experiences = Auth::user()->profile->experience ?? [];
-
-        // Trier les expériences par date de début
-        usort($experiences, function($b, $a) {
-        return strtotime($a['startDate']) - strtotime($b['startDate']);
-        });
-        @endphp
-
-        @foreach($experiences as $experience)
-        <div class="relative flex group gap-4 items-start mt-6 max-md:flex-wrap">
-            @if(isset($experience['companyImage']))
-            <img loading="lazy" src="{{ asset('storage/' . $experience['companyImage']) }}" class="shrink-0 aspect-square w-[54px]" />
-            @else
-            <div class="shrink-0 aspect-square w-[54px] bg-gray-200"></div>
-            @endif
-            <div class="flex flex-col grow shrink-0 basis-0 w-fit max-md:max-w-full">
-                <div class="text-sm text-neutral-900 max-md:max-w-full">
-                    {{ $experience['position'] }}
-                </div>
-                <div class="flex gap-3.5 self-start mt-4 whitespace-nowrap text-neutral-900">
-                    <div>{{ $experience['companyName'] }}</div>
-                    <div>{{ $experience['location'] }}</div>
-                </div>
-                <div class="flex gap-3.5 self-start mt-3">
-                    <div class="grow text-neutral-900">{{ $experience['startDate'] }} — {{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}</div>
-                    @php
-                    $startDate = new DateTime($experience['startDate']);
-                    $endDate = isset($experience['endDate']) ? new DateTime($experience['endDate']) : new DateTime();
-                    $interval = $startDate->diff($endDate);
-                    $months = $interval->format('%m') + ($interval->format('%y') * 12);
-                    @endphp
-                    <div class="text-sky-800">{{ $months }} month</div>
-                </div>
-                <div class="mt-4 text-neutral-900 max-md:max-w-full">
-                    {{ $experience['about'] }}
+    <div class="mt-6 max-md:max-w-full">
+        <div class="flex gap-5 max-md:flex-col max-md:gap-0">
+            @foreach(Auth::user()->profile->projects as $project)
+            <div class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
+                <div class="flex flex-col grow leading-[150%] text-neutral-900 max-md:mt-5">
+                    <img loading="lazy" src="{{ $project->image }}" class="w-full aspect-[1.56]" />
+                    <div class="mt-5 text-sm">{{ $project->name }}</div>
+                    <div class="mt-3 text-xs">{{ $project->type }}, {{ $project->date }}</div>
                 </div>
             </div>
-            <div class="absolute top-0 right-0 hidden group-hover:block">
-                <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editExperience(this)" data-experience='{"companyName": "{{ $experience['companyName'] }}", "position": "{{ $experience['position'] }}", "location": "{{ $experience['location'] }}", "startDate": "{{ $experience['startDate'] }}", "endDate": "{{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}", "about": "{{ $experience['about'] }}"}'>Edit</button>
-            </div>
-
-        </div>
-        <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
-        @endforeach
-
-    </div>
-
-
-    <div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
-        <div class="flex justify-between items-center">
-            <div class="text-lg text-neutral-900 max-md:max-w-full">Education</div>
-
-            <div>
-                <svg id="addEducationButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-
-                    <g id="SVGRepo_iconCarrier">
-                        <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </g>
-
-                </svg>
-            </div>
-        </div>
-        @php
-        // Récupérer les expériences de l'utilisateur
-        $educations = Auth::user()->profile->education ?? [];
-        @endphp
-        @foreach($educations as $education)
-        <div class="relative flex group gap-4 items-start mt-7 text-xs leading-4 max-md:flex-wrap">
-            @if(isset($education['schoolImage']))
-            <img loading="lazy" src="{{ asset('storage/' . $education['schoolImage']) }}" class="shrink-0 aspect-square w-[54px]" />
-            @else
-            <div class="shrink-0 aspect-square w-[54px] bg-gray-200"></div>
-            @endif
-            <div class="flex flex-col grow shrink-0 basis-0 w-fit max-md:max-w-full">
-                <div class="text-sm max-md:max-w-full">
-                    {{ $education['institution'] }}
-                </div>
-                <div class="mt-4 max-md:max-w-full">
-                    {{ $education['fieldOfStudy'] }}
-                </div>
-                <div class="mt-3 max-md:max-w-full">
-                    {{ $education['startDate'] }} — {{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}
-                </div>
-                <div class="mt-4 max-md:max-w-full">
-                    {{ $education['description'] }}
-                </div>
-            </div>
-            <div class="absolute top-0 right-0 hidden group-hover:block">
-                <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editEducation(this)" data-education='{"institution": "{{ $education['institution'] }}", "fieldOfStudy": "{{ $education['fieldOfStudy'] }}", "startDate": "{{ $education['startDate'] }}", "endDate": "{{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}", "description": "{{ $education['description'] }}"}'>Edit</button>
-            </div>
-
-        </div>
-        <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
-        @endforeach
-    </div>
-
-
-
-
-    <div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
-        <div class="flex justify-between items-center">
-            <div class="text-lg text-neutral-900 max-md:max-w-full">Skills</div>
-
-            <div>
-                <svg id="addSkillButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-
-                    <g id="SVGRepo_iconCarrier">
-                        <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </g>
-
-                </svg>
-            </div>
-        </div>
-        @php
-        // Récupérer les expériences de l'utilisateur
-        $skills = Auth::user()->profile->skills ?? [];
-        @endphp
-        <div class="flex flex-wrap mt-4">
-            @foreach($skills as $skill)
-            <div class="bg-sky-800 hover:bg-sky-700 text-white px-4 py-2 rounded-full mr-2 mb-2 shadow-md cursor-pointer" onclick="confirmDeleteSkill('{{ $skill }}')">{{ $skill }}</div>
             @endforeach
         </div>
     </div>
+    <div class="mt-7 text-xs text-sky-800 uppercase max-md:max-w-full">
+        Show all ({{ Auth::user()->profile->projects->count() }})
+    </div>
+    @else
+    <div class="mt-6 max-md:max-w-full">
+        <div class="text-sm text-neutral-900">No projects available.</div>
+    </div>
+    @endif
+</div>
 
+<div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
+    <div class="flex justify-between items-center">
+        <div class="text-lg text-neutral-900 max-md:max-w-full">Experience</div>
 
-    <!-- Modal pour ajouter une nouvelle compétence -->
-    <div id="addSkillModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-        <div class="flex items-center justify-center min-h-screen">
-            <div class="fixed inset-0 transition-opacity">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        <div>
+            <svg id="addExperienceButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                <g id="SVGRepo_iconCarrier">
+                    <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+            </svg>
+        </div>
+
+    </div>
+
+    @php
+    $experiences = Auth::user()->profile->experience ?? [];
+
+    usort($experiences, function($b, $a) {
+    return strtotime($a['startDate']) - strtotime($b['startDate']);
+    });
+    @endphp
+
+    @foreach($experiences as $experience)
+    <div class="relative flex group gap-4 items-start mt-6 max-md:flex-wrap">
+        @if(isset($experience['companyImage']))
+        <img loading="lazy" src="{{ asset('storage/' . $experience['companyImage']) }}" class="shrink-0 aspect-square w-[54px]" />
+        @else
+        <div class="shrink-0 aspect-square w-[54px] bg-gray-200"></div>
+        @endif
+        <div class="flex flex-col grow shrink-0 basis-0 w-fit max-md:max-w-full">
+            <div class="text-sm text-neutral-900 max-md:max-w-full">
+                {{ $experience['position'] }}
             </div>
-            <div class="bg-white rounded-lg overflow-hidden max-w-lg w-full p-6 z-20">
-
-                <form id="addSkillForm" action="{{ route('add.skill') }}" method="POST">
-                    @csrf
-                    <div class="mb-4">
-                        <label for="skillName" class="block text-sm font-medium text-gray-700">Skill Name</label>
-                        <input type="text" id="skillName" name="skillName" class="mt-1 py-2 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button type="button" id="cancelAddSkill" class="text-gray-600 mr-4">Cancel</button>
-                        <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Add Skill</button>
-                    </div>
-                </form>
+            <div class="flex gap-3.5 self-start mt-4 whitespace-nowrap text-neutral-900">
+                <div>{{ $experience['companyName'] }}</div>
+                <div>{{ $experience['location'] }}</div>
             </div>
+            <div class="flex gap-3.5 self-start mt-3">
+                <div class="grow text-neutral-900">{{ $experience['startDate'] }} — {{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}</div>
+                @php
+                $startDate = new DateTime($experience['startDate']);
+                $endDate = isset($experience['endDate']) ? new DateTime($experience['endDate']) : new DateTime();
+                $interval = $startDate->diff($endDate);
+                $months = $interval->format('%m') + ($interval->format('%y') * 12);
+                @endphp
+                <div class="text-sky-800">{{ $months }} month</div>
+            </div>
+            <div class="mt-4 text-neutral-900 max-md:max-w-full">
+                {{ $experience['about'] }}
+            </div>
+        </div>
+        <div class="absolute top-0 right-0 hidden group-hover:block">
+            <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editExperience(this)" data-experience='{"companyName": "{{ $experience['companyName'] }}", "position": "{{ $experience['position'] }}", "location": "{{ $experience['location'] }}", "startDate": "{{ $experience['startDate'] }}", "endDate": "{{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}", "about": "{{ $experience['about'] }}"}'>Edit</button>
+        </div>
+
+    </div>
+    <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
+    @endforeach
+
+</div>
+
+
+<div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
+    <div class="flex justify-between items-center">
+        <div class="text-lg text-neutral-900 max-md:max-w-full">Education</div>
+
+        <div>
+            <svg id="addEducationButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                <g id="SVGRepo_iconCarrier">
+                    <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+
+            </svg>
         </div>
     </div>
 
+    @php
+    $educations = Auth::user()->profile->education ?? [];
+    @endphp
+    @foreach($educations as $education)
+    <div class="relative flex group gap-4 items-start mt-7 text-xs leading-4 max-md:flex-wrap">
+        @if(isset($education['schoolImage']))
+        <img loading="lazy" src="{{ asset('storage/' . $education['schoolImage']) }}" class="shrink-0 aspect-square w-[54px]" />
+        @else
+        <div class="shrink-0 aspect-square w-[54px] bg-gray-200"></div>
+        @endif
+        <div class="flex flex-col grow shrink-0 basis-0 w-fit max-md:max-w-full">
+            <div class="text-sm max-md:max-w-full">
+                {{ $education['institution'] }}
+            </div>
+            <div class="mt-4 max-md:max-w-full">
+                {{ $education['fieldOfStudy'] }}
+            </div>
+            <div class="mt-3 max-md:max-w-full">
+                {{ $education['startDate'] }} — {{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}
+            </div>
+            <div class="mt-4 max-md:max-w-full">
+                {{ $education['description'] }}
+            </div>
+        </div>
+        <div class="absolute top-0 right-0 hidden group-hover:block">
+            <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editEducation(this)" data-education='{"institution": "{{ $education['institution'] }}", "fieldOfStudy": "{{ $education['fieldOfStudy'] }}", "startDate": "{{ $education['startDate'] }}", "endDate": "{{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}", "description": "{{ $education['description'] }}"}'>Edit</button>
+        </div>
 
-    <!-- JavaScript pour gérer l'affichage du modal -->
-    <script>
-        // Sélection du bouton pour ouvrir le modal
-        const addSkillButton = document.getElementById('addSkillButton');
-        // Sélection de l'élément modal
-        const addSkillModal = document.getElementById('addSkillModal');
-        // Sélection du bouton pour fermer le modal
-        const cancelAddSkill = document.getElementById('cancelAddSkill');
-
-        // Fonction pour ouvrir le modal
-        function openAddSkillModal() {
-            addSkillModal.classList.remove('hidden');
-        }
-
-        // Fonction pour fermer le modal
-        function closeAddSkillModal() {
-            addSkillModal.classList.add('hidden');
-        }
-
-        // Ajout d'un écouteur d'événement au bouton pour ouvrir le modal
-        addSkillButton.addEventListener('click', openAddSkillModal);
-        // Ajout d'un écouteur d'événement au bouton pour fermer le modal
-        cancelAddSkill.addEventListener('click', closeAddSkillModal);
-
-        function confirmDeleteSkill(skillName) {
-            if (confirm("Are you sure you want to delete the skill '" + skillName + "'?")) {
-                // Si l'utilisateur confirme, soumettre le formulaire de suppression
-                window.location.href = "{{ route('delete.skill') }}?skill=" + encodeURIComponent(skillName);
-            }
-        }
-
-        function submitForm(idForm) {
-            document.getElementById(idForm).submit();
-        }
-
-        document.getElementById('editCoverButton').addEventListener('click', function() {
-            document.getElementById('coverUploadInput').click();
-        });
-
-        document.getElementById('editImageButton').addEventListener('click', function() {
-            document.getElementById('imageUploadInput').click();
-        });
-        document.getElementById('addExperienceButton').addEventListener('click', function() {
-            document.getElementById('experienceModal').classList.remove('hidden');
-        });
-
-        // Close modal when close button is clicked
-        document.getElementById('closeModalButton').addEventListener('click', function() {
-            document.getElementById('experienceModal').classList.add('hidden');
-        });
-
-        function editExperience(button) {
-            // Récupérer les données de l'expérience à partir de l'attribut data-experience du bouton
-            var experienceData = JSON.parse(button.getAttribute('data-experience'));
+    </div>
+    <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
+    @endforeach
+</div>
 
 
-            document.getElementById('editCompanyName').value = experienceData.companyName;
-            document.getElementById('editPosition').value = experienceData.position;
-            document.getElementById('editLocation').value = experienceData.location;
-            document.getElementById('editStartDate').value = experienceData.startDate;
-            document.getElementById('editEndDate').value = experienceData.endDate;
-            document.getElementById('editAbout').value = experienceData.about;
-
-            // Afficher le modal d'édition
-            document.getElementById('editExperienceModal').classList.remove('hidden');
-        }
-
-        // Function to close edit modal
-        document.getElementById('closeEditModalButton').addEventListener('click', function() {
-            document.getElementById('editExperienceModal').classList.add('hidden');
-        });
 
 
-        function confirmDelete() {
-            if (confirm("Are you sure you want to delete this experience?")) {
-                // Si l'utilisateur confirme, soumettre le formulaire de suppression
-                document.getElementById("editExperienceForm").action = "{{ route('delete.experience') }}"; // Définir l'action de suppression
-                document.getElementById("editExperienceForm").submit();
-            }
-        }
+<div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full text-xs leading-4 bg-white rounded shadow-2xl w-[850px] max-md:px-5">
+    <div class="flex justify-between items-center">
+        <div class="text-lg text-neutral-900 max-md:max-w-full">Skills</div>
 
-        // Attacher un événement au bouton de suppression
-        document.getElementById("deleteExperienceButton").addEventListener("click", function() {
-            confirmDelete();
-        });
+        <div>
+            <svg id="addSkillButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
-        const addEducationButton = document.getElementById('addEducationButton');
+                <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
-        // Sélectionnez le modal d'ajout d'éducation
-        const educationModal = document.getElementById('educationModal');
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
 
-        // Ajoutez un gestionnaire d'événements pour le clic sur le bouton "Plus"
-        addEducationButton.addEventListener('click', function() {
-            // Afficher le modal d'ajout d'éducation
-            educationModal.classList.remove('hidden');
-        });
-        document.getElementById('closeEducationModalButton').addEventListener('click', function() {
-            document.getElementById('educationModal').classList.add('hidden');
-        });
+                <g id="SVGRepo_iconCarrier">
+                    <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
 
-        function closeEditEducationModal() {
-            document.getElementById('editEducationModal').classList.add('hidden');
-        }
-
-        function editEducation(button) {
-            // Récupérer les données de l'éducation à partir de l'attribut data-education du bouton
-            var educationData = JSON.parse(button.getAttribute('data-education'));
+            </svg>
+        </div>
+    </div>
+    @php
+    $skills = Auth::user()->profile->skills ?? [];
+    @endphp
+    <div class="flex flex-wrap mt-4">
+        @foreach($skills as $skill)
+        <div class="bg-sky-800 hover:bg-sky-700 text-white px-4 py-2 rounded-full mr-2 mb-2 shadow-md cursor-pointer" onclick="confirmDeleteSkill('{{ $skill }}')">{{ $skill }}</div>
+        @endforeach
+    </div>
+</div>
 
 
-            document.getElementById('editInstitution').value = educationData.institution;
-            document.getElementById('editFieldOfStudy').value = educationData.fieldOfStudy;
-            document.getElementById('editStartDateEdu').value = educationData.startDate;
-            document.getElementById('editEndDateEdu').value = educationData.endDate;
-            document.getElementById('editDescription').value = educationData.description;
 
-            // Afficher le modal d'édition
-            document.getElementById('editEducationModal').classList.remove('hidden');
-        }
 
-        function confirmDelete() {
-            if (confirm("Are you sure you want to delete this education?")) {
-                // Si l'utilisateur confirme, soumettre le formulaire de suppression
-                document.getElementById("editEducationForm").submit();
-            }
-        }
+<div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full bg-white rounded shadow-2xl w-[850px] max-md:px-5">
+    <div class="flex justify-between items-center">
+        <div class="text-lg text-neutral-900 max-md:max-w-full">Languages</div>
 
-        function confirmDeleteEducation() {
-            if (confirm("Are you sure you want to delete this education?")) {
-                // Si l'utilisateur confirme, soumettre le formulaire de suppression
-                document.getElementById("editEducationForm").action = "{{ route('education.delete') }}";
-                document.getElementById("editEducationForm").submit();
-            }
-        }
+        <div>
+            <svg id="addLanguageButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
-        // Attacher un événement au bouton de suppression
-        document.getElementById("deleteEducationButton").addEventListener("click", function() {
-            confirmDeleteEducation();
-        });
-    </script>
+                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                <g id="SVGRepo_iconCarrier">
+                    <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+
+            </svg>
+        </div>
+    </div>
+    @php
+    $languages = Auth::user()->profile->languages ?? [];
+    @endphp
+    <div class="flex flex-wrap mt-4">
+        @foreach($languages as $language => $level)
+        <div class=" mr-2 mb-2 ">{{ $language }} - {{ $level }}</div>
+        @endforeach
+    </div>
+
+</div>
+
+@include('profile.modals.profile-about');
+@include('profile.modals.profile-add-education');
+@include('profile.modals.profile-add-experience');
+@include('profile.modals.profile-add-language');
+@include('profile.modals.profile-add-skill');
+@include('profile.modals.profile-title');
+@include('profile.modals.profile-update-education');
+@include('profile.modals.profile-update-experience');
+
+
+<script src="js/profile_script.js"></script>
 @endsection

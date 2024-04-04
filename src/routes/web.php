@@ -50,4 +50,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/edit-profile-about',  [ProfileController::class, 'updateProfileAbout'])->name('edit.profile.about');
     Route::post('/add-skill', [ProfileController::class, 'addSkill'])->name('add.skill');
     Route::get('/delete-skill',  [ProfileController::class,'deleteSkill'])->name('delete.skill');
+    Route::post('/add-language', [ProfileController::class,'addLanguage'])->name('add.language');
 });

@@ -18,7 +18,7 @@ class ProfileController extends Controller
     public function updateCoverImage(Request $request)
     {
         $request->validate([
-            'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $image = $request->file('cover_image');
@@ -113,7 +113,7 @@ class ProfileController extends Controller
                     $imagePath = $request->file('editCompanyImage')->store('company_images', 'public');
                     $experiences[$key]['companyImage'] = $imagePath;
                 }
-                break; 
+                break;
             }
         }
 
@@ -205,7 +205,7 @@ class ProfileController extends Controller
                 }
 
 
-                break; 
+                break;
             }
         }
 
@@ -285,12 +285,10 @@ class ProfileController extends Controller
     public function deleteSkill(Request $request)
     {
         $profile = auth()->user()->profile;
-    
+
         $skills = $profile->skills ?? [];
-    
-        // Vérifiez si la compétence à supprimer existe dans le tableau des compétences
+
         if (in_array($request->input('skill'), $skills)) {
-            // Supprimer la compétence du tableau des compétences
             $skills = array_diff($skills, [$request->input('skill')]);
             $profile->update(['skills' => array_values($skills)]);
 
@@ -299,5 +297,23 @@ class ProfileController extends Controller
             return redirect()->back()->with('error', 'Skill not found or could not be deleted');
         }
     }
-    
+
+
+    public function addLanguage(Request $request)
+    {
+
+        $user = auth()->user();
+        $profile = $user->profile;
+
+        $language = $request->input('language');
+        $level = $request->input('level');
+
+        $languages = $profile->languages ?? [];
+
+        $languages[$language] = $level;
+
+        $profile->update(['languages' => $languages]);
+
+        return redirect()->back()->with('success', 'Language added successfully.');
+    }
 }
