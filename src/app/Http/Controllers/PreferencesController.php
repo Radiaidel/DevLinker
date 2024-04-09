@@ -77,21 +77,25 @@ class PreferencesController extends Controller
     
     public function updatePassword(Request $request)
     {
-        $user = Auth::user();
-
-        // Vérifier l'ancien mot de passe
-        if (!Hash::check($request->old_password, $user->password)) {
-            return redirect()->back()->with('error', 'Le mot de passe actuel est incorrect.');
-        }
-
-        // Valider les nouveaux mots de passe
-        $request->validate([
-            'password' => 'required|string|min:8|confirmed',
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'password' => 'required|confirmed|min:6',
         ]);
 
-        // Mettre à jour le mot de passe
-        $user->password = Hash::make($request->password);
-        $user->save();
+        if ($validator->fails()) {
+        
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if (!Hash::check($request->old_password, auth()->user()->password)) {
+            $validator->errors()->add('old_password', 'Le mot de passe actuel est incorrect.');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Mettre à jour le mot de passe de l'utilisateur
+        auth()->user()->update([
+            'password' => Hash::make($request->password),
+        ]);
 
         return redirect()->back()->with('success', 'Votre mot de passe a été mis à jour avec succès.');
     }

@@ -62,8 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/preferences/update', [PreferencesController::class, 'update'])->name('preferences.update');
     Route::put('/preferences/name', [PreferencesController::class, 'updateName'])->name('preferences.update.name');
     Route::put('/preferences/email', [PreferencesController::class, 'updateEmail'])->name('preferences.update.email');
-    Route::put('/preferences/password', [PreferencesController::class, 'updatePassword'])->name('preferences.update.password');
-   
+    Route::put('/update-password', [PreferencesController::class, 'updatePassword'])->name('preferences.update.password');   
    
     Route::post('/update-email', [PreferencesController::class, 'updateEmail'])->name('update.email');
     Route::get('/email/verify/{token}', [PreferencesController::class, 'verifyEmail'])->name('email.verify');
