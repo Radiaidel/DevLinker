@@ -2,7 +2,31 @@
 
 @section('content')
 <div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+<form action="{{ route('delete-account') }}" method="POST">
+        @csrf
+        <button type="button" onclick="confirmDeleteAccount()" class="text-red-600 font-semibold">Supprimer mon compte</button>
+    </form>
 
+
+    <script>
+        function confirmDeleteAccount() {
+            if (confirm('Voulez-vous vraiment supprimer votre compte? Cette action est irréversible.')) {
+                // Si l'utilisateur confirme, demandez son mot de passe pour confirmer la suppression du compte
+                var password = prompt("Pour confirmer, veuillez entrer votre mot de passe :");
+                if (password != null) {
+                    // Envoyer le formulaire de suppression du compte avec le mot de passe
+                    document.getElementById('delete-account-form').submit();
+                }
+            }
+        }
+    </script>
+
+<form id="delete-account-form" action="{{ route('delete-account') }}" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+        <!-- Utilisez un champ caché pour envoyer le mot de passe avec la demande de suppression de compte -->
+        <input type="hidden" name="password">
+    </form>
     <div class="max-w-md w-full space-y-6">
         <div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">

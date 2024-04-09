@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\EmailVerification;
 use Illuminate\Support\Facades\Mail;
-use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
-class PreferencesController extends Controller
+
+
+class PreferencesController  extends Controller
 {
     public function show()
     {
@@ -20,6 +21,7 @@ class PreferencesController extends Controller
 
     public function updateName(Request $request)
     {
+        
         auth()->user()->update([
             'name' => $request->name,
         ]);
@@ -98,5 +100,19 @@ class PreferencesController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Votre mot de passe a été mis à jour avec succès.');
+    }
+
+    public function deleteAccount(Request $request)
+    {
+        // Vérifier si le mot de passe est correct
+        if (!Hash::check($request->password, auth()->user()->password)) {
+            return redirect()->back()->with('error', 'Le mot de passe est incorrect.');
+        }
+
+        // Supprimer le compte de l'utilisateur
+        auth()->user()->delete();
+
+        // Rediriger vers une page appropriée après la suppression du compte
+        return redirect()->route('auth.register')->with('success', 'Votre compte a été supprimé avec succès.');
     }
 }

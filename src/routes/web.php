@@ -66,4 +66,7 @@ Route::middleware('auth')->group(function () {
    
     Route::post('/update-email', [PreferencesController::class, 'updateEmail'])->name('update.email');
     Route::get('/email/verify/{token}', [PreferencesController::class, 'verifyEmail'])->name('email.verify');
-    });
+   
+    Route::delete('/delete-account', [PreferencesController::class, 'deleteAccount'])->name('delete-account');   
+
+});
