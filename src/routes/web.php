@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PreferencesController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 
 
 /*
@@ -52,4 +54,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/delete-skill',  [ProfileController::class,'deleteSkill'])->name('delete.skill');
     Route::post('/add-language', [ProfileController::class,'addLanguage'])->name('add.language');
     Route::post('/delete-language', [ProfileController::class,'deleteLanguage'])->name('language.delete');
-});
+
+
+
+
+    Route::get('/preferences', [PreferencesController::class, 'show'])->name('preferences.show');
+    Route::post('/preferences/update', [PreferencesController::class, 'update'])->name('preferences.update');
+    Route::put('/preferences/name', [PreferencesController::class, 'updateName'])->name('preferences.update.name');
+    Route::put('/preferences/email', [PreferencesController::class, 'updateEmail'])->name('preferences.update.email');
+    Route::put('/preferences/password', [PreferencesController::class, 'updatePassword'])->name('preferences.update.password');
+   
+   
+    Route::post('/update-email', [PreferencesController::class, 'updateEmail'])->name('update.email');
+    Route::get('/email/verify/{token}', [PreferencesController::class, 'verifyEmail'])->name('email.verify');
+    });
