@@ -316,4 +316,37 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('success', 'Language added successfully.');
     }
+    public function deleteLanguage(Request $request)
+    {
+        // Vérifier si l'utilisateur est authentifié et a un profil
+        if (auth()->check() && auth()->user()->profile) {
+            // Récupérer le profil de l'utilisateur authentifié
+            $profile = auth()->user()->profile;
+    
+            // Récupérer les langues du profil de l'utilisateur
+            $languages = $profile->languages ?? [];
+    
+            // Vérifier si la clé de langue à supprimer existe dans le tableau des langues
+            if (isset($languages[$request->languageKey])) {
+                // Supprimer la langue du tableau des langues
+                unset($languages[$request->languageKey]);
+    
+                // Mettre à jour le profil de l'utilisateur avec les langues restantes
+                $profile->update(['languages' => array_values($languages)]);
+    
+                // Rediriger avec un message de succès
+                return redirect()->back()->with('success', 'Language deleted successfully');
+            } else {
+                // Rediriger avec un message d'erreur si la langue n'existe pas dans le tableau
+                return redirect()->back()->with('error', 'Language not found');
+            }
+        } else {
+            // Rediriger avec un message d'erreur si l'utilisateur n'est pas authentifié ou n'a pas de profil
+            return redirect()->back()->with('error', 'Unable to delete language');
+        }
+    }
+    
+    
+    
+    
 }

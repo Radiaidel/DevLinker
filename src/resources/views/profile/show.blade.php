@@ -313,7 +313,7 @@
 
 
 
-<div class="flex mx-auto flex-col px-8 py-8 mt-4 max-w-full bg-white rounded shadow-2xl w-[850px] max-md:px-5">
+<div class="flex mx-auto  flex-col px-8 py-8 mt-4 max-w-full bg-white rounded shadow-2xl w-[850px] max-md:px-5">
     <div class="flex justify-between items-center">
         <div class="text-lg text-neutral-900 max-md:max-w-full">Languages</div>
 
@@ -334,23 +334,30 @@
     @php
     $languages = Auth::user()->profile->languages ?? [];
     @endphp
-    <div class="flex flex-wrap mt-4">
+    <div class="p mt-4">
         @foreach($languages as $language => $level)
-        <div class=" mr-2 mb-2 ">{{ $language }} - {{ $level }}</div>
+        <button class="text-neutral-900  mr-2 mb-2 flex items-center" onclick="confirmDelete('{{ $language }}')">
+            <span class="mr-2">{{ $language }} : </span>
+            <span class="text-xs text-white bg-indigo-500 px-2 py-1 rounded">{{ $level }}</span>
+        </button>
         @endforeach
     </div>
+    <form id="deleteLanguageForm" method="POST" action="{{ route('language.delete') }}">
+        @csrf
+        <input type="hidden" name="languageKey" id="languageToDeleteInput" value="">
 
-</div>
-
-@include('profile.modals.profile-about');
-@include('profile.modals.profile-add-education');
-@include('profile.modals.profile-add-experience');
-@include('profile.modals.profile-add-language');
-@include('profile.modals.profile-add-skill');
-@include('profile.modals.profile-title');
-@include('profile.modals.profile-update-education');
-@include('profile.modals.profile-update-experience');
+    </form>
 
 
-<script src="js/profile_script.js"></script>
-@endsection
+    @include('profile.modals.profile-about')
+    @include('profile.modals.profile-add-education')
+    @include('profile.modals.profile-add-experience')
+    @include('profile.modals.profile-add-language')
+    @include('profile.modals.profile-add-skill')
+    @include('profile.modals.profile-title')
+    @include('profile.modals.profile-update-education')
+    @include('profile.modals.profile-update-experience')
+
+
+    <script src="js/profile_script.js"></script>
+    @endsection

@@ -25,26 +25,26 @@
 </div>
 <script>
     // Sélection des boutons pour ouvrir le modal
-    const editAboutButtons = document.querySelectorAll('.editAboutButton');
-    // Sélection de l'élément modal
-    const editAboutModal = document.getElementById('editAboutModal');
-    // Sélection du bouton pour fermer le modal
-    const cancelEditAbout = document.getElementById('cancelEditAbout');
+    // const editAboutButtons = document.querySelectorAll('.editAboutButton');
+    // // Sélection de l'élément modal
+    // const editAboutModal = document.getElementById('editAboutModal');
+    // // Sélection du bouton pour fermer le modal
+    // const cancelEditAbout = document.getElementById('cancelEditAbout');
 
     // Fonction pour ouvrir le modal
     function openEditAboutModal() {
-        editAboutModal.classList.remove('hidden');
+        document.getElementById('editAboutModal').classList.remove('hidden');
     }
 
     // Fonction pour fermer le modal
     function closeEditAboutModal() {
-        editAboutModal.classList.add('hidden');
+        document.getElementById('editAboutModal').classList.add('hidden');
     }
 
     // Ajout d'un écouteur d'événement à chaque bouton pour ouvrir le modal
-    editAboutButtons.forEach(button => {
+    document.querySelectorAll('.editAboutButton').forEach(button => {
         button.addEventListener('click', openEditAboutModal);
     });
     // Ajout d'un écouteur d'événement au bouton pour fermer le modal
-    cancelEditAbout.addEventListener('click', closeEditAboutModal);
+    document.getElementById('cancelEditAbout').addEventListener('click', closeEditAboutModal);
 </script>
