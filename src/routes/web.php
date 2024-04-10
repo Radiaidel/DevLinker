@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PreferencesController;
+use App\Http\Controllers\ProjectController;
+
 use App\Http\Controllers\Auth\EmailVerificationController;
 
 
@@ -67,6 +69,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-email', [PreferencesController::class, 'updateEmail'])->name('update.email');
     Route::get('/email/verify/{token}', [PreferencesController::class, 'verifyEmail'])->name('email.verify');
    
-    Route::delete('/delete-account', [PreferencesController::class, 'deleteAccount'])->name('delete-account');   
+    Route::delete('/delete-account', [PreferencesController::class, 'deleteAccount'])->name('delete-account');  
+    
+    
+    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 
 });

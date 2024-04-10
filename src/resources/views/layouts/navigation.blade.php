@@ -3,7 +3,7 @@
         <img src="{{ asset('storage/images/devlinker_logo.png') }}" class="w-36" />
     </div>
     <div class="max-md:hidden flex gap-1.5 items-center justify-center">
-        <div class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
+        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
             <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -15,7 +15,7 @@
                 </g>
 
             </svg>
-        </div>
+        </a>
         <div class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
             <svg fill="#000000" width="30px" height="30px" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg">
 
@@ -104,13 +104,12 @@
     <div class="relative max-md:hidden gap-5 justify-between text-xs mr-12 max-md:flex">
         <a href="{{ route('profile.show') }}" class="flex gap-4 items-center" onclick="toggleDropdown(event)">
             <div class="shrink-0 self-stretch w-px h-20 border border-solid bg-zinc-100 border-zinc-100"></div>
-            <div class="shrink-0 self-stretch w-px h-20 border border-solid bg-zinc-100 border-zinc-100"></div>
             @if(Auth::user()->profile && Auth::user()->profile->profile_image)
             <img src="{{ asset('storage/profile/' . Auth::user()->profile->profile_image) }}" class="rounded-full shrink-0 self-stretch my-auto aspect-square w-[42px]" />
             @else
             <img src="{{ asset('storage/profile/unknown.png') }}" class="rounded-full shrink-0 self-stretch my-auto aspect-square w-[42px]" />
             @endif
-             <div class="flex flex-col self-stretch my-auto">
+            <div class="flex flex-col self-stretch my-auto">
                 <div class="uppercase text-neutral-900">{{ Auth::user()->name }}</div>
                 <div class="flex  items-center justify-start gap-2 mt-1">
                     <div class="w-2 h-2 rounded-full bg-green-400"></div>
