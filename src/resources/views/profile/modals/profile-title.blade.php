@@ -13,13 +13,13 @@
                 @csrf
                 <div class="mb-4">
                     <label for="newProfileTitle" class="block text-sm font-medium text-gray-700">New Profile Title</label>
-                    <input type="text" id="newProfileTitle" name="newProfileTitle" value="{{Auth::user()->profile->title}}" class="mt-1 py-2 border  focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" value="{{ old('newProfileTitle') }}">
+                    <input type="text" id="newProfileTitle" name="newProfileTitle" value="{{Auth::user()->profile->title}}" class="mt-1 py-2 border block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" value="{{ old('newProfileTitle') }}">
                 </div>
 
                 <!-- Boutons -->
                 <div class="flex justify-end">
                     <button type="button" id="cancelEditProfileTitle" class="text-gray-600 mr-4">Cancel</button>
-                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Save</button>
+                    <button type="submit" class="bg-sky-800 text-white px-4 py-2 rounded-md">Save</button>
                 </div>
             </form>
         </div>

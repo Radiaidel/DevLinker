@@ -62,7 +62,7 @@
                             <div class="flex flex-col">
                                 <div class="text-lg ">{{Auth::user()->name}}</div>
                                 @if(Auth::user()->profile && Auth::user()->profile->title)
-                                <div class=" group mt-2 text-sm leading-5 hover:text-indigo-600 profileTitle flex gap-6 justify-between">
+                                <div class=" group mt-2 text-sm leading-5 hover:text-sky-800 profileTitle flex gap-6 justify-between">
                                     <div>
                                         {{ Auth::user()->profile->title }}
 
@@ -75,7 +75,7 @@
                                 </div>
                                 @else
 
-                                <div class=" group mt-2 text-sm leading-5 hover:text-indigo-600 profileTitle flex gap-6 justify-between">
+                                <div class=" group mt-2 text-sm leading-5 hover:text-sky-800 profileTitle flex gap-6 justify-between">
                                     <div>
 
                                         Profile Title Not Set
@@ -110,7 +110,7 @@
 <div class="flex mx-auto flex-col px-8 py-9 mt-4 max-w-full bg-white rounded shadow-2xl text-neutral-900 w-[850px] max-md:px-5">
     <div class="text-lg max-md:max-w-full">About</div>
     @if(Auth::user()->profile && Auth::user()->profile->about)
-    <div class="relative group mt-5 text-sm leading-5 max-md:max-w-full hover:text-indigo-600 aboutSection">
+    <div class="relative group mt-5 text-sm leading-5 max-md:max-w-full hover:text-sky-800 aboutSection">
         {{ Auth::user()->profile->about }}
         <button class="absolute top-0 right-0 hidden edit-button group-hover:block editAboutButton">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -119,7 +119,7 @@
         </button>
     </div>
     @else
-    <div class="relative group mt-5 text-sm leading-5 max-md:max-w-full hover:text-indigo-600 aboutSection">
+    <div class="relative group mt-5 text-sm leading-5 max-md:max-w-full hover:sky-800 aboutSection">
         About section not filled out.
         <button class="absolute top-0 right-0 hidden edit-button group-hover:block editAboutButton">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -217,7 +217,7 @@
             </div>
         </div>
         <div class="absolute top-0 right-0 hidden group-hover:block">
-            <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editExperience(this)" data-experience='{"companyName": "{{ $experience['companyName'] }}", "position": "{{ $experience['position'] }}", "location": "{{ $experience['location'] }}", "startDate": "{{ $experience['startDate'] }}", "endDate": "{{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}", "about": "{{ $experience['about'] }}"}'>Edit</button>
+            <button class="text-sm text-sky-800 hover:text-indigo-800" onclick="editExperience(this)" data-experience='{"companyName": "{{ $experience['companyName'] }}", "position": "{{ $experience['position'] }}", "location": "{{ $experience['location'] }}", "startDate": "{{ $experience['startDate'] }}", "endDate": "{{ isset($experience['endDate']) ? $experience['endDate'] : 'Present' }}", "about": "{{ $experience['about'] }}"}'>Edit</button>
         </div>
 
     </div>
@@ -271,7 +271,7 @@
             </div>
         </div>
         <div class="absolute top-0 right-0 hidden group-hover:block">
-            <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="editEducation(this)" data-education='{"institution": "{{ $education['institution'] }}", "fieldOfStudy": "{{ $education['fieldOfStudy'] }}", "startDate": "{{ $education['startDate'] }}", "endDate": "{{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}", "description": "{{ $education['description'] }}"}'>Edit</button>
+            <button class="text-sm text-sky-800 hover:text-indigo-800" onclick="editEducation(this)" data-education='{"institution": "{{ $education['institution'] }}", "fieldOfStudy": "{{ $education['fieldOfStudy'] }}", "startDate": "{{ $education['startDate'] }}", "endDate": "{{ isset($education['endDate']) ? $education['endDate'] : 'Present' }}", "description": "{{ $education['description'] }}"}'>Edit</button>
         </div>
 
     </div>
@@ -338,7 +338,7 @@
         @foreach($languages as $language => $level)
         <button class="text-neutral-900  mr-2 mb-2 flex items-center" onclick="confirmDelete('{{ $language }}')">
             <span class="mr-2">{{ $language }} : </span>
-            <span class="text-xs text-white bg-indigo-500 px-2 py-1 rounded">{{ $level }}</span>
+            <span class="text-xs text-white bg-gray-500 px-2 py-1 rounded">{{ $level }}</span>
         </button>
         @endforeach
     </div>

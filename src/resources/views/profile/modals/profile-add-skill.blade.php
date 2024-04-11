@@ -8,13 +8,13 @@
             <form id="addSkillForm" action="{{ route('add.skill') }}" method="POST">
                 @csrf
                 <div class="mb-4">
-                    <label for="skillName" class="block text-sm font-medium text-gray-700">Skill Name</label>
-                    <input type="text" id="skillName" name="skillName" class="mt-1 py-2 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    <label for="skillName" class="block text-sm font-medium text-gray-700">Skill</label>
+                    <input type="text" id="skillName" name="skillName" class="mt-1 py-2 border block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                 </div>
 
                 <div class="flex justify-end">
                     <button type="button" id="cancelAddSkill" class="text-gray-600 mr-4">Cancel</button>
-                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Add Skill</button>
+                    <button type="submit" class="bg-sky-800 text-white px-4 py-2 rounded-md">Add Skill</button>
                 </div>
             </form>
         </div>

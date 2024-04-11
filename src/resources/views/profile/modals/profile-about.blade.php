@@ -11,13 +11,13 @@
                 @csrf
                 <div class="mb-4">
                     <label for="newAboutContent" class="block text-sm font-medium text-gray-700">New About Content</label>
-                    <textarea id="newAboutContent" name="newAboutContent" rows="4" class="border mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">{{ Auth::user()->profile->about }}</textarea>
+                    <textarea id="newAboutContent" name="newAboutContent" rows="4" class="border mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">{{ Auth::user()->profile->about }}</textarea>
                 </div>
 
                 <!-- Boutons -->
                 <div class="flex justify-end">
                     <button type="button" id="cancelEditAbout" class="text-gray-600 mr-4">Cancel</button>
-                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Save</button>
+                    <button type="submit" class="bg-sky-800 text-white px-4 py-2 rounded-md">Save</button>
                 </div>
             </form>
         </div>
