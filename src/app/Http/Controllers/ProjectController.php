@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
+
     public function store(Request $request)
     {
         // dd($request->all());
@@ -17,10 +18,10 @@ class ProjectController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validation pour les images
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validation pour les images
             'video.*' => 'nullable|file|mimes:mp4,mov,avi,wmv|max:20480', // Validation pour les vidéos
             'links.*' => 'nullable|url', // Validation pour les liens
-            'document.*' => 'nullable|file|mimes:pdf,doc,docx,txt|max:2048', // Validation pour les documents
+            'document.*' => 'nullable|file|mimes:pdf,doc,docx,txt|max:20480', // Validation pour les documents
         ]);
 
 
@@ -37,12 +38,11 @@ class ProjectController extends Controller
                 $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
                 $image->storeAs('public/images', $imageName);
 
-                // Créer une entrée dans la table des médias pour l'image
+                // Créer une entrée dans la table des médias pour chaque image et l'associer au projet
                 $media = new Media();
-                $media->project_id = $project->id;
                 $media->type = 'image';
                 $media->path = $imageName;
-                $media->save();
+                $project->media()->save($media);
             }
         }
 
@@ -79,15 +79,24 @@ class ProjectController extends Controller
         }
 
         // Enregistrer les liens
-        if ($request->has('links')) {
-            foreach ($request->input('links') as $link) {
-                $media = new Media();
-                $media->project_id = $project->id;
-                $media->type = 'link';
-                $media->path = $link;
-                $media->save();
-            }
+        // Vérifiez si des liens ont été envoyés et qu'ils ne sont pas nuls
+ // Vérifiez si des liens ont été envoyés et qu'ils ne sont pas nuls
+if ($request->input('links') !== null) {
+    // Parcourez les liens envoyés
+    foreach ($request->input('links') as $link) {
+        // Vérifiez si le lien n'est pas nul
+        if ($link !== null) {
+            // Créez une nouvelle entrée Media pour chaque lien
+            $media = new Media();
+            $media->project_id = $project->id;
+            $media->type = 'link';
+            $media->path = $link;
+            $media->save();
         }
+    }
+}
+
+
 
         // Rediriger vers une page de succès ou afficher un message de succès
         return redirect()->back()->with('success', 'Projet ajouté avec succès.');

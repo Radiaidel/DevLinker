@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Media extends Model
 {
     use HasFactory;
-    protected $fillable = ['path' , 'type'];
+    protected $fillable = ['type' , 'path' ];
 
     public function project()
     {
