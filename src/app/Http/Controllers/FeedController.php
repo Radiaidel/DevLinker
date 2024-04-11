@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Project;
 
 class FeedController extends Controller
 {
     //
     public function index()
     {
-        return view('feed.index');
-    }
+        $projects = Project::all();
+
+        // Passez les projets à la vue
+        return view('feed.index', compact('projects'));    }
 }

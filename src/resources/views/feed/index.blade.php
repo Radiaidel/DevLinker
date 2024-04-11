@@ -7,14 +7,17 @@
             <div class="flex gap-5 text-md text-neutral-900 text-opacity-20 max-md:flex-wrap max-md:max-w-full">
 
                 @if(Auth::user()->profile && Auth::user()->profile->profile_image)
-                <img src="{{ asset('storage/profile/' . Auth::user()->profile->profile_image) }}" class="shrink-0 aspect-square w-[60px]" />
+                <img src="{{ asset('storage/profile/' . Auth::user()->profile->profile_image) }}" class="shrink-0 aspect-square w-[60px] rounded-full" />
                 @else
-                <img src="{{ asset('storage/profile/unknown.png') }}" class="shrink-0 aspect-square w-[60px]" />
+                <img src="{{ asset('storage/profile/unknown.png') }}" class="shrink-0 aspect-square w-[60px] rounded-full" />
                 @endif
                 <div class="grow justify-center items-start px-7 py-4 my-auto rounded-2xl bg-zinc-100 w-fit max-md:px-5 max-md:max-w-full">
                     Share something...
                 </div>
             </div>
+
+
+
             <div class="flex gap-5 justify-between items-end self-end mt-2 w-[820px] text-xs whitespace-nowrap  text-zinc-400 max-md:flex-wrap max-md:max-w-full">
                 <div class="flex gap-5 justify-between items-start my-auto">
                     <div class="flex gap-1.5 self-stretch">
@@ -103,38 +106,42 @@
                 <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/a9171304e9bca410d7d9699c8f0e1a63f9d398580dc7b58582c1c2bccc0ea64a?" class="shrink-0 my-auto w-5 border-2 border-black border-solid aspect-square stroke-[1.5px] stroke-black" />
             </div>
         </div>
+        @foreach($projects as $project)
         <div class="flex flex-col px-8 py-6 mt-10 w-full bg-white rounded-3xl shadow-2xl text-neutral-900 max-md:px-5 max-md:max-w-full">
             <div class="flex gap-5 justify-between w-full max-md:flex-wrap max-md:mr-1.5 max-md:max-w-full">
                 <div class="flex gap-4 px-px">
-                    <img loading="lazy" srcset="..." class="shrink-0 aspect-square w-[52px]" />
+                    @if($project->user->profile && $project->user->profile->profile_image)
+                    <img src="{{ asset('storage/profile/' . $project->user->profile->profile_image) }}" class="shrink-0 aspect-square w-[52px]" />
+                    @else
+                    <img src="{{ asset('storage/profile/unknown.png') }}" class="shrink-0 aspect-square w-[52px]" />
+                    @endif
                     <div class="flex flex-col my-auto">
-                        <div class="text-sm">Brandon Wilson</div>
-                        <div class="mt-2.5 text-xs leading-4">Senior UX designer</div>
+                        <div class="text-sm">{{ $project->user->name }}</div>
+                        <div class="mt-2.5 text-xs leading-4">{{ $project->user->profile->title }}</div>
                     </div>
                 </div>
                 <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/58c4a5a5f1c790f1fd03172a6c3d20a1857e82f20a35d65c8ac9024f159555b7?" class="shrink-0 my-auto w-6 aspect-square" />
             </div>
-            <div class="mt-5 text-sm leading-5 max-md:max-w-full">Evento plateform</div>
+            <div class="mt-5 text-sm leading-5 max-md:max-w-full">{{$project->title}}</div>
+
+            @foreach ($project->media as $media)
+            @if ($media->type === 'document')
             <div class="flex gap-5 justify-between px-6 py-5 mt-5 w-full bg-indigo-50 rounded leading-[150%] max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
                 <div class="flex gap-4">
                     <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ce3b78eb4910f8881d4d5316b82b4352381767a0953bf889bdd252361cba0248?" class="shrink-0 aspect-square w-[42px]" />
                     <div class="flex flex-col self-start mt-1.5">
-                        <div class="text-sm italic">UX/UI</div>
-                        <div class="mt-3.5 text-xs italic">PDF file, 324 kb</div>
+                        <div class="text-sm ">{{ $media->path }}</div>
+                        <div class="mt-3.5 text-xs ">{{ strtoupper(pathinfo($media->path, PATHINFO_EXTENSION)) }} file, {{ round(Storage::size($media->path) / 1024, 2) }} kb</div>
                     </div>
                 </div>
                 <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/eb9b0cdbe89f7455624707f19cd1ed54475715dd439d50e6e3257985590a4348?" class="shrink-0 my-auto w-6 aspect-square" />
             </div>
-            <div class="flex gap-5 justify-between px-6 py-5 mt-2.5 w-full bg-indigo-50 rounded leading-[150%] max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
-                <div class="flex gap-4">
-                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ce3b78eb4910f8881d4d5316b82b4352381767a0953bf889bdd252361cba0248?" class="shrink-0 aspect-square w-[42px]" />
-                    <div class="flex flex-col self-start mt-1.5">
-                        <div class="text-sm italic">Source Code</div>
-                        <div class="mt-3.5 text-xs italic">PDF file, 245 kb</div>
-                    </div>
-                </div>
-                <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6c6f692648579086c5028cf0f3e8901d7779e93bb79d9c21ee252b47b0b26354?" class="shrink-0 my-auto w-6 aspect-square" />
-            </div>
+            @endif
+            @endforeach
+
+
+
+
             <div class="flex gap-5 justify-between pr-4 mt-5 w-full text-xs uppercase whitespace-nowrap max-md:flex-wrap max-md:max-w-full">
                 <div class="flex gap-5 justify-between items-center">
                     <div class="flex gap-2 justify-center self-stretch">
@@ -150,7 +157,22 @@
                 <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/a9171304e9bca410d7d9699c8f0e1a63f9d398580dc7b58582c1c2bccc0ea64a?" class="shrink-0 my-auto w-5 border-2 border-black border-solid aspect-square stroke-[1.5px] stroke-black" />
             </div>
         </div>
+        @endforeach
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <div class="flex flex-col max-w-[290px]">
         <div class="flex flex-col items-center px-5 pb-7 w-full bg-white rounded text-neutral-900">
             <img loading="lazy" srcset="..." class="self-stretch w-full aspect-[2.44]" />

@@ -78,23 +78,21 @@ class ProjectController extends Controller
             }
         }
 
-        // Enregistrer les liens
-        // Vérifiez si des liens ont été envoyés et qu'ils ne sont pas nuls
- // Vérifiez si des liens ont été envoyés et qu'ils ne sont pas nuls
-if ($request->input('links') !== null) {
-    // Parcourez les liens envoyés
-    foreach ($request->input('links') as $link) {
-        // Vérifiez si le lien n'est pas nul
-        if ($link !== null) {
-            // Créez une nouvelle entrée Media pour chaque lien
-            $media = new Media();
-            $media->project_id = $project->id;
-            $media->type = 'link';
-            $media->path = $link;
-            $media->save();
+
+        if ($request->input('links') !== null) {
+            // Parcourez les liens envoyés
+            foreach ($request->input('links') as $link) {
+                // Vérifiez si le lien n'est pas nul
+                if ($link !== null) {
+                    // Créez une nouvelle entrée Media pour chaque lien
+                    $media = new Media();
+                    $media->project_id = $project->id;
+                    $media->type = 'link';
+                    $media->path = $link;
+                    $media->save();
+                }
+            }
         }
-    }
-}
 
 
 

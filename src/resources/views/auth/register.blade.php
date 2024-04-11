@@ -4,12 +4,15 @@
 <div class="flex justify-center items-center px-16 py-10 bg-white max-md:px-5">
     <div class="w-full max-w-[1157px] max-md:max-w-full">
         <div class="flex gap-5 max-md:flex-col max-md:gap-0">
-            <div class="flex flex-col w-[56%] max-md:ml-0 max-md:w-full">
-                <div class="flex flex-col grow font-bold text-slate-600 max-md:mt-10 max-md:max-w-full">
-                    <div class="flex gap-1 justify-center self-start px-6 py-1 text-xs leading-4 rounded bg-zinc-200 max-md:px-5">
+        <div class="flex flex-col w-[56%] max-md:ml-0 max-md:w-full">
+                <a href="{{ url()->previous() }}">
+                    <div class="flex w-[30%] gap-1 justify-center self-start px-6 py-1 text-xs leading-4 rounded bg-zinc-200 max-md:px-5">
                         <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f4b63c3e07c8dfc747caca3517e2db2db71cad67d30d98339609c907b11055ac?" class="shrink-0 w-6 aspect-square" />
                         <div class="my-auto">Go back</div>
                     </div>
+                </a>
+
+                <div class=" hidden md:flex  flex-col grow font-bold text-slate-600 max-md:mt-10 max-md:max-w-full">
                     <div class="mt-12 text-6xl leading-[72px] text-zinc-800 max-md:mt-10 max-md:max-w-full max-md:text-4xl max-md:leading-[53px]">
                         Welcome to our
                         <br />
