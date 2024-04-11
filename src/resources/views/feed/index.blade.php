@@ -107,13 +107,13 @@
             </div>
         </div>
         @foreach($projects as $project)
-        <div class="flex flex-col px-8 py-6 mt-10 w-full bg-white rounded-3xl shadow-2xl text-neutral-900 max-md:px-5 max-md:max-w-full">
+        <div class="flex flex-col px-8 py-6 mt-10 w-full bg-white rounded-3xl shadow-lg text-neutral-900 max-md:px-5 max-md:max-w-full">
             <div class="flex gap-5 justify-between w-full max-md:flex-wrap max-md:mr-1.5 max-md:max-w-full">
                 <div class="flex gap-4 px-px">
                     @if($project->user->profile && $project->user->profile->profile_image)
-                    <img src="{{ asset('storage/profile/' . $project->user->profile->profile_image) }}" class="shrink-0 aspect-square w-[52px]" />
+                    <img src="{{ asset('storage/profile/' . $project->user->profile->profile_image) }}" class="shrink-0 aspect-square w-[52px] rounded-full" />
                     @else
-                    <img src="{{ asset('storage/profile/unknown.png') }}" class="shrink-0 aspect-square w-[52px]" />
+                    <img src="{{ asset('storage/profile/unknown.png') }}" class="shrink-0 aspect-square w-[52px] rounded-full" />
                     @endif
                     <div class="flex flex-col my-auto">
                         <div class="text-sm">{{ $project->user->name }}</div>
@@ -131,7 +131,7 @@
                     <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ce3b78eb4910f8881d4d5316b82b4352381767a0953bf889bdd252361cba0248?" class="shrink-0 aspect-square w-[42px]" />
                     <div class="flex flex-col self-start mt-1.5">
                         <div class="text-sm ">{{ $media->path }}</div>
-                        <div class="mt-3.5 text-xs ">{{ strtoupper(pathinfo($media->path, PATHINFO_EXTENSION)) }} file, {{ round(Storage::size($media->path) / 1024, 2) }} kb</div>
+                        <div class="mt-3.5 text-xs">{{ strtoupper(pathinfo(asset('storage/documents/'.$media->path), PATHINFO_EXTENSION)) }} file,      {{ round(Storage::size('public/documents/'.$media->path) / 1024, 2) }} Ko</div>
                     </div>
                 </div>
                 <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/eb9b0cdbe89f7455624707f19cd1ed54475715dd439d50e6e3257985590a4348?" class="shrink-0 my-auto w-6 aspect-square" />

@@ -7,6 +7,8 @@ use App\Models\Project;
 use App\Models\Media;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+
 
 class ProjectController extends Controller
 {
@@ -29,6 +31,8 @@ class ProjectController extends Controller
         $project = new Project();
         $project->title = $request->input('title');
         $project->description = $request->input('description');
+        $project->user_id = Auth::user()->id;
+
         $project->save();
 
         // Enregistrer les images
@@ -65,8 +69,13 @@ class ProjectController extends Controller
         // Enregistrer les documents
         if ($request->hasFile('document')) {
             foreach ($request->file('document') as $document) {
-                // Renommer le document et le stocker dans le répertoire approprié
-                $documentName = uniqid() . '.' . $document->getClientOriginalExtension();
+                // Obtenir le nom de fichier original
+                $originalFileName = $document->getClientOriginalName();
+
+                // Remplacer les espaces par des tirets bas
+                $documentName = str_replace(' ', '_', $originalFileName);
+
+                // Stocker le document dans le répertoire approprié avec le nom modifié
                 $document->storeAs('public/documents', $documentName);
 
                 // Créer une entrée dans la table des médias pour le document

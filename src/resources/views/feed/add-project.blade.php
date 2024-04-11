@@ -1,14 +1,13 @@
 <div id="addProjectModal" class="fixed inset-0 z-50 overflow-y-auto hidden bg-gray-800 bg-opacity-50 w-full">
     <div class="flex items-center justify-center min-h-screen">
         <div class="relative bg-white rounded-lg w-[700px] mx-auto p-8">
-            <button id="closeModalButton" class="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-800">&times;</button>
-            <h2 class="text-lg font-semibold mb-4">Partager un projet</h2>
+            <button id="closeModalButton" class="absolute top-0 right-0 mt-4 mr-4 text-bold text-lg text-gray-600 hover:text-gray-800">&times;</button>
 
             <form id="projectForm" action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mb-4">
-                    <label for="title" class="block text-sm font-medium text-gray-700">Titre</label>
+                    <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
                     <input type="text" name="title" id="title" class="mt-1 border py-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                 </div>
 
@@ -95,7 +94,7 @@
                 <div id="linkDisplay" class="mb-4 text-blue-500"></div>
 
 
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md float-right">Envoyer</button>
+                <button type="submit" class="bg-sky-800 hover:bg-sky-700 text-white px-6 py-3 rounded-md float-right">Envoyer</button>
             </form>
         </div>
 
@@ -260,52 +259,45 @@
 
 
 
-
     function previewDocuments() {
-        var preview = document.getElementById('documentPreview');
-        var filesInput = document.getElementById('document');
-        var files = filesInput.files;
+    var preview = document.getElementById('documentPreview');
+    var filesInput = document.getElementById('document');
+    var files = filesInput.files;
 
-        // Parcourir les fichiers sélectionnés
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            var reader = new FileReader();
+    // Parcourir les fichiers sélectionnés
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var reader = new FileReader();
 
-            // Vérifier si le fichier est un document
-            if (file.type.includes('application/pdf') || file.type.includes('text/plain') || file.type.includes('application/msword') || file.type.includes('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
-                var documentPreview = document.createElement('div');
-                documentPreview.classList.add('relative', 'mr-4', 'mb-4');
+        // Vérifier si le fichier est un document
+        if (file.type.includes('application/pdf') || file.type.includes('text/plain') || file.type.includes('application/msword') || file.type.includes('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+            var documentPreview = document.createElement('div');
+            documentPreview.classList.add('document-preview', 'flex','flex-col', 'items-center', 'mb-2');
 
 
-                // Ajouter ici le code SVG de l'icône du document, ou simplement un texte indiquant le type de document
-                // Ici, je vais ajouter un texte indiquant le type de document pour la démonstration
-                var documentText = document.createTextNode('Document: ' + file.name);
+            // Ajouter le titre du document
+            var documentTitle = document.createElement('div');
+            documentTitle.classList.add('document-title', 'text-sm','mr-6', 'truncate', 'flex-grow');
+            // Limiter la longueur du titre et ajouter "..." à la fin si nécessaire
+            var truncatedTitle = file.name.length > 20 ? file.name.substring(0, 20) + '...' : file.name;
+            documentTitle.innerText = truncatedTitle;
+            documentPreview.appendChild(documentTitle);
 
-                var closeButton = document.createElement('button');
-                closeButton.innerHTML = '&times;';
-                closeButton.classList.add('absolute', 'top-0', 'right-0', 'mt-1', 'mr-1', 'text-white', 'bg-gray-500', 'rounded-full', 'hover:bg-red-600');
-                closeButton.onclick = function() {
-                    // Supprimer l'aperçu du document lorsqu'on clique sur le bouton de fermeture
-                    this.parentNode.remove(); // Utilisez this.parentNode pour accéder au parent (documentPreview)
+            // Ajouter le bouton de suppression à droite
+            var closeButton = document.createElement('button');
+            closeButton.innerHTML = '&times;';
+            closeButton.classList.add('close-button', 'text-sm',  'rounded-full', 'hover:bg-red-600');
+            closeButton.onclick = function() {
+                // Supprimer l'aperçu du document lorsqu'on clique sur le bouton de fermeture
+                this.parentNode.remove();
+            };
+            documentPreview.appendChild(closeButton);
 
-                    // Supprimer le fichier correspondant de la liste des fichiers sélectionnés dans l'élément <input type="file">
-                    var fileName = this.parentNode.textContent.replace('Document: ', '').trim();
-                    for (var j = 0; j < files.length; j++) {
-                        if (files[j].name === fileName) {
-                            filesInput.files[j].remove();
-                            break;
-                        }
-                    }
-                };
-
-                documentPreview.appendChild(documentText);
-                documentPreview.appendChild(closeButton);
-
-                // Ajouter l'aperçu du document à la section de prévisualisation
-                preview.appendChild(documentPreview);
-            }
+            // Ajouter l'aperçu du document à la section de prévisualisation
+            preview.appendChild(documentPreview);
         }
     }
+}
 
 
     // Ajouter un gestionnaire d'événement pour déclencher la fonction de prévisualisation lorsqu'un document est sélectionné
