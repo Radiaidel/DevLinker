@@ -7,11 +7,11 @@ use App\Models\Project;
 
 class FeedController extends Controller
 {
-    //
     public function index()
     {
-        $projects = Project::all();
+        $projects = Project::inRandomOrder()->get();
 
         // Passez les projets à la vue
-        return view('feed.index', compact('projects'));    }
+        return view('feed.index', compact('projects'));
+    }
 }

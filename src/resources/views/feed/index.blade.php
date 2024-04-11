@@ -74,38 +74,7 @@
             </div>
         </div>
         <div class="mt-6 w-full border border-solid bg-neutral-200 border-neutral-200 min-h-[2px] max-md:max-w-full"></div>
-        <div class="flex flex-col py-5 pr-4 pl-8 mt-7 w-full bg-white rounded-3xl text-neutral-900 max-md:pl-5 max-md:max-w-full">
-            <div class="flex gap-5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
-                <div class="flex gap-4 px-px">
-                    <img loading="lazy" srcset="..." class="shrink-0 aspect-square w-[52px]" />
-                    <div class="flex flex-col my-auto">
-                        <div class="text-sm">Kyle Fisher</div>
-                        <div class="mt-1.5 text-xs leading-4">
-                            Product designer at Commandor Corp.
-                        </div>
-                    </div>
-                </div>
-                <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/58c4a5a5f1c790f1fd03172a6c3d20a1857e82f20a35d65c8ac9024f159555b7?" class="shrink-0 my-auto w-6 aspect-square" />
-            </div>
-            <div class="mt-8 text-sm leading-5 text-sky-600 max-md:max-w-full">
-                https://www.youtube.com/watch?v=dKjKasoCWuU
-            </div>
-            <img loading="lazy" srcset="..." class="self-start mt-6 w-full aspect-[2.63] max-md:max-w-full" />
-            <div class="flex gap-5 justify-between pr-8 mt-6 w-full text-xs uppercase whitespace-nowrap max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
-                <div class="flex gap-5 justify-between items-center">
-                    <div class="flex gap-2 justify-center self-stretch">
-                        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/a862cab91e23dde7f8383a4feffc732259bb623074a83c1ce1feeb962fe83bd8?" class="shrink-0 aspect-[1.08] w-[30px]" />
-                        <div class="justify-center py-1 my-auto italic">89</div>
-                    </div>
-                    <div class="flex gap-2 justify-center self-stretch my-auto">
-                        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/e99039d355e7dd312382fa4972cdf1618e95a20bc0dab34747ad700500a387a0?" class="shrink-0 aspect-square w-[25px]" />
-                        <div class="justify-center py-1 my-auto italic">7</div>
-                    </div>
-                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/365c044ff255cea15561a8e999b58b55360e80e822f95d1426492432405b46cd?" class="shrink-0 self-stretch my-auto border-2 border-solid aspect-[0.78] border-zinc-800 stroke-[1.5px] stroke-zinc-800 w-[18px]" />
-                </div>
-                <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/a9171304e9bca410d7d9699c8f0e1a63f9d398580dc7b58582c1c2bccc0ea64a?" class="shrink-0 my-auto w-5 border-2 border-black border-solid aspect-square stroke-[1.5px] stroke-black" />
-            </div>
-        </div>
+
         @foreach($projects as $project)
         <div class="flex flex-col px-8 py-6 mt-10 w-full bg-white rounded-3xl shadow-lg text-neutral-900 max-md:px-5 max-md:max-w-full">
             <div class="flex gap-5 justify-between w-full max-md:flex-wrap max-md:mr-1.5 max-md:max-w-full">
@@ -122,8 +91,32 @@
                 </div>
                 <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/58c4a5a5f1c790f1fd03172a6c3d20a1857e82f20a35d65c8ac9024f159555b7?" class="shrink-0 my-auto w-6 aspect-square" />
             </div>
-            <div class="mt-5 text-sm leading-5 max-md:max-w-full">{{$project->title}}</div>
+            <div class="mt-5 mb-2 text-lg leading-5 max-md:max-w-full "> <strong>{{$project->title}}</strong> </div>
+            <div class="text-sm max-h-24 mb-4 overflow-hidden leading-6 max-md:max-w-full" id="description_{{$loop->iteration}}">
+                {{$project->description}}
+            </div>
+            @if(strlen($project->description) > 120)
+            <button class="toggleDescriptionBtn text-sm text-blue-500 cursor-pointer">...lire la suite</button>
+            @endif
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var description = document.getElementById('description_{{$loop->iteration}}');
+                    var toggleBtn = description.nextElementSibling;
 
+                    toggleBtn.addEventListener('click', function() {
+                        if (description.classList.contains('max-h-24')) {
+                            description.classList.remove('max-h-24');
+                            toggleBtn.textContent = 'réduire';
+                        } else {
+                            description.classList.add('max-h-24');
+                            toggleBtn.textContent = '...lire la suite';
+                        }
+                    });
+                });
+            </script>
+            @php
+            $imagePaths = [];
+            @endphp
             @foreach ($project->media as $media)
             @if ($media->type === 'document')
             <div class="flex gap-5 justify-between px-6 py-5 mt-5 w-full bg-indigo-50 rounded leading-[150%] max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
@@ -131,16 +124,84 @@
                     <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ce3b78eb4910f8881d4d5316b82b4352381767a0953bf889bdd252361cba0248?" class="shrink-0 aspect-square w-[42px]" />
                     <div class="flex flex-col self-start mt-1.5">
                         <div class="text-sm ">{{ $media->path }}</div>
-                        <div class="mt-3.5 text-xs">{{ strtoupper(pathinfo(asset('storage/documents/'.$media->path), PATHINFO_EXTENSION)) }} file,      {{ round(Storage::size('public/documents/'.$media->path) / 1024, 2) }} Ko</div>
+                        <div class="mt-3.5 text-xs">{{ strtoupper(pathinfo(asset('storage/documents/'.$media->path), PATHINFO_EXTENSION)) }} file, {{ round(Storage::size('public/documents/'.$media->path) / 1024, 2) }} Ko</div>
                     </div>
                 </div>
-                <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/eb9b0cdbe89f7455624707f19cd1ed54475715dd439d50e6e3257985590a4348?" class="shrink-0 my-auto w-6 aspect-square" />
+                <div class="my-auto">
+                    <a href="{{ asset('storage/documents/'.$media->path) }}" download>
+                        <svg width="26px" height="26px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M12 7L12 14M12 14L15 11M12 14L9 11" stroke="#0284c7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M16 17H12H8" stroke="#0284c7" stroke-width="1.5" stroke-linecap="round" />
+                                <path d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8" stroke="#0284c7" stroke-width="1.5" stroke-linecap="round" />
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+
             </div>
+            @elseif ($media->type === 'image')
+            @php
+            $imagePaths[] = asset('storage/images/'.$media->path);
+            @endphp
+            @elseif ($media->type === 'link')
+            <!-- Afficher le lien en bleu -->
+            <a href="{{ $media->path }}" class="text-blue-500 hover:underline" target="_blank">{{ $media->path }}</a>
             @endif
+
+
+
             @endforeach
 
 
 
+
+            <div class="relative overflow-hidden" id="carousel_{{$loop->iteration}}" data-image-paths="{{ json_encode($imagePaths) }}">
+                <div class="flex carousel-scroll">
+                    <!-- Affichage de la première image dans le carrousel si elle existe -->
+                    @if (!empty($imagePaths))
+                    <div class="w-full flex-shrink-0">
+                        <img src="{{ $imagePaths[0] }}" alt="Image">
+                    </div>
+                    @endif
+                </div>
+                <!-- Boutons de navigation du carrousel -->
+                <button class="prevBtn absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-1 rounded-md">Previous</button>
+                <button class="nextBtn absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-1 rounded-md">Next</button>
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    document.querySelectorAll('[id^="carousel_"]').forEach(function(carousel) {
+                        var imagePaths = JSON.parse(carousel.getAttribute('data-image-paths'));
+                        var totalSlides = imagePaths.length;
+                        var slide = 0;
+
+                        function nextSlide() {
+                            slide = (slide + 1) % totalSlides;
+                            updateSlide();
+                        }
+
+                        function prevSlide() {
+                            slide = slide === 0 ? totalSlides - 1 : slide - 1;
+                            updateSlide();
+                        }
+
+                        function updateSlide() {
+                            carousel.querySelector('.flex > div').innerHTML = ''; // Nettoyer le contenu du carrousel
+                            var img = document.createElement('img');
+                            img.src = imagePaths[slide];
+                            img.alt = 'Image';
+                            carousel.querySelector('.flex > div').appendChild(img);
+                        }
+
+                        carousel.querySelector('.nextBtn').addEventListener('click', nextSlide);
+                        carousel.querySelector('.prevBtn').addEventListener('click', prevSlide);
+                    });
+                });
+            </script>
 
             <div class="flex gap-5 justify-between pr-4 mt-5 w-full text-xs uppercase whitespace-nowrap max-md:flex-wrap max-md:max-w-full">
                 <div class="flex gap-5 justify-between items-center">
