@@ -114,9 +114,15 @@
                     });
                 });
             </script>
+
+
+
             @php
-            $imagePaths = [];
+            $mediaData = [];
+
             @endphp
+
+
             @foreach ($project->media as $media)
             @if ($media->type === 'document')
             <div class="flex gap-5 justify-between px-6 py-5 mt-5 w-full bg-indigo-50 rounded leading-[150%] max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
@@ -142,13 +148,33 @@
                 </div>
 
             </div>
-            @elseif ($media->type === 'image')
-            @php
-            $imagePaths[] = asset('storage/images/'.$media->path);
-            @endphp
+
+
+
             @elseif ($media->type === 'link')
             <!-- Afficher le lien en bleu -->
             <a href="{{ $media->path }}" class="text-blue-500 hover:underline" target="_blank">{{ $media->path }}</a>
+
+
+
+
+
+
+            @elseif ($media->type === 'image')
+            @php
+            $mediaData[] = [
+            'type' => 'image',
+            'path' => asset('storage/images/'.$media->path)
+            ];
+            @endphp
+            @elseif ($media->type === 'video')
+            @php
+            $mediaData[] = [
+            'type' => 'video',
+            'path' => asset('storage/videos/'.$media->path)
+            ];
+            @endphp
+
             @endif
 
 
@@ -158,47 +184,73 @@
 
 
 
-            <div class="relative overflow-hidden" id="carousel_{{$loop->iteration}}" data-image-paths="{{ json_encode($imagePaths) }}">
+            <div class="relative overflow-hidden" id="carousel_{{$loop->iteration}}" data-media="{{ json_encode($mediaData) }}">
                 <div class="flex carousel-scroll">
-                    <!-- Affichage de la première image dans le carrousel si elle existe -->
-                    @if (!empty($imagePaths))
+                    <!-- Affichage de la première image ou vidéo dans le carrousel -->
+                    @foreach($mediaData as $media)
+                    @if ($media['type'] === 'image')
                     <div class="w-full flex-shrink-0">
-                        <img src="{{ $imagePaths[0] }}" alt="Image">
+                        <img src="{{ $media['path'] }}" alt="Image">
+                    </div>
+                    @elseif ($media['type'] === 'video')
+                    <div class="w-full flex-shrink-0">
+                        <video controls>
+                            <source src="{{ $media['path'] }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
                     @endif
+                    @endforeach
                 </div>
                 <!-- Boutons de navigation du carrousel -->
+                @if (count($mediaData) > 1)
                 <button class="prevBtn absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-1 rounded-md">Previous</button>
                 <button class="nextBtn absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-1 rounded-md">Next</button>
+                @endif
             </div>
-
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
                     document.querySelectorAll('[id^="carousel_"]').forEach(function(carousel) {
-                        var imagePaths = JSON.parse(carousel.getAttribute('data-image-paths'));
-                        var totalSlides = imagePaths.length;
-                        var slide = 0;
+                        var mediaData = JSON.parse(carousel.getAttribute('data-media'));
+                        var totalMedia = mediaData.length;
+                        var currentMediaIndex = 0;
 
-                        function nextSlide() {
-                            slide = (slide + 1) % totalSlides;
-                            updateSlide();
+                        function nextMedia() {
+                            currentMediaIndex = (currentMediaIndex + 1) % totalMedia;
+                            updateMedia();
                         }
 
-                        function prevSlide() {
-                            slide = slide === 0 ? totalSlides - 1 : slide - 1;
-                            updateSlide();
+                        function prevMedia() {
+                            currentMediaIndex = currentMediaIndex === 0 ? totalMedia - 1 : currentMediaIndex - 1;
+                            updateMedia();
                         }
 
-                        function updateSlide() {
-                            carousel.querySelector('.flex > div').innerHTML = ''; // Nettoyer le contenu du carrousel
-                            var img = document.createElement('img');
-                            img.src = imagePaths[slide];
-                            img.alt = 'Image';
-                            carousel.querySelector('.flex > div').appendChild(img);
+                        function updateMedia() {
+                            var flexContainer = carousel.querySelector('.flex');
+                            flexContainer.innerHTML = ''; // Nettoyer le contenu du carrousel
+                            if (totalMedia > 0) {
+                                var currentMedia = mediaData[currentMediaIndex];
+                                if (currentMedia['type'] === 'image') {
+                                    var img = document.createElement('img');
+                                    img.src = currentMedia['path'];
+                                    img.alt = 'Image';
+                                    flexContainer.appendChild(img);
+                                } else if (currentMedia['type'] === 'video') {
+                                    var video = document.createElement('video');
+                                    video.controls = true;
+                                    var source = document.createElement('source');
+                                    source.src = currentMedia['path'];
+                                    source.type = 'video/mp4';
+                                    video.appendChild(source);
+                                    flexContainer.appendChild(video);
+                                }
+                            }
                         }
 
-                        carousel.querySelector('.nextBtn').addEventListener('click', nextSlide);
-                        carousel.querySelector('.prevBtn').addEventListener('click', prevSlide);
+                        if (totalMedia > 1) { // Vérifier s'il y a plus d'un média dans le carrousel
+                            carousel.querySelector('.nextBtn').addEventListener('click', nextMedia);
+                            carousel.querySelector('.prevBtn').addEventListener('click', prevMedia);
+                        }
                     });
                 });
             </script>
