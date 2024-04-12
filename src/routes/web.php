@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\SaveController;
 use Illuminate\Support\Facades\Route;
@@ -77,7 +78,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
     Route::post('/projects/like', [LikeController::class, 'like'])->name('project.like');
     Route::post('/projects/save', [SaveController::class, 'save'])->name('project.save');
-
+    Route::get('/projects/{project}/comments', [CommentController::class, 'showComments'])->name('project.comments');
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
     Route::get('/explore', [FeedController::class, 'explore'])->name('explore');
 Route::post('/projects/search', [ProjectController::class,'search'])->name('projects.search');

@@ -8,7 +8,10 @@
 </div>
 <div class="grid grid-cols-3 gap-4 row-gap-1 grid-rows-auto flex items-start w-[80%] mx-auto" id="projectsContainer">
 
+    @foreach($projects as $project)
+
     @include('feed.projects')
+    @endforeach
 </div>
 
 <script>
@@ -20,7 +23,7 @@
             if (searchText.length >= 2) {
                 // Effectuer une requête Ajax pour récupérer les projets correspondants
                 fetchProjects(searchText);
-            } else if(searchText.length == '') {
+            } else if (searchText.length == '') {
                 // Si la longueur du texte de recherche est inférieure à 2, affichez à nouveau tous les projets
                 resetProjects();
             }
@@ -45,6 +48,7 @@
 
             xhr.send('search=' + encodeURIComponent(searchText));
         }
+
         function resetProjects() {
             // Rechargez la page pour afficher à nouveau tous les projets
             location.reload();

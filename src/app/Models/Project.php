@@ -36,4 +36,8 @@ class Project extends Model
         // Vérifie si l'utilisateur a aimé ce projet
         return $this->saves->contains('user_id', $user->id);
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

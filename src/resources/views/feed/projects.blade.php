@@ -1,4 +1,3 @@
-@foreach($projects as $project)
 <div class="flex flex-col px-8 py-6 mt-10 w-full bg-white rounded-3xl shadow-lg text-neutral-900 max-md:px-5 max-md:max-w-full">
     <div class="flex gap-5 justify-between w-full max-md:flex-wrap max-md:mr-1.5 max-md:max-w-full">
         <div class="flex gap-4 px-px">
@@ -15,7 +14,7 @@
         <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/58c4a5a5f1c790f1fd03172a6c3d20a1857e82f20a35d65c8ac9024f159555b7?" class="shrink-0 my-auto w-6 aspect-square" />
     </div>
     <div class="mt-5 mb-2 text-lg leading-5 max-md:max-w-full "> <strong>{{$project->title}}</strong> </div>
-    <div class="text-sm max-h-24 mb-4 overflow-hidden leading-6 max-md:max-w-full" id="description_{{$loop->iteration}}">
+    <div class="text-sm max-h-24 mb-4 overflow-hidden leading-6 max-md:max-w-full" id="description_{{$project->id}}">
         {{$project->description}}
     </div>
     @if(strlen($project->description) > 120)
@@ -23,7 +22,7 @@
     @endif
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var description = document.getElementById('description_{{$loop->iteration}}');
+            var description = document.getElementById('description_{{$project->id}}');
             var toggleBtn = description.nextElementSibling;
 
             toggleBtn.addEventListener('click', function() {
@@ -107,7 +106,7 @@
 
 
 
-    <div class="relative overflow-hidden" id="carousel_{{$loop->iteration}}" data-media="{{ json_encode($mediaData) }}">
+    <div class="relative overflow-hidden" id="carousel_{{$project->id}}" data-media="{{ json_encode($mediaData) }}">
         <div class="flex carousel-scroll">
             <!-- Affichage de la première image ou vidéo dans le carrousel -->
             @foreach($mediaData as $media)
@@ -246,13 +245,10 @@
 
 
             <div class="flex gap-2 justify-center self-stretch my-auto">
-                <div id="comment">
+                <a href="{{ route('project.comments', $project->id) }}">
                     <svg width="25px" height="25px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="red">
-
                         <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-
                         <g id="SVGRepo_iconCarrier">
                             <title>comment-1</title>
                             <desc>Created with Sketch Beta.</desc>
@@ -263,10 +259,9 @@
                                 </g>
                             </g>
                         </g>
-
                     </svg>
-                </div>
-                <div class="justify-center py-1 my-auto italic">7</div>
+                </a>
+                <div class="justify-center py-1 my-auto italic">{{$project->comments()->count()}}</div>
             </div>
             <div id="save">
 
@@ -366,4 +361,3 @@
 
     </div>
 </div>
-@endforeach
