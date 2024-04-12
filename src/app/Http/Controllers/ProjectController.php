@@ -108,4 +108,19 @@ class ProjectController extends Controller
         // Rediriger vers une page de succès ou afficher un message de succès
         return redirect()->back()->with('success', 'Projet ajouté avec succès.');
     }
+
+    public function search(Request $request)
+    {
+        // Récupérez le terme de recherche de la requête
+        $searchTerm = $request->input('search');
+    
+        // Recherchez les projets correspondant au terme de recherche dans le titre ou la description
+        $projects = Project::where('title', 'like', "%$searchTerm%")
+            ->orWhere('description', 'like', "%$searchTerm%")
+            ->get();
+    
+        // Retournez les projets à la vue
+        return view('feed.projects', compact('projects'));
+    }
+    
 }

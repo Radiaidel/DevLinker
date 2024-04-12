@@ -80,6 +80,6 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/explore', [FeedController::class, 'explore'])->name('explore');
-
+Route::post('/projects/search', [ProjectController::class,'search'])->name('projects.search');
 
 });
