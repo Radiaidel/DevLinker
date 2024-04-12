@@ -259,23 +259,73 @@
                 <div class="flex gap-5 justify-between items-center">
                     <div class="flex gap-2 justify-center self-stretch">
                         <div id="like">
-                            <svg width="27px" height="27px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-
+                            <svg onclick="toggleColors(this , '{{ $project->id }}')" id="likeIcon" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="{{ $project->isLikedBy(auth()->user()) ? '#ff0000' : '#000000' }}">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-
                                 <g id="SVGRepo_iconCarrier">
-                                    <path d="M8.96173 18.9109L9.42605 18.3219L8.96173 18.9109ZM12 5.50063L11.4596 6.02073C11.601 6.16763 11.7961 6.25063 12 6.25063C12.2039 6.25063 12.399 6.16763 12.5404 6.02073L12 5.50063ZM15.0383 18.9109L15.5026 19.4999L15.0383 18.9109ZM9.42605 18.3219C7.91039 17.1271 6.25307 15.9603 4.93829 14.4798C3.64922 13.0282 2.75 11.3345 2.75 9.1371H1.25C1.25 11.8026 2.3605 13.8361 3.81672 15.4758C5.24723 17.0866 7.07077 18.3752 8.49742 19.4999L9.42605 18.3219ZM2.75 9.1371C2.75 6.98623 3.96537 5.18252 5.62436 4.42419C7.23607 3.68748 9.40166 3.88258 11.4596 6.02073L12.5404 4.98053C10.0985 2.44352 7.26409 2.02539 5.00076 3.05996C2.78471 4.07292 1.25 6.42503 1.25 9.1371H2.75ZM8.49742 19.4999C9.00965 19.9037 9.55954 20.3343 10.1168 20.6599C10.6739 20.9854 11.3096 21.25 12 21.25V19.75C11.6904 19.75 11.3261 19.6293 10.8736 19.3648C10.4213 19.1005 9.95208 18.7366 9.42605 18.3219L8.49742 19.4999ZM15.5026 19.4999C16.9292 18.3752 18.7528 17.0866 20.1833 15.4758C21.6395 13.8361 22.75 11.8026 22.75 9.1371H21.25C21.25 11.3345 20.3508 13.0282 19.0617 14.4798C17.7469 15.9603 16.0896 17.1271 14.574 18.3219L15.5026 19.4999ZM22.75 9.1371C22.75 6.42503 21.2153 4.07292 18.9992 3.05996C16.7359 2.02539 13.9015 2.44352 11.4596 4.98053L12.5404 6.02073C14.5983 3.88258 16.7639 3.68748 18.3756 4.42419C20.0346 5.18252 21.25 6.98623 21.25 9.1371H22.75ZM14.574 18.3219C14.0479 18.7366 13.5787 19.1005 13.1264 19.3648C12.6739 19.6293 12.3096 19.75 12 19.75V21.25C12.6904 21.25 13.3261 20.9854 13.8832 20.6599C14.4405 20.3343 14.9903 19.9037 15.5026 19.4999L14.574 18.3219Z" fill="#082f49" />
+                                    <path id="heartPath" d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z" fill="{{ $project->isLikedBy(auth()->user()) ? '#ff0000' : '#ffffff' }}" />
                                 </g>
-
                             </svg>
+
+
+
                         </div>
                         <div class="justify-center py-1 my-auto italic">89</div>
                     </div>
+
+                    <script>
+
+                        function toggleColors(svgElement , projectId) {
+                            var pathElement = svgElement.querySelector('#heartPath');
+                            var strokeColor = svgElement.getAttribute('stroke');
+                            var fillColor = pathElement.getAttribute('fill');
+
+                            // Création de l'objet XMLHttpRequest
+                            var xhr = new XMLHttpRequest();
+
+                            // Préparation des données à envoyer
+                            var data = 'project_id=' + projectId;
+
+                            // Configuration de la requête
+                            xhr.open('POST', '/projects/like', true);
+                            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                            xhr.setRequestHeader('X-CSRF-TOKEN', document.head.querySelector('meta[name="csrf-token"]').content); 
+                            // Gestion de la réponse de la requête
+                            xhr.onload = function() {
+                                if (xhr.status >= 200 && xhr.status < 300) {
+                                    var response = xhr.responseText;
+                                    console.log(response);
+                                    if (response === 'like') {
+                                        // Si la réponse est 'like', remplir le cœur en rouge
+                                        pathElement.setAttribute('fill', '#ff0000');
+                                        svgElement.setAttribute('stroke', '#ff0000');
+                                    } else if (response === 'dislike') {
+                                        // Si la réponse est 'dislike', remplir le cœur en blanc
+                                        pathElement.setAttribute('fill', '#ffffff');
+                                        svgElement.setAttribute('stroke', '#000000');
+                                    } else {
+                                        console.error('Réponse inattendue du serveur :', response);
+                                    }
+                                } else {
+                                    console.error('Erreur lors de la requête :', xhr.statusText);
+                                }
+                            };
+
+                            // Gestion des erreurs de la requête
+                            xhr.onerror = function() {
+                                console.error('Erreur lors de la requête :', xhr.statusText);
+                            };
+
+                            // Envoi de la requête avec les données
+                            xhr.send(data);
+                        }
+                    </script>
+
+
+
                     <div class="flex gap-2 justify-center self-stretch my-auto">
                         <div id="comment">
-                            <svg width="25px" height="25px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000">
+                            <svg width="25px" height="25px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="red">
 
                                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -313,33 +363,33 @@
 
                 </div>
                 <div id="share" class="flex gap-3">
-        <p class="copiedText hidden text-xs text-gray-400 p-1">Copied !!</p>
-        <svg onclick="CopyLink('{{ $project->id }}', event)" width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-            <g id="SVGRepo_iconCarrier">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M13.803 5.33333C13.803 3.49238 15.3022 2 17.1515 2C19.0008 2 20.5 3.49238 20.5 5.33333C20.5 7.17428 19.0008 8.66667 17.1515 8.66667C16.2177 8.66667 15.3738 8.28596 14.7671 7.67347L10.1317 10.8295C10.1745 11.0425 10.197 11.2625 10.197 11.4872C10.197 11.9322 10.109 12.3576 9.94959 12.7464L15.0323 16.0858C15.6092 15.6161 16.3473 15.3333 17.1515 15.3333C19.0008 15.3333 20.5 16.8257 20.5 18.6667C20.5 20.5076 19.0008 22 17.1515 22C15.3022 22 13.803 20.5076 13.803 18.6667C13.803 18.1845 13.9062 17.7255 14.0917 17.3111L9.05007 13.9987C8.46196 14.5098 7.6916 14.8205 6.84848 14.8205C4.99917 14.8205 3.5 13.3281 3.5 11.4872C3.5 9.64623 4.99917 8.15385 6.84848 8.15385C7.9119 8.15385 8.85853 8.64725 9.47145 9.41518L13.9639 6.35642C13.8594 6.03359 13.803 5.6896 13.803 5.33333Z" fill="#082f49" />
-            </g>
-        </svg>
-    </div>
+                    <p class="copiedText hidden text-xs text-gray-400 p-1">Copied !!</p>
+                    <svg onclick="CopyLink('{{ $project->id }}', event)" width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                        <g id="SVGRepo_iconCarrier">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M13.803 5.33333C13.803 3.49238 15.3022 2 17.1515 2C19.0008 2 20.5 3.49238 20.5 5.33333C20.5 7.17428 19.0008 8.66667 17.1515 8.66667C16.2177 8.66667 15.3738 8.28596 14.7671 7.67347L10.1317 10.8295C10.1745 11.0425 10.197 11.2625 10.197 11.4872C10.197 11.9322 10.109 12.3576 9.94959 12.7464L15.0323 16.0858C15.6092 15.6161 16.3473 15.3333 17.1515 15.3333C19.0008 15.3333 20.5 16.8257 20.5 18.6667C20.5 20.5076 19.0008 22 17.1515 22C15.3022 22 13.803 20.5076 13.803 18.6667C13.803 18.1845 13.9062 17.7255 14.0917 17.3111L9.05007 13.9987C8.46196 14.5098 7.6916 14.8205 6.84848 14.8205C4.99917 14.8205 3.5 13.3281 3.5 11.4872C3.5 9.64623 4.99917 8.15385 6.84848 8.15385C7.9119 8.15385 8.85853 8.64725 9.47145 9.41518L13.9639 6.35642C13.8594 6.03359 13.803 5.6896 13.803 5.33333Z" fill="#082f49" />
+                        </g>
+                    </svg>
+                </div>
                 <script>
-    function CopyLink(projectId, event) {
-        var encryptedProjectId = btoa(projectId); 
-        var projectLink = window.location.origin + '/projects/' + encryptedProjectId; // URL originale + slug du projet
-        navigator.clipboard.writeText(projectLink);
-        
-        // Récupérer l'élément .copiedText associé à l'icône SVG cliqué
-        var copiedTextElement = event.target.parentNode.querySelector('.copiedText');
+                    function CopyLink(projectId, event) {
+                        var encryptedProjectId = btoa(projectId);
+                        var projectLink = window.location.origin + '/projects/' + encryptedProjectId; // URL originale + slug du projet
+                        navigator.clipboard.writeText(projectLink);
 
-        // Afficher l'élément .copiedText
-        copiedTextElement.classList.remove("hidden");
+                        // Récupérer l'élément .copiedText associé à l'icône SVG cliqué
+                        var copiedTextElement = event.target.parentNode.querySelector('.copiedText');
 
-        // Masquer l'élément après 2 secondes
-        setTimeout(function() {
-            copiedTextElement.classList.add("hidden");
-        }, 1000); // Masquer le message après 2 secondes
-    }
-</script>
+                        // Afficher l'élément .copiedText
+                        copiedTextElement.classList.remove("hidden");
+
+                        // Masquer l'élément après 2 secondes
+                        setTimeout(function() {
+                            copiedTextElement.classList.add("hidden");
+                        }, 1000); // Masquer le message après 2 secondes
+                    }
+                </script>
 
 
 

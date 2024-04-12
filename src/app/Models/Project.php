@@ -18,4 +18,13 @@ class Project extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+    public function isLikedBy($user)
+    {
+        // Vérifie si l'utilisateur a aimé ce projet
+        return $this->likes->contains('user_id', $user->id);
+    }
 }
