@@ -270,12 +270,11 @@
 
 
                         </div>
-                        <div class="justify-center py-1 my-auto italic">89</div>
+                        <div class="justify-center py-1 my-auto">{{$project->likes()->count()}}</div>
                     </div>
 
                     <script>
-
-                        function toggleColors(svgElement , projectId) {
+                        function toggleColors(svgElement, projectId) {
                             var pathElement = svgElement.querySelector('#heartPath');
                             var strokeColor = svgElement.getAttribute('stroke');
                             var fillColor = pathElement.getAttribute('fill');
@@ -289,7 +288,7 @@
                             // Configuration de la requête
                             xhr.open('POST', '/projects/like', true);
                             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                            xhr.setRequestHeader('X-CSRF-TOKEN', document.head.querySelector('meta[name="csrf-token"]').content); 
+                            xhr.setRequestHeader('X-CSRF-TOKEN', document.head.querySelector('meta[name="csrf-token"]').content);
                             // Gestion de la réponse de la requête
                             xhr.onload = function() {
                                 if (xhr.status >= 200 && xhr.status < 300) {
@@ -347,20 +346,69 @@
                         <div class="justify-center py-1 my-auto italic">7</div>
                     </div>
                     <div id="save">
-                        <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+
+                        <svg onclick="toggleSave(this, '{{ $project->id }}')" id="saveIcon" fill="{{ $project->isSavedBy(auth()->user()) ? '#000000' : '#ffffff' }}" width="25px" height="25px" viewBox="0 0 56.00 56.00" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.001">
 
                             <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#000000" stroke-width="5.5">
+
+                                <path d="M 12.0156 53.1602 C 13.2344 53.1602 13.8672 52.4805 16.3047 50.1836 L 26.8516 40.0586 C 27.3906 39.5664 27.6719 39.4258 28 39.4258 C 28.3281 39.4258 28.6563 39.5898 29.1484 40.0586 L 41.1250 51.5898 C 42.0625 52.4805 42.7890 53.1602 43.9844 53.1602 C 45.4609 53.1602 46.5859 52.2696 46.5859 50.1367 L 46.5859 10.1758 C 46.5859 5.3008 44.1719 2.8398 39.3203 2.8398 L 16.6797 2.8398 C 11.8516 2.8398 9.4141 5.3008 9.4141 10.1758 L 9.4141 50.1367 C 9.4141 52.2696 10.5625 53.1602 12.0156 53.1602 Z" />
+
+                            </g>
 
                             <g id="SVGRepo_iconCarrier">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M4 4C4 2.34315 5.34315 1 7 1H17C18.6569 1 20 2.34315 20 4V20.9425C20 22.6114 18.0766 23.5462 16.7644 22.5152L12 18.7717L7.23564 22.5152C5.92338 23.5462 4 22.6114 4 20.9425V4ZM7 3C6.44772 3 6 3.44772 6 4V20.9425L12 16.2283L18 20.9425V4C18 3.44772 17.5523 3 17 3H7Z" fill="#082f49" />
+
+                                <path d="M 12.0156 53.1602 C 13.2344 53.1602 13.8672 52.4805 16.3047 50.1836 L 26.8516 40.0586 C 27.3906 39.5664 27.6719 39.4258 28 39.4258 C 28.3281 39.4258 28.6563 39.5898 29.1484 40.0586 L 41.1250 51.5898 C 42.0625 52.4805 42.7890 53.1602 43.9844 53.1602 C 45.4609 53.1602 46.5859 52.2696 46.5859 50.1367 L 46.5859 10.1758 C 46.5859 5.3008 44.1719 2.8398 39.3203 2.8398 L 16.6797 2.8398 C 11.8516 2.8398 9.4141 5.3008 9.4141 10.1758 L 9.4141 50.1367 C 9.4141 52.2696 10.5625 53.1602 12.0156 53.1602 Z" />
+
                             </g>
 
                         </svg>
                     </div>
 
+                    <script>
+                        function toggleSave(svgElement, projectId) {
 
+                            // Création de l'objet XMLHttpRequest
+                            var xhr = new XMLHttpRequest();
+
+                            // Préparation des données à envoyer
+                            var data = 'project_id=' + projectId;
+
+                            // Configuration de la requête
+                            xhr.open('POST', '/projects/save', true);
+                            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                            xhr.setRequestHeader('X-CSRF-TOKEN', document.head.querySelector('meta[name="csrf-token"]').content);
+
+                            // Gestion de la réponse de la requête
+                            xhr.onload = function() {
+                                if (xhr.status >= 200 && xhr.status < 300) {
+                                    var response = xhr.responseText;
+
+                                    if (response === 'save') {
+                                        // Si la réponse est 'save', remplir l'icône en bleu
+                                        svgElement.setAttribute('fill', '#000000');
+                                    } else if (response === 'unsave') {
+                                        // Si la réponse est 'unsave', remplir l'icône en gris
+                                        svgElement.setAttribute('fill', '#ffffff');
+                                    } else {
+                                        console.error('Réponse inattendue du serveur :', response);
+                                    }
+                                } else {
+                                    console.error('Erreur lors de la requête :', xhr.statusText);
+                                }
+                            };
+
+                            // Gestion des erreurs de la requête
+                            xhr.onerror = function() {
+                                console.error('Erreur lors de la requête :', xhr.statusText);
+                            };
+
+                            // Envoi de la requête avec les données
+                            xhr.send(data);
+                        }
+                    </script>
                 </div>
                 <div id="share" class="flex gap-3">
                     <p class="copiedText hidden text-xs text-gray-400 p-1">Copied !!</p>

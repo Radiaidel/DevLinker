@@ -27,4 +27,13 @@ class Project extends Model
         // Vérifie si l'utilisateur a aimé ce projet
         return $this->likes->contains('user_id', $user->id);
     }
+    public function saves()
+    {
+        return $this->hasMany(Save::class);
+    }
+    public function isSavedBy($user)
+    {
+        // Vérifie si l'utilisateur a aimé ce projet
+        return $this->saves->contains('user_id', $user->id);
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\SaveController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\FeedController;
@@ -76,5 +77,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 
     Route::post('/projects/like', [LikeController::class, 'like'])->name('project.like');
+    Route::post('/projects/save', [SaveController::class, 'save'])->name('project.save');
 
 });
