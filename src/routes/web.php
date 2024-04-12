@@ -75,8 +75,11 @@ Route::middleware('auth')->group(function () {
     
     
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
-
     Route::post('/projects/like', [LikeController::class, 'like'])->name('project.like');
     Route::post('/projects/save', [SaveController::class, 'save'])->name('project.save');
+
+
+    Route::get('/explore', [FeedController::class, 'explore'])->name('explore');
+
 
 });

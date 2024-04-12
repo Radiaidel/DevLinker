@@ -16,7 +16,7 @@
 
             </svg>
         </a>
-        <div class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
+        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
             <svg fill="#000000" width="30px" height="30px" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -38,8 +38,8 @@
                 </g>
 
             </svg>
-        </div>
-        <div class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
+        </a>
+        <a href="{{ route('explore') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
             <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -52,9 +52,9 @@
                 </g>
 
             </svg>
-        </div>
-        <div class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
-            <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        </a>
+        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center"> 
+        <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -66,9 +66,9 @@
                 </g>
 
             </svg>
-        </div>
-        <div class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
-            <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        </a>
+        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center"> 
+        <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -79,7 +79,7 @@
                 </g>
 
             </svg>
-        </div>
+        </a>
 
     </div>
     <div class="flex items-center pr-5 hidden max-md:flex">

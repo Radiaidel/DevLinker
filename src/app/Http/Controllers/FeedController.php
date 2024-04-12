@@ -14,4 +14,13 @@ class FeedController extends Controller
         // Passez les projets à la vue
         return view('feed.index', compact('projects'));
     }
+
+
+
+    public function explore()
+    {
+        $projects = Project::inRandomOrder()->get();
+        
+        return view('explore.index', compact('projects'));
+    }
 }
