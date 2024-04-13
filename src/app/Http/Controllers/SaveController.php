@@ -30,4 +30,14 @@ class SaveController extends Controller
             return response('save');
         }
     }
+
+
+    public function getSavedItems()
+    {
+        // Récupérer les éléments enregistrés pour l'utilisateur authentifié
+        $user = auth()->user();
+        $savedItems = $user->saves()->with('project')->get();
+    
+        return response()->json($savedItems);
+    }
 }

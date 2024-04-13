@@ -53,8 +53,8 @@
 
             </svg>
         </a>
-        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center"> 
-        <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
+            <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -67,8 +67,8 @@
 
             </svg>
         </a>
-        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center"> 
-        <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
+            <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -125,10 +125,20 @@
         <div id="dropdownMenu" class="absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded shadow-lg z-10 hidden">
             <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
             <a href="{{ route('preferences.show') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Preferences</a>
+            <a onclick="fetchSavedItems()" class="cursor-pointer block px-4 py-2 text-gray-800 hover:bg-gray-200">Mes enregistrements</a>
+
             <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
         </div>
     </div>
 
+
+    <div id="savedItemsPopup" class="z-20 fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center hidden">
+            <div class="bg-white rounded-lg p-8 max-w-md">
+                <h2 class="text-lg font-semibold mb-4">Likes</h2>
+                <ul id="likesList">
+                </ul>
+            </div>
+    </div>
 
 
     <script>
@@ -158,4 +168,30 @@
             dropdownMenu.classList.toggle('hidden');
         }
     </script>
+
+
+
+<script>
+    function fetchSavedItems() {
+        fetch('/saved-items')
+            .then(response => response.json())
+            .then(data => {
+                const savedItemsPopup = document.getElementById('savedItemsPopup');
+                const likesList = document.getElementById('likesList');
+                likesList.innerHTML = ''; // Nettoyer le contenu précédent
+
+                // Ajouter chaque élément enregistré à la popup
+                data.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = item.project.id; // Remplacer avec la propriété appropriée de votre modèle
+                    likesList.appendChild(listItem);
+                });
+
+                savedItemsPopup.classList.remove('hidden');
+            })
+            .catch(error => console.error('Erreur lors de la récupération des éléments enregistrés :', error));
+    }
+</script>
+
+
 </nav>

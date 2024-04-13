@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Like;
+use App\Models\Project;
+
 
 class LikeController extends Controller
 {
@@ -29,4 +31,9 @@ class LikeController extends Controller
             return response('like');
         }
     }
+    public function viewLikes(Project $project)
+{
+    $likes = $project->likes()->with('user')->get();
+    return response()->json(['likes' => $likes]);
+}
 }

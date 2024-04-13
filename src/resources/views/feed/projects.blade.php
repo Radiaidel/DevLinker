@@ -1,5 +1,5 @@
 <div class="flex flex-col px-8 py-6 mt-10 w-full bg-white rounded-3xl shadow-lg text-neutral-900 max-md:px-5 max-md:max-w-full">
-    <div class="flex gap-5 justify-between w-full max-md:flex-wrap max-md:mr-1.5 max-md:max-w-full">
+    <div class="flex gap-5 justify-between items-center w-full max-md:flex-wrap max-md:mr-1.5 max-md:max-w-full">
         <div class="flex gap-4 px-px">
             @if($project->user->profile && $project->user->profile->profile_image)
             <img src="{{ asset('storage/profile/' . $project->user->profile->profile_image) }}" class="shrink-0 aspect-square w-[52px] rounded-full" />
@@ -11,7 +11,85 @@
                 <div class="mt-2.5 text-xs leading-4">{{ $project->user->profile->title }}</div>
             </div>
         </div>
-        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/58c4a5a5f1c790f1fd03172a6c3d20a1857e82f20a35d65c8ac9024f159555b7?" class="shrink-0 my-auto w-6 aspect-square" />
+        <div class="relative  gap-5 justify-between text-xs max-md:flex cursor-pointer">
+            <svg onclick="toggleDropdownProject(event)" fill="#000000" width="25px" height="25px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" id="Glyph" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                <g id="SVGRepo_iconCarrier">
+
+                    <path d="M13,16c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,14.346,13,16z" id="XMLID_294_" />
+
+                    <path d="M13,26c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,24.346,13,26z" id="XMLID_295_" />
+
+                    <path d="M13,6c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,4.346,13,6z" id="XMLID_297_" />
+
+                </g>
+
+            </svg>
+
+
+            <div id="Drop_project_menu" class="text-md absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded shadow-lg z-10 hidden">
+                <a onclick="openLikesPopup('{{$project->id}}')" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">See Likes</a>
+                <a href="{{ route('profile.show') }}" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">View User Profile</a>
+                <a href="#" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">Report Project</a>
+            </div>
+        </div>
+
+
+
+        <script>
+            function toggleDropdownProject(event) {
+                var dropdownMenu = event.target.nextElementSibling;
+                dropdownMenu.classList.toggle('hidden');
+            }
+        </script>
+
+
+        <!-- pop up like -->
+        <div id="likesPopup" class="z-20 fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center hidden">
+            <div class="bg-white rounded-lg p-8 max-w-md">
+                <h2 class="text-lg font-semibold mb-4">Likes</h2>
+                <ul id="likesList">
+                    <!-- Likes will be dynamically inserted here -->
+                </ul>
+                <button onclick="closeLikesPopup()" class="block w-full mt-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md">Close</button>
+            </div>
+        </div>
+
+
+        <script>
+            function openLikesPopup(projectId) {
+                var popup = document.getElementById('likesPopup');
+                popup.classList.remove('hidden');
+
+                // Make AJAX request to get likes
+                fetch('/projects/' + projectId + '/likes')
+                    .then(response => response.json())
+                    .then(data => {
+                        var likesList = document.getElementById('likesList');
+                        likesList.innerHTML = ''; // Clear previous likes
+                        data.likes.forEach(like => {
+                            var listItem = document.createElement('li');
+                            listItem.textContent = like.user.name;
+                            likesList.appendChild(listItem);
+                        });
+                    });
+            }
+
+            function closeLikesPopup() {
+                var popup = document.getElementById('likesPopup');
+                popup.classList.add('hidden');
+            }
+        </script>
+
+
+
+
+
+
     </div>
     <div class="mt-5 mb-2 text-lg leading-5 max-md:max-w-full "> <strong>{{$project->title}}</strong> </div>
     <div class="text-sm max-h-24 mb-4 overflow-hidden leading-6 max-md:max-w-full" id="description_{{$project->id}}">
@@ -340,8 +418,7 @@
         </div>
         <script>
             function CopyLink(projectId, event) {
-                var encryptedProjectId = btoa(projectId);
-                var projectLink = window.location.origin + '/projects/' + encryptedProjectId; // URL originale + slug du projet
+                var projectLink = window.location.origin + '/projects/' + projectId; // URL originale + slug du projet
                 navigator.clipboard.writeText(projectLink);
 
                 // Récupérer l'élément .copiedText associé à l'icône SVG cliqué
