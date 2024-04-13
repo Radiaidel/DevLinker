@@ -90,6 +90,6 @@ Route::get('/network', [NetworkController::class, 'index'])->name('network');
 Route::post('/friend-requests/accept', [NetworkController::class, 'accept'])->name('friend-requests.accept');
 Route::post('/friend-requests/decline', [NetworkController::class, 'decline'])->name('friend-requests.decline');
 Route::post('/friend-requests/cancel', [NetworkController::class, 'cancel'])->name('friend-requests.cancel');
-
+Route::post('/connect',  [NetworkController::class, 'sendConnectionRequest'])->name('connect.send');
 });
 // 

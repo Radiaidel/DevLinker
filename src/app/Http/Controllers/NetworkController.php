@@ -32,7 +32,7 @@ class NetworkController extends Controller
 
         // Récupérer les utilisateurs qui ne sont pas dans la table friendrequests avec l'utilisateur authentifié
         $suggestedUsers = User::whereNotIn('id', $relatedUserIds)
-            ->where('id', '!=', $user->id) 
+            ->where('id', '!=', $user->id)
             ->limit(4)
             ->get();
 
@@ -71,4 +71,23 @@ class NetworkController extends Controller
             return redirect()->back()->with('error', 'Friend request not found.');
         }
     }
+    public function sendConnectionRequest(Request $request)
+    {
+        // Récupérer l'utilisateur authentifié
+        $user = auth()->user();
+
+        // Récupérer l'ID de l'utilisateur suggéré à connecter
+        $suggestedUserId = $request->input('user_id');
+
+  
+            FriendRequest::create([
+                'sender_id' => $user->id,
+                'receiver_id' => $suggestedUserId,
+                'status' => 'pending',
+            ]);
+        
+
+        // Rediriger l'utilisateur vers la page précédente (ou une autre page de votre choix)
+        return back()->with('success', 'Votre invitation a été envoyée avec succès');
+        }
 }
