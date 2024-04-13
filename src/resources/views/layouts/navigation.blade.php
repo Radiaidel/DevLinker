@@ -16,7 +16,7 @@
 
             </svg>
         </a>
-        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
+        <a href="{{ route('network') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
             <svg fill="#000000" width="30px" height="30px" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\SaveController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -84,4 +85,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/explore', [FeedController::class, 'explore'])->name('explore');
 Route::post('/projects/search', [ProjectController::class,'search'])->name('projects.search');
 
+
+Route::get('/network', [NetworkController::class, 'index'])->name('network');
+Route::post('/friend-requests/accept', [NetworkController::class, 'accept'])->name('friend-requests.accept');
+Route::post('/friend-requests/decline', [NetworkController::class, 'decline'])->name('friend-requests.decline');
+Route::post('/friend-requests/cancel', [NetworkController::class, 'cancel'])->name('friend-requests.cancel');
+
 });
+// 

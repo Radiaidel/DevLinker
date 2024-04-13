@@ -58,11 +58,21 @@ class User extends Authenticatable
         return $this->hasMany(Like::class);
     }
     public function saves()
-{
-    return $this->hasMany(Save::class);
-}
-public function comments()
-{
-    return $this->hasMany(Comment::class);
-}
+    {
+        return $this->hasMany(Save::class);
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function sentFriendrequests()
+    {
+        return $this->hasMany(Friendrequest::class, 'sender_id');
+    }
+
+    public function receivedFriendrequests()
+    {
+        return $this->hasMany(Friendrequest::class, 'receiver_id');
+    }
 }
