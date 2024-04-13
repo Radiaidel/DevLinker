@@ -70,7 +70,7 @@
                         <div class="my-auto">Video</div>
                     </div>
                 </div>
-                <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/82ace3ab39ce7da47f8de2f6d0b36e9f8a9bedb7ff752f4109d67431a4365c16?" class="shrink-0 w-8 aspect-square" />
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/82ace3ab39ce7da47f8de2f6d0b36e9f8a9bedb7ff752f4109d67431a4365c16?" class="shrink-0 w-8 aspect-square" />
             </div>
         </div>
         <div class="mt-6 w-full border border-solid bg-neutral-200 border-neutral-200 min-h-[2px] max-md:max-w-full"></div>
@@ -94,58 +94,39 @@
 
 
     <div class="flex flex-col max-w-[290px]">
-        <div class="flex flex-col items-center px-5 pb-7 w-full bg-white rounded text-neutral-900">
-            <img loading="lazy" srcset="..." class="self-stretch w-full aspect-[2.44]" />
-            <img loading="lazy" srcset="..." class="z-10 mt-0 max-w-full border-2 border-white border-solid aspect-square w-[100px]" />
-            <div class="mt-5 text-sm">Dmitry Kargaev</div>
-            <div class="mt-2.5 w-60 text-xs leading-4 text-center">
-                Freelance UX/UI designer, 80+ projects in web design, mobile apps (iOS &
-                android) and creative projects. Open to offers.
+        <div class="flex flex-col items-center pb-7 w-full bg-white rounded text-neutral-900">
+            <div class="relative mb-5">
+                <!-- Image de couverture -->
+                @if(Auth::user()->profile && Auth::user()->profile->cover_image)
+                <img src="{{ asset('storage/profile/' . Auth::user()->profile->cover_image) }}" class="self-stretch w-full aspect-[2.44]" />
+                @else
+                <img src="{{ asset('storage/profile/cover_default.jpeg') }}" class="self-stretch w-full aspect-[2.44]" />
+                @endif
+
+                <!-- Photo de profil au centre -->
+                <div class="absolute inset-x-0 top-12 flex justify-center">
+                    @if(Auth::user()->profile && Auth::user()->profile->profile_image)
+                    <img src="{{ asset('storage/profile/' . Auth::user()->profile->profile_image) }}" class="max-w-full h-auto rounded-full border-2 border-white w-[100px]" />
+                    @else
+                    <img src="{{ asset('storage/profile/unknown.png') }}" class="max-w-full h-auto rounded-full border-2 border-white" />
+                    @endif
+                </div>
+            </div>
+
+
+
+
+            <div class="mt-5 text-sm"><strong> {{Auth::user()->name}} </strong></div>
+            <div class="mt-2.5 w-60 text-xs leading-4 text-justify">
+                @if(Auth::user()->profile && Auth::user()->profile->about)
+                {{ Auth::user()->profile->about }}
+                @else
+                About section not filled out.
+                @endif
+
             </div>
         </div>
-        <div class="flex flex-col px-5 pt-7 pb-4 mt-5 w-full bg-white rounded">
-            <div class="flex gap-5 uppercase">
-                <div class="flex-auto text-xs text-neutral-900">Suggested for YOU</div>
-                <div class="text-xs text-right text-sky-800">See all</div>
-            </div>
-            <div class="shrink-0 mt-4 h-px border border-solid bg-zinc-100 border-zinc-100"></div>
-            <div class="flex gap-5 justify-between px-3.5 py-1.5 mt-3 w-full whitespace-nowrap bg-white rounded-md border border-solid border-zinc-100">
-                <div class="flex gap-2.5 text-xs text-neutral-900">
-                    <img loading="lazy" srcset="..." class="shrink-0 border-2 border-white border-solid aspect-[1.02] w-[41px]" />
-                    <div class="my-auto">idelkadiradia</div>
-                </div>
-                <div class="my-auto text-xs text-right text-sky-800 uppercase">
-                    FOLLOW
-                </div>
-            </div>
-            <div class="flex gap-5 justify-between px-3.5 py-1.5 mt-1.5 w-full whitespace-nowrap bg-white rounded-md border border-solid border-zinc-100">
-                <div class="flex gap-2.5 text-xs text-neutral-900">
-                    <img loading="lazy" srcset="..." class="shrink-0 border-2 border-white border-solid aspect-[1.02] w-[41px]" />
-                    <div class="my-auto">idelkadiradia</div>
-                </div>
-                <div class="my-auto text-xs text-right text-sky-800 uppercase">
-                    FOLLOW
-                </div>
-            </div>
-            <div class="flex gap-5 justify-between px-3.5 py-1.5 mt-1.5 w-full whitespace-nowrap bg-white rounded-md border border-solid border-zinc-100">
-                <div class="flex gap-2.5 text-xs text-neutral-900">
-                    <img loading="lazy" srcset="..." class="shrink-0 border-2 border-white border-solid aspect-[1.02] w-[41px]" />
-                    <div class="my-auto">idelkadiradia</div>
-                </div>
-                <div class="my-auto text-xs text-right text-sky-800 uppercase">
-                    FOLLOW
-                </div>
-            </div>
-            <div class="flex gap-5 justify-between px-3.5 py-1.5 mt-1.5 w-full whitespace-nowrap bg-white rounded-md border border-solid border-zinc-100">
-                <div class="flex gap-2.5 text-xs text-neutral-900">
-                    <img loading="lazy" srcset="..." class="shrink-0 border-2 border-white border-solid aspect-[1.02] w-[41px]" />
-                    <div class="my-auto">idelkadiradia</div>
-                </div>
-                <div class="my-auto text-xs text-right text-sky-800 uppercase">
-                    FOLLOW
-                </div>
-            </div>
-        </div>
+       @include('network.suggested_users')
     </div>
     @include('feed.add-project')
 

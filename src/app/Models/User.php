@@ -75,4 +75,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Friendrequest::class, 'receiver_id');
     }
+
+    public function relatedUserIds()
+    {
+        // Récupérer les IDs des utilisateurs ayant une relation avec l'utilisateur authentifié dans la table friendrequests
+        $relatedUserIds = $this->sentFriendRequests()->pluck('receiver_id')
+            ->merge($this->receivedFriendRequests()->pluck('sender_id'));
+
+        return $relatedUserIds;
+    }
 }
