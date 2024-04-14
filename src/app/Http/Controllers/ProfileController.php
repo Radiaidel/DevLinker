@@ -9,10 +9,10 @@ use App\Models\User;
 class ProfileController extends Controller
 {
     //
-    public function show()
+    public function show($userId)
     {
-        $user = auth()->user();
-
+        $user = User::findOrFail($userId);
+    
         return view('profile.show', compact('user'));
     }
     public function updateCoverImage(Request $request)

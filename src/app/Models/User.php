@@ -49,9 +49,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class);
     }
-    public function project()
+    public function projects()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Project::class);
     }
     public function likes()
     {

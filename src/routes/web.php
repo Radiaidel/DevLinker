@@ -45,7 +45,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
 
     Route::get('/feed', [FeedController::class, 'index'])->name('feed');
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+
+
+
+    Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
     Route::post('/update-cover-image', [ProfileController::class, 'updateCoverImage'])->name('update.cover.image');
     Route::post('/update-profile-image', [ProfileController::class, 'updateProfileImage'])->name('update.profile.image');
     Route::post('/add-experience', [ProfileController::class, 'addExperience'])->name('add.experience');
@@ -89,8 +92,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/projects/save', [SaveController::class, 'save'])->name('project.save');
     Route::get('/saved-items', [SaveController::class, 'getSavedItems'])->name('saved.items');
 
-    
-    
+
+
     Route::get('/projects/{project}', [CommentController::class, 'showComments'])->name('project.comments');
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 

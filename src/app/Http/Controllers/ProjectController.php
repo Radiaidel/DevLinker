@@ -73,16 +73,12 @@ class ProjectController extends Controller
         // Enregistrer les documents
         if ($request->hasFile('document')) {
             foreach ($request->file('document') as $document) {
-                // Obtenir le nom de fichier original
                 $originalFileName = $document->getClientOriginalName();
 
-                // Remplacer les espaces par des tirets bas
                 $documentName = str_replace(' ', '_', $originalFileName);
 
-                // Stocker le document dans le répertoire approprié avec le nom modifié
                 $document->storeAs('public/documents', $documentName);
 
-                // Créer une entrée dans la table des médias pour le document
                 $media = new Media();
                 $media->project_id = $project->id;
                 $media->type = 'document';

@@ -102,7 +102,7 @@
 
 
     <div class="relative max-md:hidden gap-5 justify-between text-xs mr-12 max-md:flex">
-        <a href="{{ route('profile.show') }}" class="flex gap-4 items-center" onclick="toggleDropdown(event)">
+        <a  href="{{ route('profile.show', ['user' => auth()->id()]) }}"  class="flex gap-4 items-center" onclick="toggleDropdown(event)">
             <div class="shrink-0 self-stretch w-px h-20 border border-solid bg-zinc-100 border-zinc-100"></div>
             @if(Auth::user()->profile && Auth::user()->profile->profile_image)
             <img src="{{ asset('storage/profile/' . Auth::user()->profile->profile_image) }}" class="rounded-full shrink-0 self-stretch my-auto aspect-square w-[42px]" />
@@ -123,7 +123,7 @@
 
         <!-- Dropdown menu -->
         <div id="dropdownMenu" class="absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded shadow-lg z-10 hidden">
-            <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
+            <a href="{{ route('profile.show', ['user' => auth()->id()]) }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
             <a href="{{ route('preferences.show') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Preferences</a>
             <a onclick="fetchSavedItems()" class="cursor-pointer block px-4 py-2 text-gray-800 hover:bg-gray-200">Mes enregistrements</a>
 
@@ -186,49 +186,49 @@
     </script>
 
 
-<script>
-function fetchSavedItems() {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    fetch('/saved-items')
-        .then(response => response.json())
-        .then(data => {
-            var savedItemsList = document.getElementById('SavesList');
-            savedItemsList.innerHTML = ''; // Clear previous saved items
-            data.forEach(project => {
-                // Créez un élément de liste pour chaque projet
-                var listItem = document.createElement('li');
-                listItem.classList.add('flex', 'items-center', 'py-2');
-                
-                // Incluez dynamiquement la vue pour le projet
-                console.log(project);
-                fetch('/render-project-view', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken,
-                    },
-                   
-                    body: JSON.stringify({ project: project }),
-                })
-                .then(response => response.text())
-                .then(html => {
-                    listItem.innerHTML = html;
-                    savedItemsList.appendChild(listItem);
+    <script>
+        function fetchSavedItems() {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            fetch('/saved-items')
+                .then(response => response.json())
+                .then(data => {
+                    var savedItemsList = document.getElementById('SavesList');
+                    savedItemsList.innerHTML = ''; // Clear previous saved items
+                    data.forEach(project => {
+                        // Créez un élément de liste pour chaque projet
+                        var listItem = document.createElement('li');
+                        listItem.classList.add('flex', 'items-center', 'py-2');
+
+                        // Incluez dynamiquement la vue pour le projet
+                        console.log(project);
+                        fetch('/render-project-view', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': csrfToken,
+                                },
+
+                                body: JSON.stringify({
+                                    project: project
+                                }),
+                            })
+                            .then(response => response.text())
+                            .then(html => {
+                                listItem.innerHTML = html;
+                                savedItemsList.appendChild(listItem);
+                            })
+                            .catch(error => {
+                                console.error("Une erreur s'est produite lors de l'inclusion de la vue du projet:", error);
+                            });
+                    });
+                    const savedItemsPopup = document.getElementById('savedItemsPopup');
+                    savedItemsPopup.classList.remove('hidden');
                 })
                 .catch(error => {
-                    console.error("Une erreur s'est produite lors de l'inclusion de la vue du projet:", error);
+                    console.error("Une erreur s'est produite lors du traitement des données des projets:", error);
                 });
-            });
-            const savedItemsPopup = document.getElementById('savedItemsPopup');
-            savedItemsPopup.classList.remove('hidden');
-        })
-        .catch(error => {
-            console.error("Une erreur s'est produite lors du traitement des données des projets:", error);
-        });
-}
-
-
-</script>
+        }
+    </script>
 
 
 

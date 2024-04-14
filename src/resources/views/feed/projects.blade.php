@@ -33,7 +33,7 @@
 
             <div id="Drop_project_menu" class="text-md absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded shadow-lg z-10 hidden">
                 <a onclick="openLikesPopup('{{$project->id}}')" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">See Likes</a>
-                <a href="{{ route('profile.show') }}" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">View User Profile</a>
+                <a  href="{{ route('profile.show', ['user' => $project->user]) }}" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">View User Profile</a>
                 <a href="#" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">Report Project</a>
             </div>
         </div>
