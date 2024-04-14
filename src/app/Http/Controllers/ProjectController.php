@@ -12,7 +12,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
-
+    public function storerenderProjectView(Request $request)
+    {
+        $project = $request->input('project');
+        return view('feed.projects', compact('project'));
+    }
     public function store(Request $request)
     {
         // dd($request->all());

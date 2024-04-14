@@ -50,33 +50,64 @@
 
         <!-- pop up like -->
         <div id="likesPopup" class="z-20 fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center hidden">
-            <div class="bg-white rounded-lg p-8 max-w-md">
-                <h2 class="text-lg font-semibold mb-4">Likes</h2>
-                <ul id="likesList">
+            <div class="bg-white rounded-lg p-8 w-[40%] relative">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Likes (<span id="likesCount">0</span>)</h2>
+                    <button onclick="closeLikesPopup()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <ul id="likesList" >
                     <!-- Likes will be dynamically inserted here -->
                 </ul>
-                <button onclick="closeLikesPopup()" class="block w-full mt-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md">Close</button>
             </div>
         </div>
 
 
         <script>
             function openLikesPopup(projectId) {
-                var popup = document.getElementById('likesPopup');
-                popup.classList.remove('hidden');
+
 
                 // Make AJAX request to get likes
                 fetch('/projects/' + projectId + '/likes')
                     .then(response => response.json())
                     .then(data => {
                         var likesList = document.getElementById('likesList');
-                        likesList.innerHTML = ''; // Clear previous likes
+                        likesList.innerHTML = '';
+                        const likesCount = data.likes.length;
+                        document.getElementById('likesCount').textContent = likesCount;
+
                         data.likes.forEach(like => {
-                            var listItem = document.createElement('li');
-                            listItem.textContent = like.user.name;
+                            const listItem = document.createElement('li');
+                            listItem.classList.add('flex', 'items-center', 'py-2');
+
+                            const userImage = document.createElement('img');
+                            if (like.user.profile && like.user.profile.profile_image) {
+                                // Construction de l'URL de l'image de profil si elle est disponible
+                                userImage.src = '{{ asset("storage/profile/") }}' + '/' + like.user.profile.profile_image;
+                            } else {
+                                // Utilisation de l'image par défaut si aucune image de profil n'est disponible
+                                userImage.src = '{{ asset("storage/profile/unknown.png") }}';
+                            }
+                            userImage.alt = 'Profile Image';
+                            userImage.classList.add('w-10', 'h-10', 'rounded-full', 'mr-4');
+                            listItem.appendChild(userImage);
+
+                            const userName = document.createElement('span');
+                            userName.textContent = like.user.name; // Nom de l'utilisateur
+                            userName.classList.add('text-gray-800');
+                            listItem.appendChild(userName);
+
                             likesList.appendChild(listItem);
                         });
+                        var popup = document.getElementById('likesPopup');
+                popup.classList.remove('hidden');
+
                     });
+
+
             }
 
             function closeLikesPopup() {

@@ -132,13 +132,24 @@
     </div>
 
 
+
+
     <div id="savedItemsPopup" class="z-20 fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center hidden">
-            <div class="bg-white rounded-lg p-8 max-w-md">
-                <h2 class="text-lg font-semibold mb-4">Likes</h2>
-                <ul id="likesList">
-                </ul>
+        <div class="bg-white rounded-lg p-8 w-[40%] relative">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold">Saves </h2>
+                <button onclick="closeSavesPopup()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
+            <ul id="SavesList" class="mb-4">
+                <!-- Saved items will be dynamically inserted here -->
+            </ul>
+        </div>
     </div>
+
 
 
     <script>
@@ -148,7 +159,6 @@
 
         // Ajoutez un gestionnaire d'événements de clic au bouton de menu burger
         burgerButton.addEventListener('click', function() {
-            console.log("vylkuyfgver");
             // Vérifiez si l'élément du contenu du menu burger est actuellement masqué
             var isHidden = menuContent.classList.contains('hidden');
 
@@ -160,6 +170,12 @@
                 menuContent.classList.add('hidden');
             }
         });
+
+
+        function closeSavesPopup() {
+            var popup = document.getElementById('savedItemsPopup');
+            popup.classList.add('hidden');
+        }
     </script>
     <script>
         function toggleDropdown(event) {
@@ -170,28 +186,50 @@
     </script>
 
 
-
 <script>
-    function fetchSavedItems() {
-        fetch('/saved-items')
-            .then(response => response.json())
-            .then(data => {
-                const savedItemsPopup = document.getElementById('savedItemsPopup');
-                const likesList = document.getElementById('likesList');
-                likesList.innerHTML = ''; // Nettoyer le contenu précédent
-
-                // Ajouter chaque élément enregistré à la popup
-                data.forEach(item => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = item.project.id; // Remplacer avec la propriété appropriée de votre modèle
-                    likesList.appendChild(listItem);
+function fetchSavedItems() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    fetch('/saved-items')
+        .then(response => response.json())
+        .then(data => {
+            var savedItemsList = document.getElementById('SavesList');
+            savedItemsList.innerHTML = ''; // Clear previous saved items
+            data.forEach(project => {
+                // Créez un élément de liste pour chaque projet
+                var listItem = document.createElement('li');
+                listItem.classList.add('flex', 'items-center', 'py-2');
+                
+                // Incluez dynamiquement la vue pour le projet
+                console.log(project);
+                fetch('/render-project-view', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                   
+                    body: JSON.stringify({ project: project }),
+                })
+                .then(response => response.text())
+                .then(html => {
+                    listItem.innerHTML = html;
+                    savedItemsList.appendChild(listItem);
+                })
+                .catch(error => {
+                    console.error("Une erreur s'est produite lors de l'inclusion de la vue du projet:", error);
                 });
+            });
+            const savedItemsPopup = document.getElementById('savedItemsPopup');
+            savedItemsPopup.classList.remove('hidden');
+        })
+        .catch(error => {
+            console.error("Une erreur s'est produite lors du traitement des données des projets:", error);
+        });
+}
 
-                savedItemsPopup.classList.remove('hidden');
-            })
-            .catch(error => console.error('Erreur lors de la récupération des éléments enregistrés :', error));
-    }
+
 </script>
+
 
 
 </nav>

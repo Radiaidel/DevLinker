@@ -32,8 +32,10 @@ class LikeController extends Controller
         }
     }
     public function viewLikes(Project $project)
-{
-    $likes = $project->likes()->with('user')->get();
-    return response()->json(['likes' => $likes]);
-}
+    {
+
+        $likes = $project->likes()->with('user.profile')->get();
+    
+        return response()->json(['likes' => $likes]);
+    }
 }

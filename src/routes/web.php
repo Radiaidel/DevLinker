@@ -77,15 +77,20 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+    Route::post('/render-project-view', [ProjectController::class, 'storerenderProjectView']);
+
+
+
 
     Route::post('/projects/like', [LikeController::class, 'like'])->name('project.like');
     Route::get('/projects/{project}/likes', [LikeController::class, 'viewLikes'])->name('projects.likes');
 
 
     Route::post('/projects/save', [SaveController::class, 'save'])->name('project.save');
-    Route::get('/saved-items', [SaveController::class, 'getSavedItems']);
+    Route::get('/saved-items', [SaveController::class, 'getSavedItems'])->name('saved.items');
 
-
+    
+    
     Route::get('/projects/{project}', [CommentController::class, 'showComments'])->name('project.comments');
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
