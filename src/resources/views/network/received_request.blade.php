@@ -27,7 +27,6 @@
         </div>
       </div>
       <div class="flex gap-4 my-auto text-xs text-center uppercase whitespace-nowrap">
-        <!-- Formulaire pour accepter la demande d'ami -->
         <form action="{{ route('friend-requests.accept') }}" method="POST">
           @csrf
           <input type="hidden" value="{{$request->id}}" name="friendRequest_id">
@@ -36,7 +35,6 @@
           </button>
         </form>
 
-        <!-- Formulaire pour refuser la demande d'ami -->
         <form action="{{ route('friend-requests.decline') }}" method="POST">
           @csrf
           <input type="hidden" value="{{$request->id}}" name="friendRequest_id">
