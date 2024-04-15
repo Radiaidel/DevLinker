@@ -76,7 +76,7 @@
 
             </svg>
         </a>
-        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
+        <a href="{{ route('notifications') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
             <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -141,19 +141,20 @@
     </div>
 
 
+    <script src="{{ asset('js/project_script.js') }}" defer></script>
 
 
     <div id="savedItemsPopup" class="z-20 fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center hidden">
-        <div class="bg-white rounded-lg p-8 w-[40%] relative">
+        <div class="bg-white rounded-lg p-8 w-[40%] h-[95%] relative overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-lg font-semibold">Saves </h2>
-                <button onclick="closeSavesPopup()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                <button onclick="closeSavedItemsPopup()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
-            <ul id="SavesList" class="mb-4">
+            <ul id="SavesList" class=" ">
                 <!-- Saved items will be dynamically inserted here -->
             </ul>
         </div>
@@ -162,17 +163,13 @@
 
 
     <script>
-        // Sélectionnez l'élément du bouton de menu burger et l'élément du contenu du menu burger
         var burgerButton = document.getElementById('burger-menu');
         var menuContent = document.getElementById('burger-menu-content');
 
-        // Ajoutez un gestionnaire d'événements de clic au bouton de menu burger
         burgerButton.addEventListener('click', function() {
-            // Vérifiez si l'élément du contenu du menu burger est actuellement masqué
+
             var isHidden = menuContent.classList.contains('hidden');
 
-            // Si l'élément est masqué, montrez-le en supprimant la classe "hidden"
-            // Sinon, masquez-le en ajoutant la classe "hidden"
             if (isHidden) {
                 menuContent.classList.remove('hidden');
             } else {
@@ -199,37 +196,13 @@
         function fetchSavedItems() {
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             fetch('/saved-items')
-                .then(response => response.json())
+                .then(response => response.text())
                 .then(data => {
                     var savedItemsList = document.getElementById('SavesList');
-                    savedItemsList.innerHTML = ''; // Clear previous saved items
-                    data.forEach(project => {
-                        // Créez un élément de liste pour chaque projet
-                        var listItem = document.createElement('li');
-                        listItem.classList.add('flex', 'items-center', 'py-2');
+                    savedItemsList.innerHTML = ''; 
 
-                        // Incluez dynamiquement la vue pour le projet
-                        console.log(project);
-                        fetch('/render-project-view', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': csrfToken,
-                                },
+                    savedItemsList.innerHTML = data;
 
-                                body: JSON.stringify({
-                                    project: project
-                                }),
-                            })
-                            .then(response => response.text())
-                            .then(html => {
-                                listItem.innerHTML = html;
-                                savedItemsList.appendChild(listItem);
-                            })
-                            .catch(error => {
-                                console.error("Une erreur s'est produite lors de l'inclusion de la vue du projet:", error);
-                            });
-                    });
                     const savedItemsPopup = document.getElementById('savedItemsPopup');
                     savedItemsPopup.classList.remove('hidden');
                 })
@@ -237,8 +210,12 @@
                     console.error("Une erreur s'est produite lors du traitement des données des projets:", error);
                 });
         }
-    </script>
 
+        function closeSavedItemsPopup() {
+    const savedItemsPopup = document.getElementById('savedItemsPopup');
+    savedItemsPopup.classList.add('hidden');
+}
+    </script>
 
 
 </nav>

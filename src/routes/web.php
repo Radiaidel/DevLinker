@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
-    Route::post('/render-project-view', [ProjectController::class, 'storerenderProjectView']);
+    Route::post('/render-project-view', [ProjectController::class, 'renderProjectView']);
 
 
 
@@ -106,5 +106,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/friend-requests/decline', [NetworkController::class, 'decline'])->name('friend-requests.decline');
     Route::post('/friend-requests/cancel', [NetworkController::class, 'cancel'])->name('friend-requests.cancel');
     Route::post('/connect',  [NetworkController::class, 'sendConnectionRequest'])->name('connect.send');
+
+
+
+    Route::get('/notifications', function () {
+        return view('notification.index');
+    })->name('notifications');
 });
 // 

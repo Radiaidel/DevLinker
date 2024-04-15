@@ -4,8 +4,6 @@ function toggleDropdownProject(event) {
 }
 function openLikesPopup(projectId) {
 
-
-    // Make AJAX request to get likes
     fetch('/projects/' + projectId + '/likes')
         .then(response => response.json())
         .then(data => {
@@ -105,13 +103,10 @@ function toggleColors(svgElement, projectId) {
 
 function toggleSave(svgElement, projectId) {
 
-    // Création de l'objet XMLHttpRequest
     var xhr = new XMLHttpRequest();
 
-    // Préparation des données à envoyer
     var data = 'project_id=' + projectId;
 
-    // Configuration de la requête
     xhr.open('POST', '/projects/save', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.setRequestHeader('X-CSRF-TOKEN', document.head.querySelector('meta[name="csrf-token"]').content);
@@ -164,18 +159,20 @@ function CopyLink(projectId, event) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    var description = document.getElementById('description_{{$project->id}}');
-    var toggleBtn = description.nextElementSibling;
+    // var description = document.getElementById('description_{{$project->id}}');
+    // var toggleBtn = description.nextElementSibling;
 
-    toggleBtn.addEventListener('click', function () {
-        if (description.classList.contains('max-h-24')) {
-            description.classList.remove('max-h-24');
-            toggleBtn.textContent = 'réduire';
-        } else {
-            description.classList.add('max-h-24');
-            toggleBtn.textContent = '...lire la suite';
-        }
-    });
+    // toggleBtn.addEventListener('click', function () {
+    //     if (description.classList.contains('max-h-24')) {
+    //         description.classList.remove('max-h-24');
+    //         toggleBtn.textContent = 'réduire';
+    //     } else {
+    //         description.classList.add('max-h-24');
+    //         toggleBtn.textContent = '...lire la suite';
+    //     }
+    // });
+
+
     document.querySelectorAll('[id^="carousel_"]').forEach(function (carousel) {
         var mediaData = JSON.parse(carousel.getAttribute('data-media'));
         var totalMedia = mediaData.length;

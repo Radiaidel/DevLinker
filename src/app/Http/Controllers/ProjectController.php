@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Media;
+use App\Models\User;
+
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -12,11 +14,15 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
-    public function storerenderProjectView(Request $request)
+    public function renderProjectView(Request $request)
     {
-        $project = $request->input('project');
-        return view('feed.projects', compact('project'));
+        // Récupérer les données JSON du corps de la requête
+        $projects = $request->all();
+
+        // Passer les projets chargés à la vue
+        return view('feed.projects', compact('projects'));
     }
+
     public function store(Request $request)
     {
         // dd($request->all());
@@ -111,16 +117,13 @@ class ProjectController extends Controller
 
     public function search(Request $request)
     {
-        // Récupérez le terme de recherche de la requête
         $searchTerm = $request->input('search');
-    
-        // Recherchez les projets correspondant au terme de recherche dans le titre ou la description
+
         $projects = Project::where('title', 'like', "%$searchTerm%")
             ->orWhere('description', 'like', "%$searchTerm%")
             ->get();
-    
-        // Retournez les projets à la vue
+
+
         return view('feed.projects', compact('projects'));
     }
-    
 }

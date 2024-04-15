@@ -1,5 +1,5 @@
 <script src="{{ asset('js/project_script.js') }}" defer></script>
-
+@foreach($projects as $project)
 <div class="flex flex-col px-8 py-6 mt-10 w-full bg-white rounded-3xl shadow-lg text-neutral-900 max-md:px-5 max-md:max-w-full">
     <div class="flex gap-5 justify-between items-center w-full max-md:flex-wrap max-md:mr-1.5 max-md:max-w-full">
         <div class="flex gap-4 px-px">
@@ -273,3 +273,4 @@
 
     </div>
 </div>
+@endforeach

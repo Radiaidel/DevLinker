@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Save;
+use App\Models\Project;
+
 
 class SaveController extends Controller
 {
@@ -13,7 +15,7 @@ class SaveController extends Controller
         $userId = auth()->id(); // Récupérer l'ID de l'utilisateur authentifié
 
         $projectId = $request->input('project_id');
-        
+
         // Vérifier si l'entrée existe déjà dans la table save
         $save = Save::where('user_id', $userId)->where('project_id', $projectId)->first();
 
@@ -33,13 +35,12 @@ class SaveController extends Controller
 
     public function getSavedItems()
     {
-        $projects = Save::where('user_id', auth()->id())->with('project.user.profile')->get();
-        return response()->json($projects);
-        }
-    
-    
-    
-    
-    
-    
+        // Récupérer les projets sauvegardés par l'utilisateur authentifié avec les utilisateurs et les profils associés
+        $projects = Project::whereHas('saves', function ($query) {
+            $query->where('user_id', auth()->id());
+        })
+            ->with('user.profile')
+            ->get();
+        return view('feed.projects', compact('projects'));
+    }
 }

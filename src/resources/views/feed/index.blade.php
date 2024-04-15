@@ -74,10 +74,8 @@
             </div>
         </div>
         <div class="mt-6 w-full border border-solid bg-neutral-200 border-neutral-200 min-h-[2px] max-md:max-w-full"></div>
-        @foreach($projects as $project)
 
         @include('feed.projects')
-        @endforeach
     </div>
 
 
