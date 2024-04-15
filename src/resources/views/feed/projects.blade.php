@@ -33,7 +33,7 @@
 
             <div id="Drop_project_menu" class="text-md absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded shadow-lg z-10 hidden">
                 <a onclick="openLikesPopup('{{$project->id}}')" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">See Likes</a>
-                <a  href="{{ route('profile.show', ['user' => $project->user]) }}" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">View User Profile</a>
+                <a href="{{ route('profile.show', ['user' => $project->user]) }}" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">View User Profile</a>
                 <a href="#" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">Report Project</a>
             </div>
         </div>
@@ -59,7 +59,7 @@
                         </svg>
                     </button>
                 </div>
-                <ul id="likesList" >
+                <ul id="likesList">
                     <!-- Likes will be dynamically inserted here -->
                 </ul>
             </div>
@@ -103,7 +103,7 @@
                             likesList.appendChild(listItem);
                         });
                         var popup = document.getElementById('likesPopup');
-                popup.classList.remove('hidden');
+                        popup.classList.remove('hidden');
 
                     });
 
@@ -297,11 +297,8 @@
                             <path id="heartPath" d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z" fill="{{ $project->isLikedBy(auth()->user()) ? '#ff0000' : '#ffffff' }}" />
                         </g>
                     </svg>
-
-
-
                 </div>
-                <div class="justify-center py-1 my-auto">{{$project->likes()->count()}}</div>
+                <div class="justify-center py-1 my-auto like-count">{{$project->likes()->count()}}</div>
             </div>
 
             <script>
@@ -324,21 +321,28 @@
                     xhr.onload = function() {
                         if (xhr.status >= 200 && xhr.status < 300) {
                             var response = xhr.responseText;
-                            console.log(response);
+
+                            var likeCountElement = svgElement.closest('.flex').querySelector('.like-count');
+
                             if (response === 'like') {
                                 // Si la réponse est 'like', remplir le cœur en rouge
+                                likeCountElement.innerText = parseInt(likeCountElement.innerText) + 1;
                                 pathElement.setAttribute('fill', '#ff0000');
                                 svgElement.setAttribute('stroke', '#ff0000');
                             } else if (response === 'dislike') {
                                 // Si la réponse est 'dislike', remplir le cœur en blanc
+                                likeCountElement.innerText = parseInt(likeCountElement.innerText) - 1;
                                 pathElement.setAttribute('fill', '#ffffff');
                                 svgElement.setAttribute('stroke', '#000000');
                             } else {
                                 console.error('Réponse inattendue du serveur :', response);
                             }
+
                         } else {
                             console.error('Erreur lors de la requête :', xhr.statusText);
                         }
+
+
                     };
 
                     // Gestion des erreurs de la requête

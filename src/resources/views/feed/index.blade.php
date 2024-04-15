@@ -108,7 +108,7 @@
                     @if(Auth::user()->profile && Auth::user()->profile->profile_image)
                     <img src="{{ asset('storage/profile/' . Auth::user()->profile->profile_image) }}" class="max-w-full h-auto rounded-full border-2 border-white w-[100px]" />
                     @else
-                    <img src="{{ asset('storage/profile/unknown.png') }}" class="max-w-full h-auto rounded-full border-2 border-white" />
+                    <img src="{{ asset('storage/profile/unknown.png') }}" class="max-w-full h-auto rounded-full border-2 border-white w-[100px]" />
                     @endif
                 </div>
             </div>

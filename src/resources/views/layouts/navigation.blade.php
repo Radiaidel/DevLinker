@@ -2,8 +2,8 @@
     <div class="flex items-center px-5 py-4 bg-white">
         <img src="{{ asset('storage/images/devlinker_logo.png') }}" class="w-36" />
     </div>
-    <div class="max-md:hidden flex gap-1.5 items-center justify-center">
-        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
+    <div class="max-md:hidden flex  gap-1.5 items-center">
+        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex flex-col justify-center items-center {{ request()->routeIs('feed') ? 'border-b border-sky-800 border-b-2': '' }}">
             <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -11,35 +11,41 @@
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
 
                 <g id="SVGRepo_iconCarrier">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M21.4498 10.275L11.9998 3.1875L2.5498 10.275L2.9998 11.625H3.7498V20.25H20.2498V11.625H20.9998L21.4498 10.275ZM5.2498 18.75V10.125L11.9998 5.0625L18.7498 10.125V18.75H14.9999V14.3333L14.2499 13.5833H9.74988L8.99988 14.3333V18.75H5.2498ZM10.4999 18.75H13.4999V15.0833H10.4999V18.75Z" fill="#080341" />
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M21.4498 10.275L11.9998 3.1875L2.5498 10.275L2.9998 11.625H3.7498V20.25H20.2498V11.625H20.9998L21.4498 10.275ZM5.2498 18.75V10.125L11.9998 5.0625L18.7498 10.125V18.75H14.9999V14.3333L14.2499 13.5833H9.74988L8.99988 14.3333V18.75H5.2498ZM10.4999 18.75H13.4999V15.0833H10.4999V18.75Z" fill=" {{ request()->routeIs('feed') ? '#075985' : '#080341' }}" />
                 </g>
 
             </svg>
+            <strong class="uppercase text-xs {{ request()->routeIs('feed') ? 'text-sky-800' : 'hidden' }}">
+                home
+            </strong>
         </a>
-        <a href="{{ route('network') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
-            <svg fill="#000000" width="30px" height="30px" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg">
+        <a href="{{ route('network') }}" class="shrink-0 aspect-[1.12] w-[90px] flex flex-col justify-center items-center {{ request()->routeIs('network') ? 'border-b border-sky-800 border-b-2' : '' }}">
+            <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
 
                 <g id="SVGRepo_iconCarrier">
+                    <g clip-path="url(#clip0_1251_98416)">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M9 0C5.96243 0 3.5 2.46243 3.5 5.5C3.5 8.53757 5.96243 11 9 11C12.0376 11 14.5 8.53757 14.5 5.5C14.5 2.46243 12.0376 0 9 0ZM5.5 5.5C5.5 3.567 7.067 2 9 2C10.933 2 12.5 3.567 12.5 5.5C12.5 7.433 10.933 9 9 9C7.067 9 5.5 7.433 5.5 5.5Z" fill=" {{ request()->routeIs('network') ? '#075985' : '#080341' }}" />
+                        <path d="M15.5 0C14.9477 0 14.5 0.447715 14.5 1C14.5 1.55228 14.9477 2 15.5 2C17.433 2 19 3.567 19 5.5C19 7.433 17.433 9 15.5 9C14.9477 9 14.5 9.44771 14.5 10C14.5 10.5523 14.9477 11 15.5 11C18.5376 11 21 8.53757 21 5.5C21 2.46243 18.5376 0 15.5 0Z" fill=" {{ request()->routeIs('network') ? '#075985' : '#080341' }}" />
+                        <path d="M19.0837 14.0157C19.3048 13.5096 19.8943 13.2786 20.4004 13.4997C22.5174 14.4246 24 16.538 24 19V21C24 21.5523 23.5523 22 23 22C22.4477 22 22 21.5523 22 21V19C22 17.3613 21.0145 15.9505 19.5996 15.3324C19.0935 15.1113 18.8625 14.5217 19.0837 14.0157Z" fill=" {{ request()->routeIs('network') ? '#075985' : '#080341' }}" />
+                        <path d="M6 13C2.68629 13 0 15.6863 0 19V21C0 21.5523 0.447715 22 1 22C1.55228 22 2 21.5523 2 21V19C2 16.7909 3.79086 15 6 15H12C14.2091 15 16 16.7909 16 19V21C16 21.5523 16.4477 22 17 22C17.5523 22 18 21.5523 18 21V19C18 15.6863 15.3137 13 12 13H6Z" fill=" {{ request()->routeIs('network') ? '#075985' : '#080341' }}" />
+                    </g>
                     <defs>
-                        <style>
-                            .cls-1 {
-                                fill: none;
-                            }
-                        </style>
+                        <clipPath id="clip0_1251_98416">
+                            <rect width="24" height="24" fill="white" />
+                        </clipPath>
                     </defs>
-                    <path d="M25,10H7a3.0033,3.0033,0,0,0-3,3v6a2.0023,2.0023,0,0,0,2,2v7a2.0023,2.0023,0,0,0,2,2h4a2.0023,2.0023,0,0,0,2-2V16H12V28H8V19H6V13a1.0009,1.0009,0,0,1,1-1H25a1.0009,1.0009,0,0,1,1,1v6H24v9H20V16H18V28a2.0023,2.0023,0,0,0,2,2h4a2.0023,2.0023,0,0,0,2-2V21a2.0023,2.0023,0,0,0,2-2V13A3.0033,3.0033,0,0,0,25,10Z" transform="translate(0 0)" />
-                    <path d="M10,9a4,4,0,1,1,4-4A4.0042,4.0042,0,0,1,10,9Zm0-6a2,2,0,1,0,2,2A2.0023,2.0023,0,0,0,10,3Z" transform="translate(0 0)" />
-                    <path d="M22,9a4,4,0,1,1,4-4A4.0042,4.0042,0,0,1,22,9Zm0-6a2,2,0,1,0,2,2A2.0023,2.0023,0,0,0,22,3Z" transform="translate(0 0)" />
-                    <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32" />
                 </g>
 
             </svg>
+            <strong class="uppercase text-xs {{ request()->routeIs('network') ? 'text-sky-800' : 'hidden' }}">
+                network
+            </strong>
         </a>
-        <a href="{{ route('explore') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
+        <a href="{{ route('explore') }}" class="shrink-0 aspect-[1.12] w-[90px] flex flex-col justify-center items-center {{ request()->routeIs('explore') ? 'border-b border-sky-800 border-b-2' : '' }}">
             <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -47,13 +53,16 @@
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
 
                 <g id="SVGRepo_iconCarrier">
-                    <path d="M9.87868 9.87869L15.5355 8.46448L14.1213 14.1213L8.46446 15.5355L9.87868 9.87869Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M9.87868 9.87869L15.5355 8.46448L14.1213 14.1213L8.46446 15.5355L9.87868 9.87869Z" stroke=" {{ request()->routeIs('explore') ? '#075985' : '#080341' }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke=" {{ request()->routeIs('explore') ? '#075985' : '#080341' }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </g>
 
             </svg>
+            <strong class="uppercase text-xs {{ request()->routeIs('explore') ? 'text-sky-800' : 'hidden' }}">
+                explore
+            </strong>
         </a>
-        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center">
+        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center ">
             <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -102,7 +111,7 @@
 
 
     <div class="relative max-md:hidden gap-5 justify-between text-xs mr-12 max-md:flex">
-        <a  href="{{ route('profile.show', ['user' => auth()->id()]) }}"  class="flex gap-4 items-center" onclick="toggleDropdown(event)">
+        <a href="{{ route('profile.show', ['user' => auth()->id()]) }}" class="flex gap-4 items-center" onclick="toggleDropdown(event)">
             <div class="shrink-0 self-stretch w-px h-20 border border-solid bg-zinc-100 border-zinc-100"></div>
             @if(Auth::user()->profile && Auth::user()->profile->profile_image)
             <img src="{{ asset('storage/profile/' . Auth::user()->profile->profile_image) }}" class="rounded-full shrink-0 self-stretch my-auto aspect-square w-[42px]" />
