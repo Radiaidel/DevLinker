@@ -44,6 +44,18 @@
 
         </footer>
     </div>
+
+
+    <script src="{{asset('js/app.js')}}"></script>
+<script>
+
+    window.User = {
+    id: '{{optional(auth()->user())->id}}'
+    }
+</script>
+
+
+
 </body>
 
 </html>

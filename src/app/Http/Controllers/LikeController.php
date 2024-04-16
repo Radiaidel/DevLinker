@@ -7,6 +7,7 @@ use App\Models\Like;
 
 use App\Models\Project;
 use App\Models\Notification;
+use App\Notifications\NotificationProject;
 
 class LikeController extends Controller
 {
@@ -16,6 +17,10 @@ class LikeController extends Controller
         $userId = auth()->id(); // Récupérer l'ID de l'utilisateur authentifié
 
         $projectId = $request->input('project_id');
+
+        $project = Project::findOrFail($projectId);
+
+
         // Vérifier si l'entrée existe déjà dans la table like
         $like = Like::where('user_id', $userId)->where('project_id', $projectId)->first();
 
@@ -30,12 +35,8 @@ class LikeController extends Controller
                 'project_id' => $projectId,
             ]);
 
-            $notification = new Notification([
-                'type' => "like",
-                'project_id' => $projectId,
-                'user_id' => $userId,
-                'data' => "liked your project"// Vous pouvez inclure d'autres données pertinentes ici
-            ]);
+            $project->user->notify(new NotificationProject($projectId, $userId, 'like'));
+        
 
 
             return response('like');
@@ -45,7 +46,7 @@ class LikeController extends Controller
     {
 
         $likes = $project->likes()->with('user.profile')->get();
-    
+
         return response()->json(['likes' => $likes]);
     }
 }
