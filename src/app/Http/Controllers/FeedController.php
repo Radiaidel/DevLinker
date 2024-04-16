@@ -13,28 +13,33 @@ class FeedController extends Controller
 {
     public function index()
     {
-        $projects = Project::inRandomOrder()->get();
         $user = Auth::user();
 
+        // Récupérer les IDs des amis de l'utilisateur
+        $friendIds = $user->relatedUserIds();
+        $pendingFriends = $user->PendingRequests();
+        // Récupérer les projets des amis de l'utilisateur, triés par la dernière date de mise à jour
+        $projects = Project::whereIn('user_id', $friendIds)
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10);
 
-        $relatedUserIds = $user->relatedUserIds();
-
-        // Récupérer les utilisateurs qui ne sont pas dans la table friendrequests avec l'utilisateur authentifié
-        $suggestedUsers = User::whereNotIn('id', $relatedUserIds)
-            ->where('id', '!=', $user->id) 
+        // Récupérer les utilisateurs suggérés (non amis de l'utilisateur et sans demande d'ami en attente)
+        $suggestedUsers = User::whereNotIn('id', $friendIds->merge([$user->id]))
+            ->whereNotIn('id', $pendingFriends->merge([$user->id]))
             ->limit(4)
             ->get();
 
-        // Passez les projets à la vue
-        return view('feed.index', compact('projects' , 'suggestedUsers'));
+        // Passez les projets et les utilisateurs suggérés à la vue
+        return view('feed.index', compact('projects', 'suggestedUsers'));
     }
 
 
 
     public function explore()
     {
-        $projects = Project::inRandomOrder()->get();
-        
+        $projects = Project::orderBy('updated_at', 'desc')
+        ->get();
+
         return view('explore.index', compact('projects'));
     }
 }

@@ -78,10 +78,21 @@ class User extends Authenticatable
 
     public function relatedUserIds()
     {
-        // Récupérer les IDs des utilisateurs ayant une relation avec l'utilisateur authentifié dans la table friendrequests
-        $relatedUserIds = $this->sentFriendRequests()->pluck('receiver_id')
-            ->merge($this->receivedFriendRequests()->pluck('sender_id'));
-
-        return $relatedUserIds;
+        $acceptedFriendIds = $this->sentFriendRequests()->where('status', 'accepted')->pluck('receiver_id')
+            ->merge($this->receivedFriendRequests()->where('status', 'accepted')->pluck('sender_id'));
+    
+        return $acceptedFriendIds;
     }
+
+    public function PendingRequests()
+    {
+        return   $this->sentFriendRequests()->where('status', 'pending')->pluck('receiver_id')
+        ->merge($this->receivedFriendRequests()->where('status', 'pending')->pluck('sender_id'));
+
+
+         
+    }
+
+
+    
 }

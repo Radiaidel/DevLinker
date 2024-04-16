@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Like;
-use App\Models\Project;
 
+use App\Models\Project;
+use App\Models\Notification;
 
 class LikeController extends Controller
 {
@@ -28,6 +29,15 @@ class LikeController extends Controller
                 'user_id' => $userId,
                 'project_id' => $projectId,
             ]);
+
+            $notification = new Notification([
+                'type' => "like",
+                'project_id' => $projectId,
+                'user_id' => $userId,
+                'data' => "liked your project"// Vous pouvez inclure d'autres données pertinentes ici
+            ]);
+
+
             return response('like');
         }
     }

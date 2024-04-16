@@ -27,14 +27,14 @@ class NetworkController extends Controller
             ->limit(4)
             ->get();
 
+        $friendIds = $user->relatedUserIds();
+        $pendingFriends = $user->PendingRequests();
 
-        $relatedUserIds = $user->relatedUserIds();
-
-        // Récupérer les utilisateurs qui ne sont pas dans la table friendrequests avec l'utilisateur authentifié
-        $suggestedUsers = User::whereNotIn('id', $relatedUserIds)
-            ->where('id', '!=', $user->id)
+        $suggestedUsers = User::whereNotIn('id', $friendIds->merge([$user->id]))
+            ->whereNotIn('id', $pendingFriends->merge([$user->id]))
             ->limit(4)
             ->get();
+
 
         return view('network.index', compact('sentRequests', 'receivedRequests', 'acceptedRequests', 'suggestedUsers'));
     }
@@ -79,15 +79,15 @@ class NetworkController extends Controller
         // Récupérer l'ID de l'utilisateur suggéré à connecter
         $suggestedUserId = $request->input('user_id');
 
-  
-            FriendRequest::create([
-                'sender_id' => $user->id,
-                'receiver_id' => $suggestedUserId,
-                'status' => 'pending',
-            ]);
-        
+
+        FriendRequest::create([
+            'sender_id' => $user->id,
+            'receiver_id' => $suggestedUserId,
+            'status' => 'pending',
+        ]);
+
 
         // Rediriger l'utilisateur vers la page précédente (ou une autre page de votre choix)
         return back()->with('success', 'Votre invitation a été envoyée avec succès');
-        }
+    }
 }
