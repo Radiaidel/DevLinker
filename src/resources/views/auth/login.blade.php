@@ -43,7 +43,7 @@
                                 <input type="checkbox" id="rememberMe" name="rememberMe" class="h-4 w-4 text-indigo-600 border-gray-300 rounded">
                                 <label for="rememberMe" class="ml-2 text-gray-700">Remember me</label>
                             </div>
-                            <a href="#" class="my-auto font-medium text-rose-500">Forgot password?</a>
+                            <a id="forgot-password-link" class="cursor-pointer my-auto font-medium text-rose-500">Forgot password?</a>
                         </div>
 
                         <button type="submit" class="justify-center px-4 py-4 mt-10 text-xl text-center text-white bg-indigo-500 rounded-xl max-md:mt-10 w-full">Log in</button>
@@ -75,4 +75,7 @@
         </div>
     </div>
 </div>
+
+
+@include('auth.forgot_password')
 @endsection

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\NetworkController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\SaveController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -37,6 +38,12 @@ Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authe
 // Register
 Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('/register', [AuthController::class, 'store'])->name('auth.store');
+
+
+Route::post('/reset-password', [PasswordResetController::class, 'sendResetCode'])->name('password.reset.code');
+Route::post('/update-password', [PasswordResetController::class, 'updatePassword'])->name('update.password');
+
+
 
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
