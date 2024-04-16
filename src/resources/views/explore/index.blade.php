@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="flex justify-center mt-6">
- 
 
-<div class='max-w-md mx-auto w-[60%]'>
+
+    <div class='max-w-md mx-auto w-[60%]'>
         <div class="relative flex items-center w-full h-12 rounded-full shadow-md focus-within:shadow-lg bg-white overflow-hidden">
             <div class="grid place-items-center h-full w-12 text-gray-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -12,7 +12,7 @@
                 </svg>
             </div>
 
-            <input class="peer h-full w-full outline-none text-sm text-gray-700 pr-2" type="text" id="searchInput"  placeholder="Search something.." />
+            <input class="peer h-full w-full outline-none text-sm text-gray-700 pr-2" type="text" id="searchInput" placeholder="Search something.." />
         </div>
     </div>
 </div>

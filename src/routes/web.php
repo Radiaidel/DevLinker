@@ -12,7 +12,7 @@ use App\Http\Controllers\PreferencesController;
 use App\Http\Controllers\ProjectController;
 
 use App\Http\Controllers\Auth\EmailVerificationController;
-
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +106,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/friend-requests/decline', [NetworkController::class, 'decline'])->name('friend-requests.decline');
     Route::post('/friend-requests/cancel', [NetworkController::class, 'cancel'])->name('friend-requests.cancel');
     Route::post('/connect',  [NetworkController::class, 'sendConnectionRequest'])->name('connect.send');
+
+
+
+
+    Route::get('/search-users', [UserController::class, 'searchUsers']);
 
 
 

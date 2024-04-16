@@ -91,8 +91,8 @@
             </svg>
             <strong class="uppercase text-xs  absolute bottom-2  {{ request()->routeIs('notifications') ? 'text-sky-800' : 'hidden' }}">
                 notification
-                {{auth()->user()->unreadNotifications->count()}}
             </strong>
+            {{auth()->user()->unreadNotifications->count()}}
         </a>
 
     </div>
