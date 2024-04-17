@@ -68,7 +68,6 @@ function toggleColors(svgElement, projectId) {
     xhr.onload = function() {
         if (xhr.status >= 200 && xhr.status < 300) {
             var response = xhr.responseText;
-
             var likeCountElement = svgElement.closest('.flex').querySelector('.like-count');
 
             if (response === 'like') {

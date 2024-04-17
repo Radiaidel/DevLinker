@@ -77,8 +77,8 @@
             </svg>
          
         </a>
-        <a href="{{ route('notifications') }}" class="shrink-0 aspect-[1.12] w-[90px] flex flex-col justify-center items-center {{ request()->routeIs('notifications') ? 'border-b border-sky-800 border-b-2' : '' }}">
-            <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <a href="{{ route('notifications') }}" class="relative shrink-0 aspect-[1.12] w-[90px] flex flex-col justify-center items-center {{ request()->routeIs('notifications') ? 'border-b border-sky-800 border-b-2' : '' }}">
+            <svg  width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -89,10 +89,10 @@
                 </g>
 
             </svg>
+            <span id="notif_count" class="absolute bg-red-600 text-white h-5 w-5 text-center top-4 right-6 text-sm rounded-full">{{auth()->user()->unreadNotifications->count()}}</span>  
             <strong class="uppercase text-xs  absolute bottom-2  {{ request()->routeIs('notifications') ? 'text-sky-800' : 'hidden' }}">
                 notification
             </strong>
-            {{auth()->user()->unreadNotifications->count()}}
         </a>
 
     </div>

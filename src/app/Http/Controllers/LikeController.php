@@ -27,6 +27,14 @@ class LikeController extends Controller
         if ($like) {
             // Si l'entrée existe, supprimer la ligne de la table like (dislike)
             $like->delete();
+
+            $notification = Notification::whereJsonContains('data', ['project_id' => $projectId, 'user_id' => $userId, 'type' => 'like'])
+                                 ->first();
+
+            if ($notification) {
+                $notification->delete();
+            }
+
             return response('dislike');
         } else {
             // Si l'entrée n'existe pas, créer une nouvelle entrée dans la table like (like)
@@ -36,7 +44,6 @@ class LikeController extends Controller
             ]);
 
             $project->user->notify(new NotificationProject($projectId, $userId, 'like'));
-        
 
 
             return response('like');
