@@ -31,8 +31,22 @@ window.Echo = new Echo({
     enabledTransports: ['ws', 'wss'],
 });
 
+
+
+window.Echo.private('notifications.' + User.id)
+    .listen('.notification.deleted', (data) => {
+        document.getElementById('notif_count').innerHTML = parseInt(document.getElementById('notif_count').innerHTML) - 1;
+
+    });
+
+
 window.Echo.private('App.Models.User.' + User.id)
     .notification((notification) => {
-
         document.getElementById('notif_count').innerHTML = parseInt(document.getElementById('notif_count').innerHTML) + 1;
-    })
+    });
+
+
+
+
+
+

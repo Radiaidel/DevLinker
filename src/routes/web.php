@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\NetworkController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\SaveController;
 use Illuminate\Support\Facades\Route;
@@ -120,9 +121,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/search-users', [UserController::class, 'searchUsers']);
 
 
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
 
-    Route::get('/notifications', function () {
-        return view('notification.index');
-    })->name('notifications');
 });
 // 

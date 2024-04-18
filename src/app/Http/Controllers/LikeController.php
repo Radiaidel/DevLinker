@@ -8,6 +8,7 @@ use App\Models\Like;
 use App\Models\Project;
 use App\Models\Notification;
 use App\Notifications\NotificationProject;
+use App\Events\NotificationDeleted;
 
 class LikeController extends Controller
 {
@@ -29,10 +30,11 @@ class LikeController extends Controller
             $like->delete();
 
             $notification = Notification::whereJsonContains('data', ['project_id' => $projectId, 'user_id' => $userId, 'type' => 'like'])
-                                 ->first();
+                ->first();
 
             if ($notification) {
                 $notification->delete();
+                event(new NotificationDeleted($project->user->id));
             }
 
             return response('dislike');

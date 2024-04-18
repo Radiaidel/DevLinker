@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\BroadcastsPrivateChannel;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 
 class Notification extends Model
 {
-    use HasFactory;
+    use HasFactory , BroadcastsEvents ;
     protected $fillable = [
         'type', 'project_id', 'user_id', 'data'
     ];
@@ -36,4 +38,5 @@ class Notification extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 }

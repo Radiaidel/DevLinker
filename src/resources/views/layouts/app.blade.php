@@ -34,25 +34,23 @@
         </div>
         @endif
 
-  
+
 
         <div>
             @yield('content')
         </div>
         <footer>
-        @include('layouts.footer')
+            @include('layouts.footer')
 
         </footer>
     </div>
 
 
-<script>
-
-    window.User = {
-    id: '{{optional(auth()->user())->id}}'
-    }
-</script>
-
+    <script>
+        window.User = {
+            id: '{{optional(auth()->user())->id}}'
+        }
+    </script>
 
 </body>
 

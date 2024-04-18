@@ -156,7 +156,7 @@
 
     <div class="mt-6 max-md:max-w-full">
         <div class="flex gap-5 max-md:flex-col max-md:gap-0">
-            @foreach($user->projects as $prj)
+            @foreach($user->projects->take(4)  as $prj)
             <div class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
                 <div class="flex flex-col grow leading-[150%] text-neutral-900 max-md:mt-5">
 
