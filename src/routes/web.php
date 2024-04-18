@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PasswordResetController;
@@ -126,6 +127,6 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/chat', [ConversationController::class, 'index'])->name('chat');
-
+    Route::get('/messages/{conversation}', [MessageController::class , 'getMessages']);
 });
 // 
