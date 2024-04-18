@@ -12,7 +12,7 @@
                         </svg>
                     </div>
 
-                    <input id="search-input" class="peer h-full w-full outline-none text-sm text-gray-700 pr-2" type="text" placeholder="Search something.." />
+                    <input id="search-input" class="peer h-full w-full outline-none text-sm text-gray-700 pr-2" type="text" placeholder="Search users.." />
                 </div>
                 <div id="searchResultsContainer"></div>
             </div>
@@ -98,7 +98,7 @@
                 users.forEach(function(user) {
                     var userCard = document.createElement('a');
                     userCard.href = "{{ route('profile.show', ['user' => ':userId']) }}".replace(':userId', user.id); // Remplacez :userId par l'ID de l'utilisateur
-                                                            userCard.classList.add('flex', 'gap-5', 'justify-between', 'px-3.5', 'py-1.5', 'mt-3', 'w-full', 'whitespace-nowrap', 'bg-white', 'rounded-md', 'border', 'border-solid', 'border-zinc-100');
+                    userCard.classList.add('flex', 'gap-5', 'justify-between', 'px-3.5', 'py-1.5', 'mt-3', 'w-full', 'whitespace-nowrap', 'bg-white', 'rounded-md', 'border', 'border-solid', 'border-zinc-100');
                     userCard.innerHTML = `
                             <div class="flex gap-2.5 text-xs text-neutral-900">
                             <img src="{{asset('storage/profile/${user.profile.profile_image}')}}" alt="${user.name}" class="shrink-0 aspect-square w-12 rounded-full" />

@@ -39,10 +39,7 @@
         <div>
             @yield('content')
         </div>
-        <footer>
-            @include('layouts.footer')
-
-        </footer>
+  
     </div>
 
 

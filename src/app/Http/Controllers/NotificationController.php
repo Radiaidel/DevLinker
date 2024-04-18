@@ -12,10 +12,17 @@ class NotificationController extends Controller
     public function index()
     {
         $user = Auth::user();
-
-        // Récupérer les notifications associées à l'utilisateur authentifié
-        $notifications = Notification::where('notifiable_id', $user->id)->with('user')->get();
-            // dd($notifications);
-        return view('notification.index', compact('notifications'));
+    
+        $unreadNotifications = $user->unreadNotifications;
+        $readNotifications = $user->readNotifications;
+    
+        // Marquer les notifications non lues comme lues
+        $unreadNotifications->markAsRead();
+    
+        return view('notification.index', [
+            'unreadNotifications' => $unreadNotifications,
+            'readNotifications' => $readNotifications
+        ]);
     }
+    
 }

@@ -46,6 +46,7 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
+                        console.log( xhr.responseText);
                         // Manipulez les données récupérées (projets) et affichez-les dans la vue
                         document.getElementById('projectsContainer').innerHTML = xhr.responseText;
                     } else {

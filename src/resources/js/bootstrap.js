@@ -35,8 +35,13 @@ window.Echo = new Echo({
 
 window.Echo.private('notifications.' + User.id)
     .listen('.notification.deleted', (data) => {
-        document.getElementById('notif_count').innerHTML = parseInt(document.getElementById('notif_count').innerHTML) - 1;
-
+        let notifCountElement = document.getElementById('notif_count');
+        if (notifCountElement) {
+            let notifCount = parseInt(notifCountElement.innerHTML);
+            if (!isNaN(notifCount) && notifCount >= 1) {
+                notifCountElement.innerHTML = notifCount - 1;
+            }
+        }
     });
 
 
