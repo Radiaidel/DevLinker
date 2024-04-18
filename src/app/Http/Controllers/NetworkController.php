@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\FriendRequest;
 use App\Models\User;
+use App\Models\Conversation;
+
 
 class NetworkController extends Controller
 {
@@ -43,6 +45,10 @@ class NetworkController extends Controller
         $friendRequest = FriendRequest::findOrFail($request->input('friendRequest_id'));
 
         $friendRequest->update(['status' => 'accepted']);
+        $conversation = new Conversation();
+        $conversation->user_id = auth()->id();
+        $conversation->friend_id = $friendRequest->sender_id;
+        $conversation->save();
 
         return redirect()->back()->with('success', 'Friend request accepted successfully.');
     }
@@ -52,6 +58,10 @@ class NetworkController extends Controller
         $friendRequest = FriendRequest::findOrFail($request->input('friendRequest_id'));
 
         $friendRequest->update(['status' => 'declined']);
+
+        Conversation::where('user_id', auth()->id())
+        ->where('friend_id', $friendRequest->sender_id)
+        ->delete();
 
         return redirect()->back()->with('success', 'Friend request declined successfully.');
     }

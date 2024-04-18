@@ -75,7 +75,14 @@
         </div>
         <div class="mt-6 w-full border border-solid bg-neutral-200 border-neutral-200 min-h-[2px] max-md:max-w-full"></div>
 
-        @include('feed.projects')
+
+
+        <div id="projects-container">
+
+            @include('feed.projects')
+            
+        </div>
+        <div id="loading" class="hidden">..</div>
     </div>
 
 
@@ -124,7 +131,7 @@
 
             </div>
         </div>
-       @include('network.suggested_users')
+        @include('network.suggested_users')
     </div>
     @include('feed.add-project')
 

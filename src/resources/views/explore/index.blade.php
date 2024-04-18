@@ -16,11 +16,13 @@
         </div>
     </div>
 </div>
-<div class="grid grid-cols-3 gap-4 auto-cols-auto items-start w-[80%] mx-auto" id="projectsContainer">
 
 
-    @include('feed.projects')
-</div>
+<div id="projects-container" class="grid grid-cols-2 md:grid-cols-3 gap-4 items-start p-12">
+            @include('feed.projects')
+    </div>
+    <div id="loading" class="hidden">..</div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -46,9 +48,9 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
-                        console.log( xhr.responseText);
+                        console.log(xhr.responseText);
                         // Manipulez les données récupérées (projets) et affichez-les dans la vue
-                        document.getElementById('projectsContainer').innerHTML = xhr.responseText;
+                        document.getElementById('projects-container').innerHTML = xhr.responseText;
                     } else {
                         console.error('Request failed with status:', xhr.status);
                     }
