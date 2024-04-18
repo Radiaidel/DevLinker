@@ -1,4 +1,5 @@
 <script src="{{ asset('js/project_script.js') }}" defer></script>
+<div id="projects-container">
 @foreach($projects as $project)
 <div class="flex flex-col px-8 py-6 mt-10 w-full bg-white rounded-3xl shadow-lg text-neutral-900 max-md:px-5 max-md:max-w-full">
     <div class="flex gap-5 justify-between items-center w-full max-md:flex-wrap max-md:mr-1.5 max-md:max-w-full">
@@ -274,3 +275,49 @@
     </div>
 </div>
 @endforeach
+</div>
+<div id="loading" class="hidden">..</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var page = 1; 
+    var isLoading = false;
+
+    window.addEventListener('scroll', function() {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+            if (!isLoading) {
+                loadMoreProjects(++page);
+            }
+        }
+    });
+
+    function loadMoreProjects(page) {
+        isLoading = true;
+        document.getElementById('loading').classList.remove('hidden');
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/load-more-projects?page=' + page, true);
+
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                var data = xhr.responseText;
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('projects-container').insertAdjacentHTML('beforeend', data);
+                isLoading = false;
+            } else {
+                console.error('Error loading projects: ' + xhr.statusText);
+                isLoading = false;
+                document.getElementById('loading').classList.add('hidden');
+            }
+        };
+
+        xhr.onerror = function() {
+            console.error('Error loading projects');
+            isLoading = false;
+            document.getElementById('loading').classList.add('hidden');
+        };
+
+        xhr.send();
+    }
+});
+
+</script>

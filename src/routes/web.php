@@ -53,7 +53,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
 
     Route::get('/feed', [FeedController::class, 'index'])->name('feed');
-
+    Route::get('/load-more-projects', [FeedController::class, 'loadMoreProjects']);
 
 
     Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');

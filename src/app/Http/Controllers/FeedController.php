@@ -19,9 +19,7 @@ class FeedController extends Controller
         $friendIds = $user->relatedUserIds();
         $pendingFriends = $user->PendingRequests();
         // Récupérer les projets des amis de l'utilisateur, triés par la dernière date de mise à jour
-        $projects = Project::whereIn('user_id', $friendIds)
-            ->orderBy('updated_at', 'desc')
-            ->paginate(10);
+        $projects = Project::orderBy('updated_at', 'desc')->paginate(2);
 
         // Récupérer les utilisateurs suggérés (non amis de l'utilisateur et sans demande d'ami en attente)
         $suggestedUsers = User::whereNotIn('id', $friendIds->merge([$user->id]))
@@ -38,8 +36,17 @@ class FeedController extends Controller
     public function explore()
     {
         $projects = Project::orderBy('updated_at', 'desc')
-        ->get();
+        ->paginate(2);
 
         return view('explore.index', compact('projects'));
     }
+
+    public function loadMoreProjects(Request $request)
+{
+    // Récupérer les projets suivants
+    $projects = Project::orderBy('updated_at', 'desc')->paginate(2);
+
+    // Charger la vue partielle avec les projets suivants
+    return view('feed.projects', compact('projects'));
+}
 }
