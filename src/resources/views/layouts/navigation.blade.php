@@ -62,7 +62,7 @@
                 explore
             </strong>
         </a>
-        <a href="{{ route('feed') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center ">
+        <a href="{{ route('chat') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center  {{ request()->routeIs('chat') ? 'border-b border-sky-800 border-b-2' : '' }} ">
             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="3" />
@@ -75,7 +75,9 @@
                 </g>
 
             </svg>
-
+            <strong class="uppercase text-xs  absolute bottom-2  {{ request()->routeIs('chat') ? 'text-sky-800' : 'hidden' }}">
+                chat
+            </strong>
         </a>
         <a href="{{ route('notifications') }}" class="relative shrink-0 aspect-[1.12] w-[90px] flex flex-col justify-center items-center {{ request()->routeIs('notifications') ? 'border-b border-sky-800 border-b-2' : '' }}">
             <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
