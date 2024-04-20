@@ -53,5 +53,23 @@ window.Echo.private('App.Models.User.' + User.id)
 
 
 
+   
 
 
+
+
+    let conversations = []; 
+
+    fetch('/user/conversations')
+        .then(response => response.json())
+        .then(data => {
+            conversations = data; 
+            conversations.forEach(conversation => {
+                const conversationId = conversation.id;
+                window.Echo.private('conversation.' + conversationId)
+                    .listen('.MessageSent', (e) => {
+                        console.log('Message received in conversation ' + conversationId + ':', e.message);
+                    });
+            });
+        })
+        .catch(error => console.error('Erreur lors de la récupération des conversations:', error));

@@ -18,10 +18,13 @@
 </div>
 
 
-<div id="projects-container" class="grid grid-cols-2 md:grid-cols-3 gap-4 items-start p-12">
-            @include('feed.projects')
+<div class="p-5 sm:p-8">
+    <div id="projects-container"class="columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-2 lg:columns-3 [&>img:not(:first-child)]:mt-8">
+    @include('feed.projects')
     </div>
     <div id="loading" class="hidden">..</div>
+</div>
+
 
 
 <script>
@@ -48,7 +51,6 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
-                        console.log(xhr.responseText);
                         // Manipulez les données récupérées (projets) et affichez-les dans la vue
                         document.getElementById('projects-container').innerHTML = xhr.responseText;
                     } else {

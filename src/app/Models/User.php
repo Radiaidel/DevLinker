@@ -97,8 +97,13 @@ class User extends Authenticatable
         return $this->hasMany(Notification::class, 'notifiable_id' );
     }
 
-    public function conversations()
+    public function sentConversations()
     {
-        return $this->hasMany(Conversation::class);
+        return $this->hasMany(Conversation::class, 'user_id');
+    }
+
+    public function receivedConversations()
+    {
+        return $this->hasMany(Conversation::class, 'friend_id');
     }
 }

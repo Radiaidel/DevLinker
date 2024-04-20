@@ -16,16 +16,16 @@
                 </div>
                 <div class="shrink-0 mt-5 h-px border border-solid bg-zinc-100 border-zinc-100"></div>
                 @foreach($conversations as $conversation)
-                <div class="flex cursor-pointer gap-4 pl-6 mt-5 conversation-item" data-conversation-id="{{ $conversation->id }}">
+                <div class="flex cursor-pointer gap-4 pl-6 mt-5 conversation-item" data-conversation="{{ $conversation->toJson() }}">
                     <div class="flex overflow-hidden relative flex-col items-start aspect-square w-[52px] max-md:pl-5">
                         <img src="{{ $conversation->friend_id == auth()->id() ? asset('storage/profile/'.$conversation->user->profile->profile_image) : asset('storage/profile/'.$conversation->friend->profile->profile_image) }}" class="rounded-full object-cover absolute inset-0 size-full" />
                     </div>
                     <div class="flex flex-col my-auto">
                         <div class="text-sm text-neutral-900">
-                            @if($conversation->friend_id == auth()->id())
-                            {{ $conversation->user->name }}
-                            @else
+                            @if($conversation->user_id == auth()->user()->id)
                             {{ $conversation->friend->name }}
+                            @else
+                            {{ $conversation->user->name }}
                             @endif
                         </div>
                         @if($conversation->messages->last())
@@ -45,31 +45,86 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-col ml-5 w-2/3 max-md:ml-0 max-md:w-full bg-white rounded-3xl" id="message-container">
-        aucun message
+    <div class="flex flex-col ml-5 w-2/3 max-md:ml-0 max-md:w-full bg-white rounded-3xl">
+        <div id="message-container">
+
+            Aucun message
+        </div>
+        <div class="flex items-center mt-4">
+            <input type="text" name="content" id="new-message" class="rounded-full flex-grow border border-gray-300 py-2 px-4 focus:outline-none focus:border-blue-500" placeholder="Saisissez votre message...">
+            <button id="send-message" class="rounded-3xl ml-2 px-4 py-2 bg-blue-500 text-white focus:outline-none">Envoyer</button>
+        </div>
     </div>
 </div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var conversationItems = document.querySelectorAll(".conversation-item");
+    document.addEventListener('DOMContentLoaded', function() {
+        const conversationItems = document.querySelectorAll('.conversation-item');
+        const sendMessageButton = document.getElementById('send-message');
+        const newMessageInput = document.getElementById('new-message');
 
-        conversationItems.forEach(function(item) {
-            item.addEventListener("click", function() {
-                var conversationId = this.getAttribute("data-conversation-id");
 
-                fetch('/messages/' + conversationId)
-                    .then(response => response.text())
-                    .then(data => {
-                        var messageContainer = document.getElementById("message-container");
 
-                        messageContainer.innerHTML = data;
-                    })
-                    .catch(error => console.error('Erreur lors de la récupération de la vue message:', error));
+        conversationItems.forEach(item => {
+            item.addEventListener('click', function() {
+                conversationItems.forEach(element => {
+                    element.classList.remove('active');
+                });
+
+                this.classList.add('active');
+                const conversationData = JSON.parse(this.getAttribute('data-conversation'));
+                conversationId = conversationData.id;
+                const messages = conversationData.messages;
+
+                const messageContainer = document.getElementById('message-container');
+                messageContainer.innerHTML = ''; // Effacez le contenu précédent
+                messages.forEach(message => {
+                    messageContainer.innerHTML += `<div>${message.content}</div>`;
+                });
             });
         });
 
-    });
-</script>
+        sendMessageButton.addEventListener('click', function() {
+            const messageContent = newMessageInput.value.trim();
+            if (messageContent !== '') {
+                const activeConversation = document.querySelector('.conversation-item.active');
+              
 
+                const formData = new FormData();
+                formData.append('conversation_id', conversationId);
+                formData.append('content', messageContent);
+
+                fetch("{{ route('messages.store') }}", {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log("message envoyée");
+                        } else {
+                            // Échec
+                            console.error('Échec de l\'envoi du message');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de l\'envoi du message :', error);
+                    });
+            }
+        });
+    });
+
+
+
+
+
+
+
+    
+
+</script>
 
 @endsection
