@@ -53,11 +53,6 @@ window.Echo.private('App.Models.User.' + User.id)
 
 
 
-   
-
-
-
-
     let conversations = []; 
 
     fetch('/user/conversations')

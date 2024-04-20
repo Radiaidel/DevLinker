@@ -15,9 +15,9 @@ class ConversationController extends Controller
         $user = Auth::user();
 
         // Récupérer les conversations de l'utilisateur avec leurs messages
-        $sentConversations = $user->sentConversations()->with('messages')->get();
-        $receivedConversations = $user->receivedConversations()->with('messages')->get();
-
+        $sentConversations = $user->sentConversations()->with('messages', 'user', 'friend')->get();
+        $receivedConversations = $user->receivedConversations()->with('messages', 'user', 'friend')->get();
+        
         // Fusionner les collections de conversations
         $conversations = $sentConversations->merge($receivedConversations);
 
