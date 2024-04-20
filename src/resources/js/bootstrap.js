@@ -69,6 +69,26 @@ updateNotifCountVisibility();
 
 
 
+
+
+
+
+function updateChatCountVisibility() {
+    const chatCountSpan = document.getElementById('chat_count');
+    if (chatCountSpan) {
+        const chatCount = parseInt(chatCountSpan.innerHTML);
+        if (chatCount === 0) {
+            chatCountSpan.classList.add('hidden');
+        } else {
+            chatCountSpan.classList.remove('hidden');
+        }
+    }
+}
+
+
+
+
+
 let conversations = [];
 
 fetch('/user/conversations')
@@ -79,10 +99,13 @@ fetch('/user/conversations')
             const conversationId = conversation.id;
             window.Echo.private('conversation.' + conversationId)
                 .listen('.MessageSent', (e) => {
-                    // let notifCountElement = document.getElementById('chat_count');
-
-                    console.log('Message received in conversation ' + conversationId + ':', e.message);
+                    const chatCountSpan = document.getElementById('chat_count');
+                    if (chatCountSpan && message.sender_id != User.id) {
+                        chatCountSpan.innerHTML = parseInt(chatCountSpan.innerHTML) + 1;
+                        updateChatCountVisibility(); // Mettre à jour la visibilité après l'ajout d'un nouveau message
+                    }
                 });
         });
     })
     .catch(error => console.error('Erreur lors de la récupération des conversations:', error));
+    updateChatCountVisibility();

@@ -80,21 +80,18 @@ class User extends Authenticatable
     {
         $acceptedFriendIds = $this->sentFriendRequests()->where('status', 'accepted')->pluck('receiver_id')
             ->merge($this->receivedFriendRequests()->where('status', 'accepted')->pluck('sender_id'));
-    
+
         return $acceptedFriendIds;
     }
 
     public function PendingRequests()
     {
         return   $this->sentFriendRequests()->where('status', 'pending')->pluck('receiver_id')
-        ->merge($this->receivedFriendRequests()->where('status', 'pending')->pluck('sender_id'));
-
-
-         
+            ->merge($this->receivedFriendRequests()->where('status', 'pending')->pluck('sender_id'));
     }
     public function notification()
     {
-        return $this->hasMany(Notification::class, 'notifiable_id' );
+        return $this->hasMany(Notification::class, 'notifiable_id');
     }
 
     public function sentConversations()
@@ -105,5 +102,20 @@ class User extends Authenticatable
     public function receivedConversations()
     {
         return $this->hasMany(Conversation::class, 'friend_id');
+    }
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class, 'user_id')->orWhere('friend_id', $this->id);
+    }
+    public function unreadMessagesCount()
+    {
+        // Récupérer les conversations de l'utilisateur avec les messages non lus
+        $conversations = $this->conversations()->withCount(['messages' => function ($query) {
+            $query->whereNull('read_at')->where('sender_id', '!=', $this->id);
+        }])->get();
+
+        $unreadMessagesCount = $conversations->sum('messages_count');
+
+        return $unreadMessagesCount;
     }
 }

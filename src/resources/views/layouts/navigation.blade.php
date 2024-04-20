@@ -74,7 +74,7 @@
                 </g>
 
             </svg>
-            <span id="chat_count" class="absolute bg-red-600 text-white h-4  w-4 text-center top-5  right-6 text-xs rounded-full {{request()->routeIs('chat') ? 'hidden' : '' }}">{{auth()->user()->unreadNotifications->count()}}<span>
+            <span id="chat_count" class="absolute bg-red-600 text-white h-4  w-4 text-center top-5  right-6 text-xs rounded-full {{request()->routeIs('chat') ? 'hidden' : '' }}">{{auth()->user()->unreadMessagesCount()}}<span>
             <strong class="uppercase text-xs  absolute bottom-2  {{ request()->routeIs('chat') ? 'text-sky-800' : 'hidden' }}">
                 chat
             </strong>
