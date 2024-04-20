@@ -62,7 +62,7 @@
                 explore
             </strong>
         </a>
-        <a href="{{ route('chat') }}" class="shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center  {{ request()->routeIs('chat') ? 'border-b border-sky-800 border-b-2' : '' }} ">
+        <a href="{{ route('chat') }}" class=" relative shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center  {{ request()->routeIs('chat') ? 'border-b border-sky-800 border-b-2' : '' }} ">
             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="3" />
@@ -70,17 +70,17 @@
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
 
                 <g id="SVGRepo_iconCarrier">
-                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z" stroke="#000000" stroke-width="2" />
-                    <path opacity="0.5" d="M8 12H8.009M11.991 12H12M15.991 12H16" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z" stroke=" {{ request()->routeIs('chat') ? '#075985' : '#080341' }}" stroke-width="2" />
                 </g>
 
             </svg>
+            <span id="chat_count" class="absolute bg-red-600 text-white h-4  w-4 text-center top-5  right-6 text-xs rounded-full {{request()->routeIs('chat') ? 'hidden' : '' }}">{{auth()->user()->unreadNotifications->count()}}<span>
             <strong class="uppercase text-xs  absolute bottom-2  {{ request()->routeIs('chat') ? 'text-sky-800' : 'hidden' }}">
                 chat
             </strong>
         </a>
         <a href="{{ route('notifications') }}" class="relative shrink-0 aspect-[1.12] w-[90px] flex flex-col justify-center items-center {{ request()->routeIs('notifications') ? 'border-b border-sky-800 border-b-2' : '' }}">
-            <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -91,7 +91,11 @@
                 </g>
 
             </svg>
-            <span id="notif_count" class="absolute bg-red-600 text-white h-5 w-5 text-center top-4 right-6 text-sm rounded-full {{request()->routeIs('notifications') ? 'hidden' : '' }}">{{ auth()->user()->unreadNotifications->count() }}</span>
+
+            <!-- <span  class="absolute bg-red-600 text-white h-5 w-5 text-center top-7  right-8 text-sm rounded-full hidden">0<span> -->
+
+            <span id="notif_count" class="absolute bg-red-600 text-white h-4  w-4 text-center top-5  right-6 text-xs rounded-full {{request()->routeIs('notifications') ? 'hidden' : '' }}">{{auth()->user()->unreadNotifications->count()}}<span>
+
             <strong class="uppercase text-xs  absolute bottom-2  {{ request()->routeIs('notifications') ? 'text-sky-800' : 'hidden' }}">
                 notification
             </strong>

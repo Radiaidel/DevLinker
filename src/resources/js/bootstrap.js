@@ -33,38 +33,56 @@ window.Echo = new Echo({
 
 
 
-window.Echo.private('notifications.' + User.id)
-    .listen('.notification.deleted', (data) => {
-        let notifCountElement = document.getElementById('notif_count');
-        if (notifCountElement) {
-            let notifCount = parseInt(notifCountElement.innerHTML);
-            if (!isNaN(notifCount) && notifCount >= 1) {
-                notifCountElement.innerHTML = notifCount - 1;
-            }
+// Fonction pour mettre à jour la visibilité de l'élément <span>
+function updateNotifCountVisibility() {
+    const notifCountSpan = document.getElementById('notif_count');
+    if (notifCountSpan && notifCountSpan.innerText == 0) {
+        notifCountSpan.classList.add('hidden');
+    } else {
+        notifCountSpan.classList.remove('hidden');
+    }
+}
+
+// Écouter les événements de notification et mettre à jour le compteur en conséquence
+window.Echo.private('notifications.' + User.id).listen('.notification.deleted', (data) => {
+    const notifCountElement = document.getElementById('notif_count');
+    if (notifCountElement) {
+        let notifCount = parseInt(notifCountElement.innerText);
+        if (!isNaN(notifCount) && notifCount >= 1) {
+            notifCountElement.innerText = notifCount - 1;
+            updateNotifCountVisibility(); // Mettre à jour la visibilité après la modification du compteur
         }
-    });
+    }
+});
+
+window.Echo.private('App.Models.User.' + User.id).notification((notification) => {
+    const notifCountElement = document.getElementById('notif_count');
+    if (notifCountElement) {
+        notifCountElement.innerText = parseInt(notifCountElement.innerText) + 1;
+        updateNotifCountVisibility(); // Mettre à jour la visibilité après l'ajout d'une nouvelle notification
+    }
+});
+
+// Appeler la fonction pour mettre à jour la visibilité initiale
+updateNotifCountVisibility();
 
 
-window.Echo.private('App.Models.User.' + User.id)
-    .notification((notification) => {
-        document.getElementById('notif_count').innerHTML = parseInt(document.getElementById('notif_count').innerHTML) + 1;
-    });
 
 
+let conversations = [];
 
+fetch('/user/conversations')
+    .then(response => response.json())
+    .then(data => {
+        conversations = data;
+        conversations.forEach(conversation => {
+            const conversationId = conversation.id;
+            window.Echo.private('conversation.' + conversationId)
+                .listen('.MessageSent', (e) => {
+                    // let notifCountElement = document.getElementById('chat_count');
 
-    let conversations = []; 
-
-    fetch('/user/conversations')
-        .then(response => response.json())
-        .then(data => {
-            conversations = data; 
-            conversations.forEach(conversation => {
-                const conversationId = conversation.id;
-                window.Echo.private('conversation.' + conversationId)
-                    .listen('.MessageSent', (e) => {
-                        console.log('Message received in conversation ' + conversationId + ':', e.message);
-                    });
-            });
-        })
-        .catch(error => console.error('Erreur lors de la récupération des conversations:', error));
+                    console.log('Message received in conversation ' + conversationId + ':', e.message);
+                });
+        });
+    })
+    .catch(error => console.error('Erreur lors de la récupération des conversations:', error));

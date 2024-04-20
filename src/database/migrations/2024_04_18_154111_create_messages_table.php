@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
             $table->string('media_path')->nullable();
             $table->text('content')->nullable();
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }
