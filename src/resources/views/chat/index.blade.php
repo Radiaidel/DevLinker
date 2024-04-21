@@ -14,42 +14,46 @@
                 <div class="self-start ml-8 text-xs  uppercase text-neutral-900 max-md:ml-2.5">
                     Chats
                 </div>
-                <div class="shrink-0 mt-5 h-px border border-solid bg-zinc-100 border-zinc-100"></div>
+                <div class="shrink-0 mt-5 h-1 border border-solid bg-zinc-100 border-zinc-100"></div>
                 @foreach($conversations as $conversation)
-                <div class="flex cursor-pointer gap-4 pl-6 mt-5 conversation-item" data-conversation="{{ $conversation->toJson() }}">
-                    <div class="flex overflow-hidden relative flex-col items-start aspect-square w-[52px] max-md:pl-5">
-                        <img src="{{ $conversation->friend_id == auth()->id() ? asset('storage/profile/'.$conversation->user->profile->profile_image) : asset('storage/profile/'.$conversation->friend->profile->profile_image) }}" class="rounded-full object-cover absolute inset-0 size-full" />
-                    </div>
-                    <div class="flex flex-col my-auto">
-                        <div class="text-sm text-neutral-900">
-                            @if($conversation->user_id == auth()->user()->id)
-                            {{ $conversation->friend->name }}
-                            @else
-                            {{ $conversation->user->name }}
+                <div id="conversation-{{$conversation->id}}" class="flex justify-between items-center cursor-pointer py-2 mt-1 gap-2 px-6  conversation-item {{ ($conversation->unread_count > 0) ? 'border-l-4 border-sky-800' : '' }}" data-conversation="{{ $conversation->toJson() }}">
+                    <div class="flex items-center gap-2">
+                        <div class="flex overflow-hidden relative flex-col items-start aspect-square w-[52px] max-md:pl-5">
+                            <img src="{{ $conversation->friend_id == auth()->id() ? asset('storage/profile/'.$conversation->user->profile->profile_image) : asset('storage/profile/'.$conversation->friend->profile->profile_image) }}" class="rounded-full object-cover absolute inset-0 size-full" />
+
+                        </div>
+                        <div class="flex flex-col my-auto">
+                            <div class="text-sm text-neutral-900">
+                                @if($conversation->user_id == auth()->user()->id)
+                                {{ $conversation->friend->name }}
+                                @else
+                                {{ $conversation->user->name }}
+                                @endif
+                            </div>
+                            @if($conversation->messages->last())
+                            <div class="flex gap-1 mt-2 justify-center text-xs leading-4 text-neutral-900 text-opacity-50">
+                                <span class="shrink-0 self-start bg-sky-600 rounded-full aspect-square w-[9px]"></span>
+                                <div class="flex-auto" id="last-message-{{$conversation->id}}"  >
+                                    {{ $conversation->messages->last()->content }}
+                                </div>
+                            </div>
                             @endif
                         </div>
-                        @if($conversation->messages->last())
-                        <div class="flex gap-1 mt-2 justify-center text-xs leading-4 text-neutral-900 text-opacity-50">
-                            <span class="shrink-0 self-start bg-sky-600 rounded-full aspect-square w-[9px]"></span>
-                            <div class="flex-auto">
-                                {{ $conversation->messages->last()->content }}
-                            </div>
-                        </div>
-                        @endif
                     </div>
+                    <div id="unread-count-{{$conversation->id}}" class="flex items-center justify-center w-6 h-6 rounded-full bg-sky-800 text-white text-xs  {{ ($conversation->unread_count > 0) ? '' : 'hidden' }}  ">
+                        {{ $conversation->unread_count }}
+                    </div>
+
                 </div>
+                <div class="shrink-0 mt-1 h-px border border-solid bg-zinc-100 border-zinc-100"></div>
                 @endforeach
-
-                <div class="shrink-0 mt-3.5 h-px border border-solid bg-zinc-100 border-zinc-100"></div>
-
             </div>
         </div>
     </div>
     <div class=" flex flex-col ml-5 w-2/3 max-md:ml-0 max-md:w-full bg-white rounded-3xl ">
-        <div id="message-container" class=" relative h-[580px] overflow-y-auto ">
+        <div id="message-container" class=" relative h-[580px] overflow-y-auto">
 
-            Aucun message
-
+        <p class="text-gray-400 italic m-auto text-center h-full my-auto">Aucun message</p>
         </div>
 
         <div id="sendMessage" class=" hidden flex items-center mt-4">
@@ -78,6 +82,16 @@
                 this.classList.add('active');
                 const conversationData = JSON.parse(this.getAttribute('data-conversation'));
                 conversationId = conversationData.id;
+
+                read_messages(conversationId);
+
+                const unreadCountElement = document.getElementById(`unread-count-${conversationId}`);
+
+
+                unreadCountElement.classList.add('hidden');
+                item.classList.remove('border-l-4', 'border-sky-800');
+
+
                 const messages = conversationData.messages;
 
                 const messageContainer = document.getElementById('message-container');
@@ -86,7 +100,7 @@
                 const otherUser = conversationData.user_id === window.User.id ? conversationData.friend : conversationData.user;
 
                 const userInfoContainer = document.createElement('div');
-                userInfoContainer.classList.add('shadow-md', 'sticky', 'top-0',  'bg-white', 'flex', 'flex-col', 'px-5', 'py-3', 'max-md:px-5', 'max-md:max-w-full');
+                userInfoContainer.classList.add('shadow-md', 'sticky', 'top-0', 'bg-white', 'flex', 'flex-col', 'px-5', 'py-3', 'max-md:px-5', 'max-md:max-w-full');
                 userInfoContainer.innerHTML = `
                         <div class="flex gap-3 self-start">
                             <img src="{{ asset('storage/profile/unknown.png') }}" class="shrink-0 aspect-square w-[52px] rounded-full" />
@@ -115,14 +129,33 @@
                         displayMessages(previousMessages, messageContainer, true);
                         // Mettre à jour les indices de début et de fin pour la prochaine itération
                         start = nextStart;
-                        
+
                     }
 
                 });
+
+
                 document.getElementById('sendMessage').classList.remove('hidden');
             });
         });
 
+        function read_messages(conv_id) {
+            fetch('/ReadMessages', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        conversation_id: conv_id
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then()
+
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
         // Fonction pour afficher les messages dans le conteneur spécifié
         function displayMessages(messages, container, prepend = false) {
             messages.forEach(message => {
@@ -145,13 +178,13 @@
                 <div class="justify-center px-5 py-4 text-sm ${backgroundColorClass} ${textColorClass} rounded-3xl">
                     ${message.content}
                 </div>
-                <div class="${isCurrentUserSender ? 'self-end' : 'self-start'} mt-2.5 text-xs text-right">${formattedTime}</div>
+                <div class="${isCurrentUserSender ?'justify-end' : 'justify-start'} mt-2.5 text-xs text-right">${formattedTime}</div>
             </div>
         `;
 
 
                 prepend ? insertAfter(messageElement, container.firstChild) : container.appendChild(messageElement);
-                
+
             });
 
 

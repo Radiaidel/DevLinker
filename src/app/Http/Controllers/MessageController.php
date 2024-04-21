@@ -11,36 +11,20 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
-    // //
-    // public function getMessages(Conversation $conversation)
-    // {
-    //     $messages = $conversation->messages;
-
-    //     return view('chat.messages', compact('messages', 'conversation'));
-    // }
-
-
-    public function getMessages(Request $request)
+    public function readMessages(Request $request)
     {
         $conversationId = $request->input('conversation_id');
 
         $conversation_actuel = Conversation::findOrFail($conversationId);
-        $messages = $conversation_actuel->messages;
 
-        $user = Auth::user();
 
-        $sentConversations = $user->sentConversations;
-        $receivedConversations = $user->receivedConversations;
+        $unreadMessages = $conversation_actuel->messages()->get();
 
-        // Fusionner les collections de conversations
-        $conversations = $sentConversations->merge($receivedConversations);
+        // Marquer les messages comme lus
+        foreach ($unreadMessages as $message) {
+            $message->update(['read_at' => now()]);
+        }
 
-        // Retourner les messages au format JSON
-        return response()->json([
-            'messages' => $messages,
-            'conversation_actuel' => $conversation_actuel,
-            'conversations' => $conversations
-        ]);
     }
 
 
@@ -52,7 +36,7 @@ class MessageController extends Controller
         ]);
         $conversation = Conversation::findOrFail($request->input('conversation_id'));
 
-        $destinataireId = ($conversation->user_id == auth()->id()) ? $conversation->friend_id : $conversation->user_id;
+        // $destinataireId = ($conversation->user_id == auth()->id()) ? $conversation->friend_id : $conversation->user_id;
 
         $message = new Message();
         $message->conversation_id = $conversation->id;

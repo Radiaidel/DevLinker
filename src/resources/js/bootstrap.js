@@ -100,12 +100,66 @@ fetch('/user/conversations')
             window.Echo.private('conversation.' + conversationId)
                 .listen('.MessageSent', (e) => {
                     const chatCountSpan = document.getElementById('chat_count');
-                    if (chatCountSpan && message.sender_id != User.id) {
+                    if (chatCountSpan && e.message.sender_id != User.id) {
                         chatCountSpan.innerHTML = parseInt(chatCountSpan.innerHTML) + 1;
-                        updateChatCountVisibility(); // Mettre à jour la visibilité après l'ajout d'un nouveau message
+                        updateChatCountVisibility();
                     }
+
+
+
+
+                    if (window.location.href.includes('chat')) {
+                        if (e.message.sender_id != User.id) {
+                            const unreadCountElement = document.getElementById(`unread-count-${conversationId}`);
+                            const conversationElement = document.getElementById(`conversation-${conversationId}`);
+                            const lastmessage = document.getElementById(`last-message-${conversationId}`);
+
+                            lastmessage.innerText = e.message.content;
+                            unreadCountElement.innerText = parseInt(unreadCountElement.innerText) + 1;
+                            unreadCountElement.classList.remove('hidden');
+                            conversationElement.classList.add('border-l-4', 'border-sky-800');
+
+                            // const parentElement = conversationElement.parentElement;
+
+                            // console.log(parentElement);
+                            // const thirdChild = parentElement.children[2];
+                            // parentElement.insertBefore(conversationElement, thirdChild.nextSibling);
+                        }
+
+                        const messageContainer = document.getElementById('message-container');
+                        const isCurrentUserSender = (e.message.sender_id == window.User.id);
+                        const msgSide = isCurrentUserSender ? 'justify-end' : 'justify-start';
+                        const backgroundColorClass = isCurrentUserSender ? 'bg-sky-50' : 'bg-sky-800';
+                        const textColorClass = isCurrentUserSender ? '' : 'text-white';
+                        const messageTime = new Date(e.message.created_at);
+                        const formattedTime = messageTime.toLocaleTimeString([], {
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                        });
+
+                        const messageElement = document.createElement('div');
+                        messageElement.classList.add('flex', 'px-12', 'gap-4', 'block', 'mt-1', msgSide);
+                        messageElement.innerHTML = `
+                            <div class="flex flex-col grow shrink-0 basis-0 max-w-[60%]">
+                                <div class="justify-center px-5 py-4 text-sm ${backgroundColorClass} ${textColorClass} rounded-3xl">
+                                    ${e.message.content}
+                                </div>
+                                <div class="${isCurrentUserSender ? 'justify-end' : 'justify-start'} mt-2.5 text-xs text-right">${formattedTime}</div>
+                            </div>
+                        `;
+
+                        messageContainer.appendChild(messageElement);
+                        document.getElementById('new-message').value = '';
+
+                    }
+
+
+
+
+
                 });
         });
     })
     .catch(error => console.error('Erreur lors de la récupération des conversations:', error));
-    updateChatCountVisibility();
+updateChatCountVisibility();

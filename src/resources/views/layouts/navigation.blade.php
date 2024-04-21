@@ -62,7 +62,7 @@
                 explore
             </strong>
         </a>
-        <a href="{{ route('chat') }}" class=" relative shrink-0 aspect-[1.12] w-[90px] flex justify-center items-center  {{ request()->routeIs('chat') ? 'border-b border-sky-800 border-b-2' : '' }} ">
+        <a href="{{ route('chat') }}" class="relative  shrink-0 aspect-[1.12] w-[90px] flex flex-col justify-center items-center   {{ request()->routeIs('chat') ? 'border-b border-sky-800 border-b-2' : '' }} ">
             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="3" />
@@ -74,13 +74,16 @@
                 </g>
 
             </svg>
-            <span id="chat_count" class="absolute bg-red-600 text-white h-4  w-4 text-center top-5  right-6 text-xs rounded-full {{request()->routeIs('chat') ? 'hidden' : '' }}">{{auth()->user()->unreadMessagesCount()}}<span>
+            <span id="chat_count" class="absolute bg-red-600 text-white h-4  w-4 text-center top-5  right-6 text-xs rounded-full {{request()->routeIs('chat') ? 'hidden' : '' }}">{{auth()->user()->unreadMessagesCount()}}</span>
             <strong class="uppercase text-xs  absolute bottom-2  {{ request()->routeIs('chat') ? 'text-sky-800' : 'hidden' }}">
                 chat
             </strong>
         </a>
-        <a href="{{ route('notifications') }}" class="relative shrink-0 aspect-[1.12] w-[90px] flex flex-col justify-center items-center {{ request()->routeIs('notifications') ? 'border-b border-sky-800 border-b-2' : '' }}">
-            <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+
+        <a href="{{ route('notifications') }}" class="aspect-[1.12] w-[90px] flex flex-col justify-center items-center {{ request()->routeIs('notifications') ? 'border-b border-sky-800 border-b-2' : '' }}">
+           
+        <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -92,11 +95,10 @@
 
             </svg>
 
-            <!-- <span  class="absolute bg-red-600 text-white h-5 w-5 text-center top-7  right-8 text-sm rounded-full hidden">0<span> -->
+            <span id="notif_count" class="absolute bg-red-600 text-white h-4  w-4 text-center top-5  right-6 text-xs rounded-full {{request()->routeIs('notifications') ? 'hidden' : '' }}">{{auth()->user()->unreadNotifications->count()}}</span>
 
-            <span id="notif_count" class="absolute bg-red-600 text-white h-4  w-4 text-center top-5  right-6 text-xs rounded-full {{request()->routeIs('notifications') ? 'hidden' : '' }}">{{auth()->user()->unreadNotifications->count()}}<span>
 
-            <strong class="uppercase text-xs  absolute bottom-2  {{ request()->routeIs('notifications') ? 'text-sky-800' : 'hidden' }}">
+            <strong class="uppercase text-xs absolute bottom-2  {{ request()->routeIs('notifications') ? 'text-sky-800' : 'hidden' }}">
                 notification
             </strong>
         </a>

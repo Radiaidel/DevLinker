@@ -127,8 +127,12 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/chat', [ConversationController::class, 'index'])->name('chat');
-    Route::post('/messages', [MessageController::class , 'getMessages']);
+    Route::post('/ReadMessages', [MessageController::class , 'readMessages']);
     Route::post('/messages/send', [MessageController::class , 'store'])->name('messages.store');
     Route::get('/user/conversations', [ConversationController::class, 'getUserConversations'])->name('user.conversations');
+
+
+
+
 });
 // 

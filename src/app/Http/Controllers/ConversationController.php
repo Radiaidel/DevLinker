@@ -13,24 +13,25 @@ class ConversationController extends Controller
     public function index()
     {
         $user = Auth::user();
-
-        // Récupérer les conversations de l'utilisateur avec leurs messages
-        $sentConversations = $user->sentConversations()->with('messages', 'user', 'friend')->get();
-        $receivedConversations = $user->receivedConversations()->with('messages', 'user', 'friend')->get();
-        
-        // Fusionner les collections de conversations
-        $conversations = $sentConversations->merge($receivedConversations);
-
+    
+        // Récupérer les conversations de l'utilisateur avec la date du dernier message envoyé
+        $conversations = $user->conversations()
+        ->select('conversations.*')
+        ->selectRaw('(SELECT MAX(created_at) FROM messages WHERE messages.conversation_id = conversations.id) AS last_message_date')
+        ->selectRaw('(SELECT COUNT(*) FROM messages WHERE messages.conversation_id = conversations.id AND messages.sender_id != ? AND messages.read_at IS NULL) AS unread_count', [$user->id])
+        ->orderByDesc('last_message_date') // Triez les conversations par la date du dernier message
+        ->with('messages', 'user', 'friend')
+        ->get();
+    
         return view('chat.index', compact('conversations'));
     }
+    
+    
     public function getUserConversations()
     {
         $user = auth()->user();
-        $sentConversations = $user->sentConversations()->with('messages')->get();
-        $receivedConversations = $user->receivedConversations()->with('messages')->get();
+        $conversations = $user->conversations()->with('messages', 'user', 'friend')->get();
 
-        // Fusionner les collections de conversations
-        $conversations = $sentConversations->merge($receivedConversations);
         return response()->json($conversations);
     }
 }
