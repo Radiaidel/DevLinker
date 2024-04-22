@@ -40,8 +40,9 @@
                         <p class="text-lg font-semibold">{{ $user->name }}</p>
                         <p class="text-gray-500">{{ $user->email }}</p>
 
-                        <form action="{{ route('block.user', $user->id) }}" method="POST" class="mt-4">
+                        <form action="{{ route('block.user') }}" method="POST" class="mt-4">
                             @csrf
+                            <input type="hidden" name="user_id" value="{{$user->id}}">
                             @if(!$user->trashed())
                             <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600">Bloquer</button>
                             @else

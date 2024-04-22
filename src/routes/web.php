@@ -7,6 +7,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaveController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -54,9 +55,8 @@ Route::post('/update-password', [PasswordResetController::class, 'updatePassword
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/users', [AdminController::class, 'getUsers'])->name('users');
-    Route::post('/block/user/{user}', [UserController::class, 'blockUser'])->name('block.user');
+    Route::post('/block/user', [UserController::class, 'blockUser'])->name('block.user');
     Route::get('/support', [AdminController::class, 'dashboard'])->name('support');
-    Route::get('/explore', [AdminController::class, 'dashboard'])->name('explore');
     Route::get('/notification', [AdminController::class, 'dashboard'])->name('notification');
 
 
@@ -161,5 +161,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/ReadMessages', [MessageController::class , 'readMessages']);
     Route::post('/messages/send', [MessageController::class , 'store'])->name('messages.store');
     Route::get('/user/conversations', [ConversationController::class, 'getUserConversations'])->name('user.conversations');
+
+
+
+    Route::post('/projects/report', [ReportController::class, 'reportProject'])->name('projects.report');
 });
 // 
