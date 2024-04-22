@@ -52,7 +52,14 @@ Route::post('/update-password', [PasswordResetController::class, 'updatePassword
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'getUsers'])->name('users');
+    Route::post('/block/user/{user}', [UserController::class, 'blockUser'])->name('block.user');
+    Route::get('/support', [AdminController::class, 'dashboard'])->name('support');
+    Route::get('/explore', [AdminController::class, 'dashboard'])->name('explore');
+    Route::get('/notification', [AdminController::class, 'dashboard'])->name('notification');
+
+
 });
 
 

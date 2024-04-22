@@ -19,8 +19,12 @@
 
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
+        @if(auth()->user()->role==('admin'))
+        @include('layouts.admin_nav')
+        @else
         @include('layouts.navigation')
 
+        @endif
         @if(session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
             <strong class="font-bold">Succès!</strong>
@@ -48,10 +52,6 @@
         window.User = {
             id: '{{optional(auth()->user())->id}}',
         }
-
-
-
-    
     </script>
 
 
