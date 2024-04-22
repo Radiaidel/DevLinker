@@ -29,8 +29,12 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
-            return redirect()->route('feed');
+            $user = Auth::user();
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } else {
+                return redirect()->route('feed');
+            }
         }
 
         return back()->withErrors([
@@ -38,21 +42,22 @@ class AuthController extends Controller
         ]);
     }
 
-        public function store(Request $request){
-            $validate = $request->validate([
-                'name' => 'required',
-                'email' => 'required|unique:users,email',
-                'password' => 'required|min:6',
-            ]);
-        
-            $data = $request->except('password');
-            $data['password'] = Hash::make($request->password);
-            
-            User::create($data);
-            
-            return redirect('/login');
-        }
-        
+    public function store(Request $request)
+    {
+        $validate = $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users,email',
+            'password' => 'required|min:6',
+        ]);
+
+        $data = $request->except('password');
+        $data['password'] = Hash::make($request->password);
+
+        User::create($data);
+
+        return redirect('/login');
+    }
+
 
     public function logout(Request $request)
     {

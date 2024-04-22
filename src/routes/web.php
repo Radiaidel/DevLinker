@@ -14,7 +14,7 @@ use App\Http\Controllers\FeedController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PreferencesController;
 use App\Http\Controllers\ProjectController;
-
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\UserController;
 
@@ -49,10 +49,34 @@ Route::post('/update-password', [PasswordResetController::class, 'updatePassword
 
 
 // Logout
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Route::middleware('auth')->group(function () {
+    
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
 
     Route::get('/feed', [FeedController::class, 'index'])->name('feed');
     Route::get('/load-more-projects', [FeedController::class, 'loadMoreProjects']);
@@ -130,9 +154,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/ReadMessages', [MessageController::class , 'readMessages']);
     Route::post('/messages/send', [MessageController::class , 'store'])->name('messages.store');
     Route::get('/user/conversations', [ConversationController::class, 'getUserConversations'])->name('user.conversations');
-
-
-
-
 });
 // 

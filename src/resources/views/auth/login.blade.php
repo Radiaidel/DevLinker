@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="flex justify-center items-center px-16 py-10 bg-white max-md:px-5">
+<div class="flex justify-center items-center px-16 py-10 bg-white max-md:px-5 h-screen">
     <div class="w-full max-w-[1157px] max-md:max-w-full">
         <div class="flex gap-5 max-md:flex-col max-md:gap-0">
             <div class="flex flex-col w-[56%] max-md:ml-0 max-md:w-full">
@@ -22,15 +22,15 @@
                     <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/73acedd960075093ca07fb10936f83f5e2c1edd648a20b7c095de13472c446a8?" class="mt-9 max-w-full aspect-square w-[400px]" />
                 </div>
             </div>
-            <div class="flex flex-col ml-5 w-[44%] max-md:ml-0 max-md:w-full">
-                <div class="flex flex-col px-11 py-9 mt-4 w-full text-base bg-white rounded-3xl border border-solid border-zinc-200 max-md:px-5 max-md:mt-10 max-md:max-w-full">
+            <div class="flex flex-col ml-5 w-[44%] max-md:ml-0 max-md:w-full ">
+                <div class="flex flex-col px-11 py-9 mt-4 w-full text-base shadow-md bg-white rounded-3xl border border-solid border-zinc-200 max-md:px-5 max-md:mt-10 max-md:max-w-full">
                     <div class="text-2xl text-zinc-800">Hi, Welcome Back!</div>
                     <div class="mt-4 text-zinc-600">
                         Log into your account to continue from where
                         <br />
                         you stopped.
                     </div>
-                    <form method="POST" action="{{route('auth.authenticate')}}">
+                    <form method="POST" action="{{route('auth.authenticate')}}" >
                         @csrf
                         <div class="mt-6 text-xs text-zinc-600">Email</div>
                         <input type="email" id="email" name="email" placeholder="Your Email Address" class="w-full flex flex-col justify-center px-4 py-2 mt-2 whitespace-nowrap rounded-lg border border-solid border-neutral-300 text-zinc-800">
@@ -46,7 +46,7 @@
                             <a id="forgot-password-link" class="cursor-pointer my-auto font-medium text-rose-500">Forgot password?</a>
                         </div>
 
-                        <button type="submit" class="justify-center px-4 py-4 mt-10 text-xl text-center text-white bg-indigo-500 rounded-xl max-md:mt-10 w-full">Log in</button>
+                        <button type="submit" class="justify-center px-4 py-4 mt-10 text-xl text-center text-white bg-sky-700  hover:bg-sky-800 rounded-xl max-md:mt-10 w-full">Log in</button>
                     </form>
 
                     <div class="justify-center text-center items-center px-16 mt-6 text-sm text-black text-opacity-70 max-md:px-5 max-md:mt-10">
