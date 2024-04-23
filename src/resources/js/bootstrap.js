@@ -163,3 +163,14 @@ fetch('/user/conversations')
     })
     .catch(error => console.error('Erreur lors de la récupération des conversations:', error));
 updateChatCountVisibility();
+
+
+
+
+
+
+window.Echo.private(`admin-reports.${User.id}`)
+    .listen('.report.created', (data) => {
+        console.log('New report received:', data);
+    });
+

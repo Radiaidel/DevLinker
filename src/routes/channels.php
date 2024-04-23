@@ -24,4 +24,9 @@ Broadcast::channel('notifications.{userId}', function ($user, $userId) {
 Broadcast::channel('conversation.{conversationId}', function ($user, $conversationId) {
    $conversation = Conversation::findOrFail($conversationId);
     return $user->id == $conversation->user_id || $user->id == $conversation->friend_id;
+});      
+
+Broadcast::channel('admin-reports.{userId}', function ($user, $userId) {
+    return $user->id === (int) $userId ;
 });
+

@@ -214,4 +214,36 @@ document.addEventListener("DOMContentLoaded", function () {
             carousel.querySelector('.prevBtn').addEventListener('click', prevMedia);
         }
     });
+
+
+    const reportForms = document.querySelectorAll('.reportForm');
+
+    reportForms.forEach(function(reportForm) {
+        reportForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le comportement par défaut du formulaire
+            
+            // Récupérer les données du formulaire
+            const formData = new FormData(reportForm);
+
+            // Envoyer les données via une requête Fetch
+            fetch("/projects/report", {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Report submitted successfully:', data);
+                // Traitez la réponse si nécessaire
+            })
+            .catch(error => {
+                console.error('Error submitting report:', error);
+                // Gérez les erreurs si nécessaire
+            });
+        });
+    });
 });
