@@ -16,9 +16,14 @@ class ReportController extends Controller
 
     public function getReport()
     {
-        $projects = Project::has('reports')->with(['reports.user:id,name'])->whereHas('user', function (Builder $query) {
+        $projects = Project::withTrashed()
+        ->has('reports') // Filtrez les projets qui ont des rapports
+        ->with(['reports.user:id,name']) // Inclure les utilisateurs associés aux rapports
+        ->whereHas('user', function (Builder $query) {
             $query->whereNull('deleted_at'); // Exclure les utilisateurs supprimés
-        })->get();
+        })
+        ->get();
+
 
         return view('admin.report', ['projects' => $projects]);
     }

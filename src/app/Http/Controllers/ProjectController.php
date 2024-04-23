@@ -126,15 +126,25 @@ class ProjectController extends Controller
 
         return view('feed.projects', compact('projects'));
     }
-
-    public function projectReported(Project $project){
+    public function projectReported($projectId)
+    {
+        $project= Project::withTrashed()->findOrFail($projectId);
         if (!$project) {
             return redirect()->back()->with('error', 'Project not found.');
         }
     
-        // Effectuer la suppression logique du projet
-        $project->delete();
-    
-        return redirect()->back()->with('success', 'Project soft deleted successfully.');
+        // Vérifier si le projet est dans la corbeille (soft deleted)
+        if ($project->trashed()) {
+            // Restaurer le projet
+            $project->reports()->delete();
+            $project->restore();
+            return redirect()->back()->with('success', 'Project restored successfully.');
+        } else {
+            // Effectuer la suppression logique du projet
+            $project->delete();
+            return redirect()->back()->with('success', 'Project soft deleted successfully.');
+        }
     }
+    
+    
 }
