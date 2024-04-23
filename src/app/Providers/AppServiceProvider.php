@@ -23,8 +23,9 @@ class AppServiceProvider extends ServiceProvider
         User::created(function ($user) {
             // Créer un profil associé à l'utilisateur
             $user->profile()->create([
-                // Vous pouvez initialiser les champs du profil ici si nécessaire
-            ]);
+                'cover_image' => 'cover_default.jpeg',
+                'profile_image' => 'unknown.png',
+                        ]);
         });
     }
 }

@@ -56,9 +56,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/users', [AdminController::class, 'getUsers'])->name('users');
     Route::post('/block/user', [UserController::class, 'blockUser'])->name('block.user');
-    Route::get('/support', [AdminController::class, 'dashboard'])->name('support');
+    Route::get('/report', [ReportController::class, 'getReport'])->name('report');
     Route::get('/notification', [AdminController::class, 'dashboard'])->name('notification');
-
+    Route::delete('/projects/{project}', [ProjectController::class , 'projectReported'])->name('projects.softDelete');
 
 });
 

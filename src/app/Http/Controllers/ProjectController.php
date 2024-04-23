@@ -126,4 +126,15 @@ class ProjectController extends Controller
 
         return view('feed.projects', compact('projects'));
     }
+
+    public function projectReported(Project $project){
+        if (!$project) {
+            return redirect()->back()->with('error', 'Project not found.');
+        }
+    
+        // Effectuer la suppression logique du projet
+        $project->delete();
+    
+        return redirect()->back()->with('success', 'Project soft deleted successfully.');
+    }
 }

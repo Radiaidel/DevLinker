@@ -41,4 +41,13 @@ class Project extends Model
     {
         return $this->hasMany(Comment::class);
     }
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
+    public function getLastReporterAttribute()
+    {
+        $latestReport = $this->reports()->latest()->first();
+        return $latestReport ? $latestReport->user->name : 'No report yet';
+    }
 }
