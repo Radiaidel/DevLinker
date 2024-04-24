@@ -172,5 +172,13 @@ updateChatCountVisibility();
 window.Echo.private(`admin-reports.${User.id}`)
     .listen('.report.created', (data) => {
         console.log('New report received:', data);
+        // Vérifiez si l'événement est lié au projet que vous affichez actuellement
+        const reportCountElement = document.getElementById('report_count');
+        if (reportCountElement) {
+            reportCountElement.innerText = parseInt(reportCountElement.innerText) + 1;
+            
+            setInterval(window.location.reload(true) , 300000); 
+        }
     });
+
 

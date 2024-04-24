@@ -50,4 +50,8 @@ class Project extends Model
         $latestReport = $this->reports()->latest()->first();
         return $latestReport ? $latestReport->user->name : 'No report yet';
     }
+    public static function countReportedProjects()
+    {
+        return self::has('reports')->count();
+    }
 }
