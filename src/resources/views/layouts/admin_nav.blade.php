@@ -126,10 +126,7 @@
 
         <!-- Dropdown menu -->
         <div id="dropdownMenu" class="absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded shadow-lg z-10 hidden">
-            <a href="{{ route('profile.show', ['user' => auth()->id()]) }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
             <a href="{{ route('preferences.show') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Preferences</a>
-            <a onclick="fetchSavedItems()" class="cursor-pointer block px-4 py-2 text-gray-800 hover:bg-gray-200">Mes enregistrements</a>
-
             <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
         </div>
     </div>
@@ -137,22 +134,6 @@
 
     <script src="{{ asset('js/project_script.js') }}" defer></script>
 
-
-    <div id="savedItemsPopup" class="z-20 fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center hidden">
-        <div class="bg-white rounded-lg p-8 w-[40%] h-[95%] relative overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold">Saves </h2>
-                <button onclick="closeSavedItemsPopup()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            <ul id="SavesList" class=" ">
-                <!-- Saved items will be dynamically inserted here -->
-            </ul>
-        </div>
-    </div>
 
 
 
