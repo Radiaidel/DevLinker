@@ -1,16 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="flex justify-center gap-12 p-12">
-    <div class="flex flex-col w-2/3">
+<div class="flex justify-center gap-12 md:p-12 p-4">
+    <div class="flex flex-col md:w-2/3 w-[99%]">
         <div id="openModalButton" class="flex flex-col px-7 py-5 w-full bg-white rounded-3xl max-md:px-5 max-md:max-w-full cursor-pointer">
             <div class="flex gap-5 text-md text-neutral-900 text-opacity-20 max-md:flex-wrap max-md:max-w-full">
 
-                @if(Auth::user()->profile && Auth::user()->profile->profile_image)
                 <img src="{{ asset('storage/profile/' . Auth::user()->profile->profile_image) }}" class="shrink-0 aspect-square w-[60px] rounded-full" />
-                @else
-                <img src="{{ asset('storage/profile/unknown.png') }}" class="shrink-0 aspect-square w-[60px] rounded-full" />
-                @endif
+
                 <div class="grow justify-center items-start px-7 py-4 my-auto rounded-2xl bg-zinc-100 w-fit max-md:px-5 max-md:max-w-full">
                     Share something...
                 </div>
@@ -80,7 +77,7 @@
         <div id="projects-container">
 
             @include('feed.projects')
-            
+
         </div>
         <div id="loading" class="hidden">..</div>
     </div>
@@ -98,23 +95,17 @@
 
 
 
-    <div class="flex flex-col max-w-[290px]">
+    <div class="flex flex-col max-w-[290px] hidden md:block">
         <div class="flex flex-col items-center pb-7 w-full bg-white rounded text-neutral-900">
             <div class="relative mb-5">
                 <!-- Image de couverture -->
-                @if(Auth::user()->profile && Auth::user()->profile->cover_image)
                 <img src="{{ asset('storage/profile/' . Auth::user()->profile->cover_image) }}" class="self-stretch w-full aspect-[2.44]" />
-                @else
-                <img src="{{ asset('storage/profile/cover_default.jpeg') }}" class="self-stretch w-full aspect-[2.44]" />
-                @endif
+
 
                 <!-- Photo de profil au centre -->
                 <div class="absolute inset-x-0 top-12 flex justify-center">
-                    @if(Auth::user()->profile && Auth::user()->profile->profile_image)
                     <img src="{{ asset('storage/profile/' . Auth::user()->profile->profile_image) }}" class="max-w-full h-auto rounded-full border-2 border-white w-[100px]" />
-                    @else
-                    <img src="{{ asset('storage/profile/unknown.png') }}" class="max-w-full h-auto rounded-full border-2 border-white w-[100px]" />
-                    @endif
+
                 </div>
             </div>
 

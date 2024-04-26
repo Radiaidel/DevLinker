@@ -149,3 +149,4 @@ function confirmDelete(languageKey) {
         document.getElementById("deleteLanguageForm").submit();
     }
 }
+

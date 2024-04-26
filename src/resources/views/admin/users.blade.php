@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div class="grid p-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             @foreach($users as $user)
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg @if($user->trashed()) opacity-50 @endif">
                 <div class="p-6">

@@ -4,7 +4,7 @@
 
 <main>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-4 2xl:gap-7.5">
+        <div class="grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-4 2xl:gap-7.5">
             <!-- Card Item Start -->
 
             <div class="rounded-xl border border-stroke bg-white p-6 shadow-md">
@@ -26,7 +26,7 @@
                 <div class="mt-4 flex items-end justify-between">
                     <div>
                         <h4 class="text-2xl font-bold text-black ">
-                        {{$totalVisitors}}
+                            {{$totalVisitors}}
                         </h4>
                         <span class="text-sm text-gray-600 font-medium">Total views</span>
                     </div>
@@ -37,7 +37,7 @@
 
             <!-- Card Item Start -->
             <div class="rounded-xl border border-stroke bg-white p-6 shadow-md">
-            <div class="flex justify-start  w-[50px] h-[50px] items-center justify-center rounded-full bg-sky-50  ">                    <svg width="25px" height="25px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
+                <div class="flex justify-start  w-[50px] h-[50px] items-center justify-center rounded-full bg-sky-50  "> <svg width="25px" height="25px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
 
                         <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -68,7 +68,7 @@
 
             <!-- Card Item Start -->
             <div class="rounded-xl border border-stroke bg-white p-6 shadow-md">
-            <div class="flex justify-start  w-[50px] h-[50px] items-center justify-center rounded-full bg-sky-50  ">                    <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div class="flex justify-start  w-[50px] h-[50px] items-center justify-center rounded-full bg-sky-50  "> <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                         <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -84,7 +84,7 @@
                 <div class="mt-4 flex items-end justify-between">
                     <div>
                         <h4 class="text-2xl font-bold text-black ">
-                           {{$totalBlockedUsers}}
+                            {{$totalBlockedUsers}}
                         </h4>
                         <span class="text-sm font-medium text-gray-600">Total Blocked users</span>
                     </div>
@@ -94,7 +94,7 @@
 
             <!-- Card Item Start -->
             <div class="rounded-xl border border-stroke bg-white p-6 shadow-md">
-            <div class="flex justify-start  w-[50px] h-[50px] items-center justify-center rounded-full bg-sky-50  ">                    <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div class="flex justify-start  w-[50px] h-[50px] items-center justify-center rounded-full bg-sky-50  "> <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                         <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -113,7 +113,7 @@
                 <div class="mt-4 flex items-end justify-between">
                     <div>
                         <h4 class="text-2xl font-bold text-black ">
-                          {{$totalUsers}}
+                            {{$totalUsers}}
                         </h4>
                         <span class="text-sm font-medium text-gray-600">Total Users</span>
                     </div>

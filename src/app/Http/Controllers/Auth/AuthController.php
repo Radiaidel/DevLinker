@@ -30,6 +30,9 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $user = Auth::user();
+            $user->last_online = null;
+            $user->save();
+            
             if ($user->role === 'admin') {
                 return redirect()->route('dashboard');
             } else {
@@ -61,6 +64,9 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        if (auth()->check()) {
+            auth()->user()->update(['last_online' => now()]);
+        }
         Auth::logout();
 
         $request->session()->invalidate();

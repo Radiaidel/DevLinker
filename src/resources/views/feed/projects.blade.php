@@ -13,7 +13,10 @@
                 @endif
                 <div class="flex flex-col my-auto">
                     <div class="text-sm">{{ $project->user->name }}</div>
-                    <div class="mt-2.5 text-xs leading-4">{{ $project->user->profile->title }}</div>
+                    <div class="mt-1 text-xs leading-4">{{ $project->user->profile->title }}</div>
+                    <div class="text-xs text-gray-500 mt-2">
+                        {{ \Carbon\Carbon::parse($project->created_at)->diffForHumans() }}
+                    </div>
                 </div>
             </div>
             <div class="relative  gap-5 justify-between text-xs max-md:flex cursor-pointer">
@@ -39,7 +42,7 @@
                 <div id="Drop_project_menu" class="text-md absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded shadow-lg z-10 hidden">
                     <a onclick="openLikesPopup('{{$project->id}}')" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">See Likes</a>
                     <a href="{{ route('profile.show', ['user' => $project->user]) }}" class="block px-5 py-3 text-gray-800 hover:bg-gray-200">View User Profile</a>
-            
+
 
                     <form class="reportForm block px-5 py-3 text-gray-800 hover:bg-gray-200">
                         @csrf
@@ -92,11 +95,11 @@
 
         @foreach ($project->media as $media)
         @if ($media->type === 'document')
-        <div class="flex gap-5 justify-between px-6 py-5 mt-5 w-full bg-indigo-50 rounded leading-[150%] max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
+        <div class="flex gap-5 justify-between px-2 py-2 md:px-6 md:py-5 mt-5 w-full bg-sky-50 rounded leading-[150%] max-md:flex-wrap  max-md:max-w-full">
             <div class="flex gap-4">
                 <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ce3b78eb4910f8881d4d5316b82b4352381767a0953bf889bdd252361cba0248?" class="shrink-0 aspect-square w-[42px]" />
                 <div class="flex flex-col self-start mt-1.5">
-                    <div class="text-sm ">{{ $media->path }}</div>
+                    <div class="text-xs md:text-sm">{{ $media->path }}</div>
                     <div class="mt-3.5 text-xs">{{ strtoupper(pathinfo(asset('storage/documents/'.$media->path), PATHINFO_EXTENSION)) }} file, {{ round(Storage::size('public/documents/'.$media->path) / 1024, 2) }} Ko</div>
                 </div>
             </div>
@@ -151,7 +154,7 @@
 
 
 
-        <div class="relative overflow-hidden" id="carousel_{{$project->id}}" data-media="{{ json_encode($mediaData) }}">
+        <div class="relative overflow-hidden " id="carousel_{{$project->id}}" data-media="{{ json_encode($mediaData) }}">
             <div class="flex carousel-scroll">
                 <!-- Affichage de la première image ou vidéo dans le carrousel -->
                 @foreach($mediaData as $media)

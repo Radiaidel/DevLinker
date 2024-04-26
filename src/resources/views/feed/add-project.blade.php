@@ -1,6 +1,6 @@
 <div id="addProjectModal" class="fixed inset-0 z-50 overflow-y-auto hidden bg-gray-800 bg-opacity-50 w-full">
     <div class="flex items-center justify-center min-h-screen">
-        <div class="relative bg-white rounded-lg w-[700px] mx-auto p-8">
+    <div class="relative bg-white rounded-lg w-[90%] md:w-[50%] mx-auto p-8">
             <button id="closeModalButton" class="absolute top-0 right-0 mt-4 mr-4 text-bold text-lg text-gray-600 hover:text-gray-800">&times;</button>
 
             <form id="projectForm" action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data">

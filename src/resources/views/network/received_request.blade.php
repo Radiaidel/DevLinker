@@ -1,10 +1,10 @@
-    <div class="flex gap-5 px-5 mt-11 text-xs text-center text-sky-800 uppercase max-md:flex-wrap max-md:mt-10">
-      <div class="shrink-0 max-w-full border border-solid bg-neutral-200 border-neutral-200 h-[9px] w-[300px]"></div>
+    <div class="flex md:gap-5 gap-2 px-5 mt-11 text-xs text-center text-sky-800 uppercase max-md:flex-wrap max-md:mt-10">
+      <div class="shrink-0 w-full border border-solid bg-neutral-200 border-neutral-200 h-[9px] md:w-[300px]"></div>
       <div class="flex-auto">
         you have
         <span class="text-sky-800">{{Auth::user()->receivedFriendrequests()->count()}} new connections</span>
       </div>
-      <div class="shrink-0 max-w-full border border-solid bg-neutral-200 border-neutral-200 h-[9px] w-[301px]"></div>
+      <div class="md:block hidden shrink-0 max-w-full border border-solid bg-neutral-200 border-neutral-200 h-[9px] w-[301px]"></div>
     </div>
     @foreach($receivedRequests as $request)
     <div class="flex gap-5 justify-between px-8 py-6 mt-7 w-full bg-white rounded max-md:flex-wrap max-md:px-5 max-md:max-w-full">

@@ -85,7 +85,7 @@
 
 
     </div>
-    <div class="flex items-center pr-5 hidden max-md:flex">
+    <div class="  flex items-center pr-5 hidden max-md:flex ">
         <!-- Bouton du menu burger -->
         <button id="burger-menu" class="block flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-900 hover:border-gray-900">
             <svg class="h-3 w-3 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -94,11 +94,14 @@
             </svg>
         </button>
         <!-- Contenu du menu burger -->
-        <div id="burger-menu-content" class="flex flex-col items-center justify-center text-xs bg-white border border-gray-200 py-4 px-2 absolute top-16 right-0 z-10 hidden w-1/2 h-screen">
-            <a href="#" class="text-gray-900 hover:text-gray-700">Accueil</a>
-            <a href="#" class="text-gray-900 hover:text-gray-700">Profil</a>
-            <a href="#" class="text-gray-900 hover:text-gray-700">Paramètres</a>
-            <a href="#" class="text-gray-900 hover:text-gray-700">Déconnexion</a>
+        <div id="burger-menu-content" class="flex flex-col  text-xs bg-white border border-gray-200  absolute  top-16 right-0  z-10 hidden w-1/2 ">
+            <a href="{{ route('dashboard') }}" class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center ">Dashboard</a>
+            <a href="{{ route('users') }}" class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center">Users</a>
+            <a href="{{ route('explore') }}" class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center">Explore</a>
+            <a href="{{ route('report') }}" class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center">Reports</a>
+            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center">Logout</a>
+
+
         </div>
 
     </div>

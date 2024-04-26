@@ -19,7 +19,7 @@
                 home
             </strong>
         </a>
-        <a href="{{ route('network') }}" class="shrink-0 aspect-[1.12] w-[90px] flex flex-col justify-center items-center {{ request()->routeIs('network') ? 'border-b border-sky-800 border-b-2' : '' }}">
+        <a href="{{ route('network') }}" class=" relative shrink-0 aspect-[1.12] w-[90px] flex flex-col justify-center items-center {{ request()->routeIs('network') ? 'border-b border-sky-800 border-b-2' : '' }}">
             <svg width="27px" height="27px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -41,6 +41,8 @@
                 </g>
 
             </svg>
+            <span id="request_count" class="absolute bg-red-600 text-white h-4  w-4 text-center top-4  right-5 text-xs rounded-full {{request()->routeIs('network') ? 'hidden' : '' }}    {{auth()->user()->PendingRequests()->count() == 0 ? 'hidden' : ''}}">{{auth()->user()->PendingRequests()->count()}}</span>
+
             <strong class="uppercase text-xs  absolute bottom-2  {{ request()->routeIs('network') ? 'text-sky-800' : 'hidden' }}">
                 network
             </strong>
@@ -82,8 +84,8 @@
 
 
         <a href="{{ route('notifications') }}" class="aspect-[1.12] w-[90px] flex flex-col justify-center items-center {{ request()->routeIs('notifications') ? 'border-b border-sky-800 border-b-2' : '' }}">
-           
-        <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+            <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -113,11 +115,18 @@
             </svg>
         </button>
         <!-- Contenu du menu burger -->
-        <div id="burger-menu-content" class="flex flex-col items-center justify-center text-xs bg-white border border-gray-200 py-4 px-2 absolute top-16 right-0 z-10 hidden w-1/2 h-screen">
-            <a href="#" class="text-gray-900 hover:text-gray-700">Accueil</a>
-            <a href="#" class="text-gray-900 hover:text-gray-700">Profil</a>
-            <a href="#" class="text-gray-900 hover:text-gray-700">Paramètres</a>
-            <a href="#" class="text-gray-900 hover:text-gray-700">Déconnexion</a>
+        <div id="burger-menu-content" class="flex flex-col text-xs bg-white border border-gray-200  absolute  top-16 right-0  z-10 hidden w-1/2 ">
+            <a href="{{ route('feed') }}" class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center ">Home</a>
+            <a href="{{ route('network') }}" class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center">network</a>
+            <a href="{{ route('explore') }}" class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center">Explore</a>
+            <a href="{{ route('chat') }}" class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center">Chat</a>
+            <a href="{{ route('notifications') }}" class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center">Notification</a>
+            <a href="{{ route('profile.show', ['user' => auth()->id()]) }}"class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center">Profile</a>
+            <a href="{{ route('preferences.show') }}" class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center">Preferences</a>
+            <a onclick="fetchSavedItems()" class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center">Saved items</a>       
+            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"class="text-gray-900 border border-gray-200 w-full p-4 hover:text-gray-700 text-center">Logout</a>
+
+
         </div>
 
     </div>
@@ -147,7 +156,7 @@
         <div id="dropdownMenu" class="absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded shadow-lg z-10 hidden">
             <a href="{{ route('profile.show', ['user' => auth()->id()]) }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
             <a href="{{ route('preferences.show') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Preferences</a>
-            <a onclick="fetchSavedItems()" class="cursor-pointer block px-4 py-2 text-gray-800 hover:bg-gray-200">Mes enregistrements</a>
+            <a onclick="fetchSavedItems()" class="cursor-pointer block px-4 py-2 text-gray-800 hover:bg-gray-200">Saved items</a>
 
             <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
         </div>
@@ -158,7 +167,7 @@
 
 
     <div id="savedItemsPopup" class="z-20 fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center hidden">
-        <div class="bg-white rounded-lg p-8 w-[40%] h-[95%] relative overflow-y-auto">
+        <div class="bg-white rounded-lg p-8 w-[80%] md:w-[40%] h-[95%] relative overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-lg font-semibold">Saves </h2>
                 <button onclick="closeSavedItemsPopup()" class="text-gray-500 hover:text-gray-700 focus:outline-none">

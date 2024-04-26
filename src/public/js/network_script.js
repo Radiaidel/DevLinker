@@ -13,7 +13,7 @@ function toggleSection(section) {
     } else if (section === 'sent') {
       document.getElementById('receivedBtn').classList.remove('bg-sky-800', 'text-white', 'py-5');
       document.getElementById('receivedBtn').classList.add('bg-white', 'text-neutral-900');
-      document.getElementById('sentBtn').classList.add('bg-sky-800', 'text-white', 'py-5');
+      document.getElementById('sentBtn').classList.add('bg-sky-800', 'text-white', 'py-5'); 
       document.getElementById('sentBtn').classList.remove('bg-white', 'text-neutral-900');
       document.getElementById('receivedContent').classList.add('hidden');
       document.getElementById('recent_connections').classList.add('hidden');

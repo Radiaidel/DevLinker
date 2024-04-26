@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="px-12 py-4 justify-center flex gap-5 max-md:flex-col max-md:gap-0 h-[610px]">
+<div class="px-12 py-4 justify-center flex gap-5 max-md:flex-col max-md:gap-0 h-[650px]">
     <div class="flex flex-col w-1/4 max-md:ml-0 max-md:w-full">
         <div class="flex flex-col mt-2.5 max-md:mt-10">
             <div class="flex flex-col justify-center px-8 py-6 text-xs text-center text-white uppercase bg-white rounded max-md:px-5">
@@ -32,8 +32,11 @@
                             </div>
                             @if($conversation->messages->last())
                             <div class="flex gap-1 mt-2 justify-center text-xs leading-4 text-neutral-900 text-opacity-50">
+                                @if(!$conversation->messages->last()->read_at)
                                 <span class="shrink-0 self-start bg-sky-600 rounded-full aspect-square w-[9px]"></span>
-                                <div class="flex-auto" id="last-message-{{$conversation->id}}"  >
+                                @endif
+
+                                <div class="flex-auto" id="last-message-{{$conversation->id}}">
                                     {{ $conversation->messages->last()->content }}
                                 </div>
                             </div>
@@ -50,18 +53,38 @@
             </div>
         </div>
     </div>
-    <div class=" flex flex-col ml-5 w-2/3 max-md:ml-0 max-md:w-full bg-white rounded-3xl ">
-        <div id="message-container" class=" relative h-[580px] overflow-y-auto">
+    <div class=" flex justify-between flex-col ml-5 w-2/3 max-md:ml-0 max-md:w-full bg-white rounded-3xl ">
+        <div id="message-container" class=" relative overflow-y-auto">
 
-        <p class="text-gray-400 italic m-auto text-center h-full my-auto">Aucun message</p>
+            <p class="text-gray-400 italic m-auto text-center my-auto">Aucun message</p>
         </div>
 
-        <div id="sendMessage" class=" hidden flex items-center mt-4">
-            <div class="shrink-0 mt-7 h-px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
+        <!-- <div id="sendMessage" class=" hidden flex items-center mt-4">
+            <div class="shrink-0 mt-7 h-2px border border-solid bg-zinc-100 border-zinc-100 max-md:max-w-full"></div>
 
             <input type="text" name="content" id="new-message" class="rounded-full flex-grow border border-gray-300 py-2 px-4 focus:outline-none focus:border-blue-500" placeholder="Saisissez votre message...">
             <button id="send-message" class="px-4 py-2 bg-sky-800 text-white rounded-lg">send</button>
+        </div> -->
+
+        <div id="sendMessage" class="mb-3 hidden flex  py-2 px-3  rounded-lg">
+            <button type="button" class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+            <button type="button" class="p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+            <input type="text" name="content" id="new-message" class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 " placeholder="Your message...">
+            <button id="send-message" class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 ">
+                <svg class="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                </svg>
+            </button>
         </div>
+
     </div>
 </div>
 
@@ -97,8 +120,11 @@
                 const messageContainer = document.getElementById('message-container');
                 messageContainer.innerHTML = ''; // Effacez le contenu précédent
 
-                const otherUser = conversationData.user_id === window.User.id ? conversationData.friend : conversationData.user;
+                const otherUser = conversationData.user_id == window.User.id ? conversationData.friend : conversationData.user;
+                const lastOnline =  otherUser.last_online ? otherUser.last_online.diffForHumans() : 'Online';
 
+
+                
                 const userInfoContainer = document.createElement('div');
                 userInfoContainer.classList.add('shadow-md', 'sticky', 'top-0', 'bg-white', 'flex', 'flex-col', 'px-5', 'py-3', 'max-md:px-5', 'max-md:max-w-full');
                 userInfoContainer.innerHTML = `
@@ -106,33 +132,43 @@
                             <img src="{{ asset('storage/profile/unknown.png') }}" class="shrink-0 aspect-square w-[52px] rounded-full" />
                             <div class="flex flex-col my-auto">
                                 <div class="text-sm">${otherUser.name}</div>
-                                <div class="mt-2 text-xs uppercase">last online: ${otherUser.last_online}</div>
-                            </div>
+                                <div class="mt-2 text-xs uppercase">last online: ${lastOnline}</div>
+                                                            </div>
                         </div>
                     `;
+
+                    
                 messageContainer.appendChild(userInfoContainer);
 
-                // Afficher les cinq derniers messages
-                let start = Math.max(messages.length - 7, 0); // Index de départ pour afficher les messages
+
+                let userScrolled = false; // Variable pour vérifier si l'utilisateur a fait défiler manuellement
+
+                // Fonction pour vérifier si l'utilisateur a fait défiler manuellement
+                messageContainer.addEventListener('scroll', function() {
+                    // Si l'utilisateur a fait défiler, nous ne voulons pas régler scrollTop automatiquement
+                    userScrolled = true;
+                });
+
+                let start = Math.max(messages.length - 5, 0); // Index de départ pour afficher les messages
                 let end = messages.length; // Index de fin pour afficher les messages
                 displayMessages(messages.slice(start, end), messageContainer);
 
-                messageContainer.scrollTop = messageContainer.scrollHeight;
+                // Intervalle pour charger les messages précédents
+                setInterval(() => {
+                    const nextStart = Math.max(start - 2, 0); // Nouvel index de départ pour afficher les messages
+                    const nextEnd = start; // Nouvel index de fin pour afficher les messages
+                    const previousMessages = messages.slice(nextStart, nextEnd);
+                    displayMessages(previousMessages, messageContainer, true);
+                    // Mettre à jour les indices de début et de fin pour la prochaine itération
+                    start = nextStart;
 
-                messageContainer.addEventListener('scroll', function() {
-
-                    if (messageContainer.scrollTop === 0) {
-                        // Charger et afficher les cinq messages précédents lorsque l'utilisateur fait défiler vers le haut
-                        const nextStart = Math.max(start - 2, 0); // Nouvel index de départ pour afficher les messages
-                        const nextEnd = start; // Nouvel index de fin pour afficher les messages
-                        const previousMessages = messages.slice(nextStart, nextEnd);
-                        displayMessages(previousMessages, messageContainer, true);
-                        // Mettre à jour les indices de début et de fin pour la prochaine itération
-                        start = nextStart;
-
+                    // Si l'utilisateur n'a pas fait défiler manuellement, faites défiler vers le bas
+                    if (!userScrolled) {
+                        messageContainer.scrollTop = messageContainer.scrollHeight;
                     }
+                }, 1000);
 
-                });
+
 
 
                 document.getElementById('sendMessage').classList.remove('hidden');
