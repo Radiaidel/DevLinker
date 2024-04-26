@@ -54,7 +54,7 @@
         </div>
     </div>
     <div class=" flex justify-between flex-col ml-5 w-2/3 max-md:ml-0 max-md:w-full bg-white rounded-3xl ">
-        <div id="message-container" class=" relative overflow-y-auto">
+        <div  class=" message-container relative overflow-y-auto">
 
             <p class="text-gray-400 italic m-auto text-center my-auto">Aucun message</p>
         </div>
@@ -97,14 +97,15 @@
 
         conversationItems.forEach(item => {
             item.addEventListener('click', function() {
-
-                conversationItems.forEach(element => {
-                    element.classList.remove('active');
-                });
-
-                this.classList.add('active');
+                
+                
                 const conversationData = JSON.parse(this.getAttribute('data-conversation'));
                 conversationId = conversationData.id;
+                
+                
+                
+            
+
 
                 read_messages(conversationId);
 
@@ -115,13 +116,16 @@
                 item.classList.remove('border-l-4', 'border-sky-800');
 
 
+                const messageContainer = document.querySelector('.message-container');
+                                messageContainer.id = 'message-container-' + conversationId;
+                messageContainer.innerHTML = '';
+                
+
                 const messages = conversationData.messages;
 
-                const messageContainer = document.getElementById('message-container');
-                messageContainer.innerHTML = ''; // Effacez le contenu précédent
 
                 const otherUser = conversationData.user_id == window.User.id ? conversationData.friend : conversationData.user;
-                const lastOnline =  otherUser.last_online ? otherUser.last_online.diffForHumans() : 'Online';
+                // const lastOnline =  otherUser.last_online ? otherUser.last_online.diffForHumans() : 'Online';
 
 
                 
@@ -132,7 +136,7 @@
                             <img src="{{ asset('storage/profile/unknown.png') }}" class="shrink-0 aspect-square w-[52px] rounded-full" />
                             <div class="flex flex-col my-auto">
                                 <div class="text-sm">${otherUser.name}</div>
-                                <div class="mt-2 text-xs uppercase">last online: ${lastOnline}</div>
+                                <div class="mt-2 text-xs uppercase">online</div>
                                                             </div>
                         </div>
                     `;
@@ -192,7 +196,11 @@
                     console.error('Error:', error);
                 });
         }
-        // Fonction pour afficher les messages dans le conteneur spécifié
+
+
+
+
+//afficher les messages
         function displayMessages(messages, container, prepend = false) {
             messages.forEach(message => {
                 const isCurrentUserSender = (message.sender_id == window.User.id);

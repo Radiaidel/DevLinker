@@ -107,7 +107,7 @@ fetch('/user/conversations')
 
 
 
-                    if (window.location.href.includes('chat')) {
+                    if (window.location.href.includes('chat') && document.getElementById(`message-container-${conversationId}`)) {
                         if (e.message.sender_id != User.id) {
                             const unreadCountElement = document.getElementById(`unread-count-${conversationId}`);
                             const conversationElement = document.getElementById(`conversation-${conversationId}`);
@@ -125,7 +125,7 @@ fetch('/user/conversations')
                             // parentElement.insertBefore(conversationElement, thirdChild.nextSibling);
                         }
 
-                        const messageContainer = document.getElementById('message-container');
+                        const messageContainer = document.getElementById(`message-container-${conversationId}`);
                         const isCurrentUserSender = (e.message.sender_id == window.User.id);
                         const msgSide = isCurrentUserSender ? 'justify-end' : 'justify-start';
                         const backgroundColorClass = isCurrentUserSender ? 'bg-sky-50' : 'bg-sky-800';
