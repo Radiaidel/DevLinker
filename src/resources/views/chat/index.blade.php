@@ -2,15 +2,15 @@
 
 @section('content')
 
-<div class="px-12 py-4 justify-center flex gap-5 max-md:flex-col max-md:gap-0 h-[650px]">
+<div class=" px-5 md:px-12 md:py-4 md:justify-center flex gap-5 max-md:flex-col max-md:gap-0 md:h-[650px]">
     <div class="flex flex-col w-1/4 max-md:ml-0 max-md:w-full">
-        <div class="flex flex-col mt-2.5 max-md:mt-10">
+        <div id="conversations-list" class="flex flex-col mt-2.5 max-md:mt-10">
             <div class="flex flex-col justify-center px-8 py-6 text-xs text-center text-white uppercase bg-white rounded max-md:px-5">
                 <div class="justify-center items-center px-16 py-3  bg-sky-800 rounded max-md:px-5">
                     Start new chat
                 </div>
             </div>
-            <div class="flex flex-col py-6 mt-6 w-full bg-white rounded">
+            <div class=" flex flex-col py-6 mt-6 w-full bg-white rounded">
                 <div class="self-start ml-8 text-xs  uppercase text-neutral-900 max-md:ml-2.5">
                     Chats
                 </div>
@@ -53,8 +53,20 @@
             </div>
         </div>
     </div>
-    <div class=" flex justify-between flex-col ml-5 w-2/3 max-md:ml-0 max-md:w-full bg-white rounded-3xl ">
-        <div  class=" message-container relative overflow-y-auto">
+
+    <div id="show-conversations" class="hidden flex w-[20%]  mt-5 gap-1 justify-center self-start px-6 py-1 text-xs  rounded bg-zinc-200 max-md:px-5">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="shrink-0 w-6 aspect-square">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+                <path fill="#000000" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path>
+                <path fill="#000000" d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"></path>
+            </g>
+        </svg>
+    </div>
+
+    <div class="h-[700px] md:h-[610px] mt-8 md:mt-0 main-container  max-sm:hidden  flex justify-between flex-col ml-5 w-2/3 max-md:ml-0 max-md:w-full bg-white rounded-3xl ">
+        <div class=" message-container relative overflow-y-auto">
 
             <p class="text-gray-400 italic m-auto text-center my-auto">Aucun message</p>
         </div>
@@ -93,18 +105,65 @@
         const conversationItems = document.querySelectorAll('.conversation-item');
         const sendMessageButton = document.getElementById('send-message');
         const newMessageInput = document.getElementById('new-message');
+        const container = document.querySelector('.main-container');
+        const showConversationsButton = document.getElementById('show-conversations');
+        const conversationsList = document.getElementById('conversations-list');
+
+
+        if (window.innerWidth <= 768) {
+            container.classList.add('max-sm:hidden');
+            showConversationsButton.classList.add('hidden');
+            conversationsList.classList.remove('hidden');
+
+            showConversationsButton.addEventListener('click', function() {
+
+                if (container && conversationsList) {
+                    container.classList.remove('max-sm:hidden');
+                    conversationsList.classList.add('hidden');
+                    showConversationsButton.classList.remove('hidden');
+
+                } else {
+                    console.error('Elements not found.');
+                }
+            });
+        } else {
+            container.classList.remove('hidden');
+            showConversationsButton.classList.add('hidden');
+            conversationsList.classList.remove('hidden');
+        }
 
 
         conversationItems.forEach(item => {
             item.addEventListener('click', function() {
-                
-                
+
+
+
+                if (window.innerWidth <= 768) {
+                    container.classList.toggle('max-sm:hidden');
+                    showConversationsButton.classList.toggle('hidden');
+                    conversationsList.classList.toggle('hidden');
+
+                    showConversationsButton.addEventListener('click', function() {
+
+                        if (container && conversationsList) {
+                            container.classList.toggle('max-sm:hidden');
+                            conversationsList.classList.toggle('hidden');
+                            showConversationsButton.classList.toggle('hidden');
+
+                        } else {
+                            console.error('Elements not found.');
+                        }
+                    });
+                }
+
+
+
+
+
+
+
                 const conversationData = JSON.parse(this.getAttribute('data-conversation'));
                 conversationId = conversationData.id;
-                
-                
-                
-            
 
 
                 read_messages(conversationId);
@@ -117,9 +176,9 @@
 
 
                 const messageContainer = document.querySelector('.message-container');
-                                messageContainer.id = 'message-container-' + conversationId;
+                messageContainer.id = 'message-container-' + conversationId;
                 messageContainer.innerHTML = '';
-                
+
 
                 const messages = conversationData.messages;
 
@@ -128,7 +187,7 @@
                 // const lastOnline =  otherUser.last_online ? otherUser.last_online.diffForHumans() : 'Online';
 
 
-                
+
                 const userInfoContainer = document.createElement('div');
                 userInfoContainer.classList.add('shadow-md', 'sticky', 'top-0', 'bg-white', 'flex', 'flex-col', 'px-5', 'py-3', 'max-md:px-5', 'max-md:max-w-full');
                 userInfoContainer.innerHTML = `
@@ -141,7 +200,7 @@
                         </div>
                     `;
 
-                    
+
                 messageContainer.appendChild(userInfoContainer);
 
 
@@ -200,7 +259,7 @@
 
 
 
-//afficher les messages
+        //afficher les messages
         function displayMessages(messages, container, prepend = false) {
             messages.forEach(message => {
                 const isCurrentUserSender = (message.sender_id == window.User.id);
@@ -218,7 +277,7 @@
                 messageElement.classList.add('flex', 'px-12', 'gap-4', 'block', 'mt-1', msgSide);
 
                 messageElement.innerHTML = `
-            <div class="flex flex-col grow shrink-0 basis-0 max-w-[60%]">
+            <div class="flex flex-col grow shrink-0 basis-0 w-[80%] md:w-[60%]">
                 <div class="justify-center px-5 py-4 text-sm ${backgroundColorClass} ${textColorClass} rounded-3xl">
                     ${message.content}
                 </div>
