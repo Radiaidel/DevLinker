@@ -143,9 +143,7 @@ document.getElementById("deleteEducationButton").addEventListener("click", funct
 
 function confirmDelete(languageKey) {
     if (confirm("Are you sure you want to delete this language?")) {
-        // Mettre à jour la valeur de l'input avec la clé de langue
         document.getElementById("languageToDeleteInput").value = languageKey;
-        // Soumettre le formulaire de suppression
         document.getElementById("deleteLanguageForm").submit();
     }
 }

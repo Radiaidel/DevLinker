@@ -20,7 +20,6 @@ class MessageController extends Controller
 
         $unreadMessages = $conversation_actuel->messages()->get();
 
-        // Marquer les messages comme lus
         foreach ($unreadMessages as $message) {
             $message->update(['read_at' => now()]);
         }

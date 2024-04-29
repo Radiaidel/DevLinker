@@ -41,10 +41,8 @@ class PreferencesController  extends Controller
 
         $token = Str::random(60);
 
-        // Stockez temporairement le token dans la session.
         session(['email_verification_token' => $token]);
 
-        // Stockez temporairement le nouvel e-mail dans la session.
         session(['new_email' => $request->email]);
 
         $verificationUrl = route('email.verify', ['token' => $token]);
@@ -56,17 +54,14 @@ class PreferencesController  extends Controller
 
     public function verifyEmail(Request $request, $token)
     {
-        // Vérifiez si le token correspond à celui stocké temporairement.
         if ($token === session('email_verification_token')) {
             $user = auth()->user();
             $newEmail = session('new_email');
 
-            // Mettez à jour l'adresse e-mail de l'utilisateur.
             $user->update([
                 'email' => $newEmail,
             ]);
 
-            // Effacez les données stockées temporairement.
             $request->session()->forget('email_verification_token');
             $request->session()->forget('new_email');
 
@@ -94,7 +89,6 @@ class PreferencesController  extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Mettre à jour le mot de passe de l'utilisateur
         auth()->user()->update([
             'password' => Hash::make($request->password),
         ]);
@@ -104,15 +98,12 @@ class PreferencesController  extends Controller
 
     public function deleteAccount(Request $request)
     {
-        // Vérifier si le mot de passe est correct
         if (!Hash::check($request->password, auth()->user()->password)) {
             return redirect()->back()->with('error', 'Le mot de passe est incorrect.');
         }
 
-        // Supprimer le compte de l'utilisateur
         auth()->user()->delete();
 
-        // Rediriger vers une page appropriée après la suppression du compte
         return redirect()->route('auth.register')->with('success', 'Votre compte a été supprimé avec succès.');
     }
 }

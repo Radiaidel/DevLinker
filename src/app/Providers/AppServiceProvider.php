@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\User;
 use App\Models\Profile;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -25,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
             $user->profile()->create([
                 'cover_image' => 'cover_default.jpeg',
                 'profile_image' => 'unknown.png',
-                        ]);
+            ]);
         });
     }
 }

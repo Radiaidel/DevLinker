@@ -19,7 +19,7 @@
 
 
 <div class="p-5 sm:p-8">
-    <div id="projects-container"class="columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-2 lg:columns-3 [&>img:not(:first-child)]:mt-8">
+    <div id="projects-container"class="columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-2 lg:columns-3">
     @include('feed.projects')
     </div>
     <div id="loading" class="hidden">..</div>

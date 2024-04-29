@@ -26,18 +26,16 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        // Valider les données du formulaire
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validation pour les images
-            'video.*' => 'nullable|file|mimes:mp4,mov,avi,wmv|max:20480', // Validation pour les vidéos
-            'links.*' => 'nullable|url', // Validation pour les liens
-            'document.*' => 'nullable|file|mimes:pdf,doc,docx,txt|max:20480', // Validation pour les documents
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'video.*' => 'nullable|file|mimes:mp4,mov,avi,wmv|max:20480',
+            'links.*' => 'nullable|url', 
+            'document.*' => 'nullable|file|mimes:pdf,doc,docx,txt|max:20480', 
         ]);
 
 
-        // Créer un nouveau projet
         $project = new Project();
         $project->title = $request->input('title');
         $project->description = $request->input('description');
@@ -63,11 +61,9 @@ class ProjectController extends Controller
         // Enregistrer les vidéos
         if ($request->hasFile('video')) {
             foreach ($request->file('video') as $video) {
-                // Renommer la vidéo et la stocker dans le répertoire approprié
                 $videoName = uniqid() . '.' . $video->getClientOriginalExtension();
                 $video->storeAs('public/videos', $videoName);
 
-                // Créer une entrée dans la table des médias pour la vidéo
                 $media = new Media();
                 $media->project_id = $project->id;
                 $media->type = 'video';
@@ -95,11 +91,8 @@ class ProjectController extends Controller
 
 
         if ($request->input('links') !== null) {
-            // Parcourez les liens envoyés
             foreach ($request->input('links') as $link) {
-                // Vérifiez si le lien n'est pas nul
                 if ($link !== null) {
-                    // Créez une nouvelle entrée Media pour chaque lien
                     $media = new Media();
                     $media->project_id = $project->id;
                     $media->type = 'link';
@@ -111,7 +104,6 @@ class ProjectController extends Controller
 
 
 
-        // Rediriger vers une page de succès ou afficher un message de succès
         return redirect()->back()->with('success', 'Projet ajouté avec succès.');
     }
 
@@ -133,14 +125,11 @@ class ProjectController extends Controller
             return redirect()->back()->with('error', 'Project not found.');
         }
     
-        // Vérifier si le projet est dans la corbeille (soft deleted)
         if ($project->trashed()) {
-            // Restaurer le projet
             $project->reports()->delete();
             $project->restore();
             return redirect()->back()->with('success', 'Project restored successfully.');
         } else {
-            // Effectuer la suppression logique du projet
             $project->delete();
             return redirect()->back()->with('success', 'Project soft deleted successfully.');
         }

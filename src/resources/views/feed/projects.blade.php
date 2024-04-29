@@ -160,7 +160,7 @@
                 @foreach($mediaData as $media)
                 @if ($media['type'] === 'image')
                 <div class="w-full flex-shrink-0">
-                    <img src="{{ $media['path'] }}" alt="Image">
+                    <img src="{{ $media['path'] }}" alt="Image" class="w-full">
                 </div>
                 @elseif ($media['type'] === 'video')
                 <div class="w-full flex-shrink-0">

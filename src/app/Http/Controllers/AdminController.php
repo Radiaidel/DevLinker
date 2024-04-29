@@ -16,53 +16,48 @@ class AdminController extends Controller
     public function dashboard()
     {
 
-        $visitorsPerDay = Visitor::select(DB::raw('DATE(visited_at) as date'), DB::raw('COUNT(DISTINCT ip_address) as total_visitors'))
-        ->groupBy('date')
-        ->get();
-    
-            
-        
-        
+        //les visiteurs par jour
+        $visitorsPerDay = Visitor::selectRaw('DATE(visited_at) as date')
+            ->selectRaw('COUNT(DISTINCT ip_address) as total_visitors')
+            ->groupByRaw('DATE(visited_at)')
+            ->get();
+
+
+        //count type de medias pour les projets 
         $mediaCounts = Media::select('type', DB::raw('count(distinct project_id) as project_count'))
-        ->groupBy('type')
-        ->get();
-        
-        // Initialiser un tableau pour stocker les pourcentages
-        $mediaPercentages = [];
-        
-        $totalProjects = Media::distinct('project_id')->count(); // Nombre total de projets
-        
+            ->groupBy('type')
+            ->get();
+
+
+
         // Calculer les pourcentages pour chaque type de média
+        $mediaPercentages = [];
+
+        $totalProjects = Media::distinct('project_id')->count();
+
         foreach ($mediaCounts as $mediaCount) {
             $percentage = ($mediaCount->project_count / $totalProjects) * 100;
             $mediaPercentages[$mediaCount->type] = $percentage;
         }
-        
+
         $projectsPerDay = Project::select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as total'))
-        ->groupBy('date')
-        ->get();
+            ->groupBy('date')
+            ->get();
 
 
 
         $deletedUsers = User::onlyTrashed()->get();
 
-
-
-
         $totalVisitors = Visitor::distinct('ip_address')->count();
 
-
-        // Récupérer le total des projets
         $totalProjects = Project::count();
 
-        // Récupérer le total des utilisateurs bloqués
         $totalBlockedUsers = User::onlyTrashed()->count();
 
-        // Récupérer le total des utilisateurs
         $totalUsers = User::count();
 
 
-        return view('admin.dashboard', compact('visitorsPerDay' , 'mediaPercentages','projectsPerDay','deletedUsers','totalVisitors', 'totalProjects', 'totalBlockedUsers', 'totalUsers'));
+        return view('admin.dashboard', compact('visitorsPerDay', 'mediaPercentages', 'projectsPerDay', 'deletedUsers', 'totalVisitors', 'totalProjects', 'totalBlockedUsers', 'totalUsers'));
     }
 
     public function getUsers()

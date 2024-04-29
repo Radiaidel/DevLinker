@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Profile;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -109,9 +110,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Conversation::class, 'user_id')->orWhere('friend_id', $this->id);
     }
+
     public function unreadMessagesCount()
     {
-        // Récupérer les conversations de l'utilisateur avec les messages non lus
         $conversations = $this->conversations()->withCount(['messages' => function ($query) {
             $query->whereNull('read_at')->where('sender_id', '!=', $this->id);
         }])->get();

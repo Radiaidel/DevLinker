@@ -33,5 +33,4 @@ function toggleSection(section) {
     toggleSection('sent');
   });
 
-  // Par défaut, afficher la section "Received"
   toggleSection('received');

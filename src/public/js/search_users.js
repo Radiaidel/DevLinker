@@ -1,15 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Récupérer les éléments nécessaires
     var seeAllLink = document.getElementById('see-all');
     var popup = document.getElementById('popup');
 
-    // Ajouter un écouteur d'événements pour le clic sur "See all"
     seeAllLink.addEventListener('click', function() {
         popup.classList.remove('hidden');
 
     });
 
-    // Ajouter un écouteur d'événements pour le clic en dehors du popup pour le fermer
     window.addEventListener('click', function(event) {
         if (event.target == popup) {
             popup.classList.add('hidden');
@@ -31,11 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function fetchUsers(searchTerm) {
-        // Effectuer une requête AJAX pour récupérer les utilisateurs ayant le même nom que searchTerm
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                // Traitement de la réponse de la requête AJAX
                 var users = JSON.parse(xhr.responseText);
                 displaySearchResults(users);
             }
@@ -47,10 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     function displaySearchResults(users) {
-        // Effacer les résultats précédents
         searchResultsContainer.innerHTML = '';
 
-        // Créer et afficher les résultats pour chaque utilisateur
         var profileRoute = "/profile/:userId";
         users.forEach(function(user) {
             var userCard = document.createElement('a');

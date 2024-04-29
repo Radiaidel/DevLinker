@@ -220,12 +220,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     reportForms.forEach(function(reportForm) {
         reportForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêche le comportement par défaut du formulaire
+            event.preventDefault(); 
             
-            // Récupérer les données du formulaire
             const formData = new FormData(reportForm);
 
-            // Envoyer les données via une requête Fetch
             fetch("/projects/report", {
                 method: 'POST',
                 body: formData
@@ -238,11 +236,9 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(data => {
                 console.log('Report submitted successfully:', data);
-                // Traitez la réponse si nécessaire
             })
             .catch(error => {
                 console.error('Error submitting report:', error);
-                // Gérez les erreurs si nécessaire
             });
         });
     });

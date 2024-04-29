@@ -18,13 +18,13 @@ class NotificationDeleted implements ShouldBroadcast
         $this->userId = $userId;
     }
 
-    public function broadcastOn()
+    public function broadcastOn()//retourne le canal privé sur lequel l'evenement sera diffusé
     {
         return new PrivateChannel('notifications.'.$this->userId);
     }
     
 
-    public function broadcastAs()
+    public function broadcastAs()//retourne le nom de l'evenement à diffuser
     {
         return 'notification.deleted';
     }

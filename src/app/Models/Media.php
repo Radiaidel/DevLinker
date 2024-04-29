@@ -9,7 +9,8 @@ class Media extends Model
 {
     use HasFactory;
 
-    protected $table = 'medias';    protected $fillable = ['type' , 'path' ];
+    protected $table = 'medias';    
+    protected $fillable = ['type' , 'path' ];
 
     public function project()
     {

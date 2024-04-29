@@ -32,7 +32,6 @@ window.Echo = new Echo({
 
 
 
-// Fonction pour mettre à jour la visibilité de l'élément <span>
 function updateNotifCountVisibility() {
     const notifCountSpan = document.getElementById('notif_count');
     if (notifCountSpan && notifCountSpan.innerText == 0) {
@@ -42,14 +41,13 @@ function updateNotifCountVisibility() {
     }
 }
 
-// Écouter les événements de notification et mettre à jour le compteur en conséquence
 window.Echo.private('notifications.' + User.id).listen('.notification.deleted', (data) => {
     const notifCountElement = document.getElementById('notif_count');
     if (notifCountElement) {
         let notifCount = parseInt(notifCountElement.innerText);
         if (!isNaN(notifCount) && notifCount >= 1) {
             notifCountElement.innerText = notifCount - 1;
-            updateNotifCountVisibility(); // Mettre à jour la visibilité après la modification du compteur
+            updateNotifCountVisibility(); 
         }
     }
 });
@@ -58,7 +56,7 @@ window.Echo.private('App.Models.User.' + User.id).notification((notification) =>
     const notifCountElement = document.getElementById('notif_count');
     if (notifCountElement) {
         notifCountElement.innerText = parseInt(notifCountElement.innerText) + 1;
-        updateNotifCountVisibility(); // Mettre à jour la visibilité après l'ajout d'une nouvelle notification
+        updateNotifCountVisibility(); 
     }
 });
 

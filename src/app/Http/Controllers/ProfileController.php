@@ -18,7 +18,7 @@ class ProfileController extends Controller
     public function updateCoverImage(Request $request)
     {
         $request->validate([
-            'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif',
         ]);
 
         $image = $request->file('cover_image');
@@ -33,7 +33,7 @@ class ProfileController extends Controller
     public function updateProfileImage(Request $request)
     {
         $request->validate([
-            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif',
         ]);
 
         $image = $request->file('profile_image');

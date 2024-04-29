@@ -83,10 +83,8 @@ class NetworkController extends Controller
     }
     public function sendConnectionRequest(Request $request)
     {
-        // Récupérer l'utilisateur authentifié
         $user = auth()->user();
 
-        // Récupérer l'ID de l'utilisateur suggéré à connecter
         $suggestedUserId = $request->input('user_id');
 
 
@@ -97,7 +95,6 @@ class NetworkController extends Controller
         ]);
 
 
-        // Rediriger l'utilisateur vers la page précédente (ou une autre page de votre choix)
         return back()->with('success', 'Votre invitation a été envoyée avec succès');
     }
 }
